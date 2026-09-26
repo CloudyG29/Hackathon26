@@ -48,6 +48,7 @@ import type {
   TaxiRouteCategory,
   TransportMode,
 } from '@hackathon26/shared';
+import { config, hasSupabaseCredentials } from '../config';
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -1056,11 +1057,12 @@ async function pushToSupabase(data: {
   fareSnapshots: FareSnapshot[];
   demandSignals: DemandSignal[];
 }): Promise<void> {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseUrl || !serviceKey) {
+  const supabaseUrl = config.supabaseUrl;
+  const serviceKey = config.supabaseServiceRoleKey;
+  if (!supabaseUrl || !serviceKey || !hasSupabaseCredentials) {
     console.error(
-      '--push needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY set in services/api/.env',
+      '--push needs SUPABASE_URL and SUPABASE_SECRET_KEY (or the legacy ' +
+        'SUPABASE_SERVICE_ROLE_KEY) set in services/api/.env',
     );
     process.exitCode = 1;
     return;
