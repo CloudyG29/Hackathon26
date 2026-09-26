@@ -4,7 +4,9 @@ import express from 'express';
 import { z } from 'zod';
 import type { HealthResponse, PlanRouteRequest } from '@hackathon26/shared';
 import { config, hasSupabaseCredentials } from './config';
+import { supabase } from './db';
 
+const ROUTING_SERVICE_URL = process.env.ROUTING_SERVICE_URL || 'http://localhost:8000';
 const ROUTE_PRIORITIES = ['cheapest', 'fastest', 'easiest', 'safest'] as const;
 
 const geoPointSchema = z.object({
@@ -41,14 +43,7 @@ app.get('/health', (_req, res) => {
   res.json(body);
 });
 
-/**
- * Route planning contract.
- *
- * Request validation is wired up end to end, but the ranking engine is not
- * built yet — graph search belongs in services/routing. See
- * docs/ARCHITECTURE.md for the intended data flow.
- */
-app.post('/routes/plan', (req, res) => {
+app.post('/routes/plan', async (req, res) => {
   const parsed = planRouteRequestSchema.safeParse(req.body);
 
   if (!parsed.success) {
@@ -58,12 +53,56 @@ app.post('/routes/plan', (req, res) => {
 
   const request: PlanRouteRequest = parsed.data;
 
-  res.status(501).json({
-    error: 'Not implemented',
-    message:
-      `Route planning from "${request.origin.label}" to ` +
-      `"${request.destination.label}" is not wired up yet.`,
-  });
+  // Resolve Rank IDs from schema
+  const originRankId = request.origin.rankId || request.origin.label;
+  const destinationRankId = request.destination.rankId || request.destination.label;
+  const primaryPriority = request.priorities?.[0] || 'cheapest';
+
+  try {
+    // 1. Fetch Ranks (Nodes) from Supabase
+    const { data: ranks, error: ranksError } = await supabase
+      .from('ranks')
+      .select('id, name, lat, lng');
+
+    if (ranksError) throw ranksError;
+
+    // 2. Fetch Unblocked Routes (Edges) from Supabase
+    const { data: routes, error: routesError } = await supabase
+      .from('routes')
+      .select('id, from_rank_id, to_rank_id, fare, time_mins, taxi_association')
+      .eq('is_blocked', false);
+
+    if (routesError) throw routesError;
+
+    // 3. Call Python Routing Microservice
+    const pythonResponse = await fetch(`${ROUTING_SERVICE_URL}/calculate_route`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nodes: ranks,
+        edges: routes,
+        from_rank_id: originRankId,
+        to_rank_id: destinationRankId,
+        priority: primaryPriority,
+      }),
+    });
+
+    if (!pythonResponse.ok) {
+      throw new Error(`Routing engine error: ${pythonResponse.statusText}`);
+    }
+
+    const routeResult = await pythonResponse.json();
+
+    if (routeResult.error) {
+      res.status(404).json({ error: routeResult.error, legs: [] });
+      return;
+    }
+
+    res.json(routeResult);
+  } catch (error: any) {
+    console.error('Route planning failure:', error.message || error);
+    res.status(500).json({ error: 'Failed to calculate route.' });
+  }
 });
 
 app.use((_req, res) => {
