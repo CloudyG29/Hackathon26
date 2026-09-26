@@ -41,6 +41,8 @@ export interface Rank {
   landmarkPhotoUrl?: string;
   /** Paid facilities: toilets, guarded parking, indoor waiting area. */
   facilities?: string[];
+  /** Formal rank vs informal roadside loading point (from the facility survey). */
+  kind?: 'formal' | 'informal';
 }
 
 /** One hop of a journey, from one rank to the next. */
@@ -59,6 +61,10 @@ export interface Leg {
   departsWhenFull?: boolean;
   /** Geometric path between the two ranks, for drawing the map line. */
   path?: GeoPoint[];
+  /** The taxi route this hop belongs to, when the hop came from route data. */
+  routeId?: string;
+  /** Direction of travel along the parent taxi route. */
+  direction?: 'out' | 'return';
 }
 
 /** What a commuter must physically do at a change-over, and what to watch for. */
@@ -132,6 +138,69 @@ export interface PlanRouteResponse {
   destinationLabel: string;
   options: RouteOption[];
   generatedAt: string;
+}
+
+/** A taxi association: the operator behind one or more taxi routes. */
+export interface TaxiAssociation {
+  id: string;
+  name: string;
+}
+
+/** Distance band of a taxi route, from the route survey. */
+export type TaxiRouteCategory = 'short' | 'medium' | 'long';
+
+/**
+ * A taxi route as a marshal manages it: a named service between two ranks,
+ * operated by one association. Each route carries two directed legs ("out" and
+ * "return") because fares and travel times differ by direction. Blocking a
+ * route (strike) disables both legs at once.
+ */
+export interface TaxiRoute {
+  id: string;
+  /** Human label, e.g. "Marabastad ↔ Marble Hall". */
+  label: string;
+  associationId?: string;
+  category: TaxiRouteCategory;
+  mode: TransportMode;
+  /** Seats per vehicle: 9 = minibus, 15 = quantum/sprinter. */
+  seats?: number;
+  /** Strike toggle. Blocked routes are excluded from journey planning. */
+  isBlocked: boolean;
+  blockedReason?: string;
+  blockedAt?: string;
+  /** Provenance, e.g. "CSIR taxi route survey (route_id CR0008, 2018-12-07)". */
+  sourceNote?: string;
+}
+
+/** One demand event: a commuter (or marshal) signalling they want to travel. */
+export interface DemandSignal {
+  id: string;
+  /** Route the demand is for, when the commuter picked one. */
+  routeId?: string;
+  /** Rank the demand was raised at, when no specific route was picked. */
+  rankId?: string;
+  direction?: 'out' | 'return';
+  passengers: number;
+  signalAt: string;
+  /** Where the signal came from: 'commuter_app', 'marshal', 'demo_seed'. */
+  source: string;
+}
+
+/** Aggregated demand for one route over a time window, for the demand display. */
+export interface DemandSummaryEntry {
+  routeId: string;
+  label: string;
+  associationName?: string;
+  isBlocked: boolean;
+  signals: number;
+  passengers: number;
+}
+
+/** Shape returned by GET /demand. */
+export interface DemandSummaryResponse {
+  windowHours: number;
+  generatedAt: string;
+  entries: DemandSummaryEntry[];
 }
 
 /** Shape returned by GET /health on the API. */
