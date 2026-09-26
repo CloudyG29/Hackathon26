@@ -9,6 +9,7 @@
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
     "import:csir": "tsx src/scripts/import-csir.ts",
+    "seed:db": "tsx src/scripts/seed-db.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
