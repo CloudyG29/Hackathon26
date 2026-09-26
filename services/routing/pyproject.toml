@@ -1,0 +1,24 @@
+[project]
+name = "routing"
+version = "0.0.0"
+description = "Graph search over the rank/leg transit network, ranking journeys by cost, time, transfers and reliability"
+requires-python = ">=3.11"
+dependencies = [
+    "networkx>=3.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/routing"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

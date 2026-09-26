@@ -1,0 +1,50 @@
+{
+  "note": "ILLUSTRATIVE SAMPLE DATA. Coordinates are approximate and the landmark notes are invented. Replace with surveyed rank data before any demo that claims accuracy.",
+  "ranks": [
+    {
+      "id": "rank-jhb-bree",
+      "name": "Bree Street Taxi Rank",
+      "area": "Johannesburg CBD, Gauteng",
+      "location": { "latitude": -26.2041, "longitude": 28.0418 },
+      "modes": ["mini_bus_taxi", "local_bus"],
+      "landmarkNotes": "Multi-storey rank between Bree and Kerk Street. The long-distance deck is on the upper level - take the ramp on the Lillian Ngoyi side.",
+      "facilities": ["toilets", "street food", "cellphone charging stalls"]
+    },
+    {
+      "id": "rank-jhb-noord",
+      "name": "Noord Street Taxi Rank",
+      "area": "Johannesburg CBD, Gauteng",
+      "location": { "latitude": -26.2027, "longitude": 28.0455 },
+      "modes": ["long_distance_taxi", "mini_bus_taxi"],
+      "landmarkNotes": "Directly opposite the Noord Street shopping strip. Long-distance departures load from the basement level; loading bays are signposted by destination province.",
+      "facilities": ["toilets", "guarded parking", "indoor waiting area"]
+    },
+    {
+      "id": "rank-ermelo",
+      "name": "Ermelo Taxi Rank",
+      "area": "Ermelo, Mpumalanga",
+      "location": { "latitude": -26.5333, "longitude": 29.9833 },
+      "modes": ["long_distance_taxi", "mini_bus_taxi"],
+      "landmarkNotes": "Main interchange for the Mpumalanga corridor. Ask for the Mbombela-bound row - the local route stands are at the opposite end of the same hall.",
+      "facilities": ["toilets", "tuck shop"]
+    },
+    {
+      "id": "rank-mbombela",
+      "name": "Mbombela Taxi Rank",
+      "area": "Mbombela (Nelspruit), Mpumalanga",
+      "location": { "latitude": -25.4753, "longitude": 30.9694 },
+      "modes": ["long_distance_taxi", "mini_bus_taxi", "local_bus"],
+      "landmarkNotes": "Arrivals drop on the eastern side near the bus terminal; the mini-bus stands for White River and Hazyview are one level down.",
+      "facilities": ["toilets", "ATM", "indoor waiting area"]
+    },
+    {
+      "id": "rank-white-river",
+      "name": "White River Mini-Taxi Rank",
+      "area": "White River, Mpumalanga",
+      "location": { "latitude": -25.3286, "longitude": 31.0114 },
+      "modes": ["mini_bus_taxi"],
+      "landmarkNotes": "Small open-air rank behind the main road shops. Vehicles leave once full.",
+      "facilities": ["toilets"]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Environment files (never commit real keys)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Expo
+.expo/
+web-build/
+
+# Generated native projects (Continuous Native Generation)
+ios/
+android/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Supabase CLI
+supabase/.branches/
+supabase/.temp/
+
+# Logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

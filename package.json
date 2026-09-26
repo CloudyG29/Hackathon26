@@ -1,0 +1,27 @@
+{
+  "name": "hackathon26",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Step-by-step long-distance public transport navigation for first-time commuters",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/api"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "mobile": "npm run start --workspace @hackathon26/mobile",
+    "mobile:android": "npm run android --workspace @hackathon26/mobile",
+    "api": "npm run dev --workspace @hackathon26/api",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.3"
+  },
+  "overrides": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
+}

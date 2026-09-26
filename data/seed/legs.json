@@ -1,0 +1,60 @@
+{
+  "note": "ILLUSTRATIVE SAMPLE DATA. Fares and durations are invented for scaffolding the router. Replace with real surveyed fares before any demo that claims accuracy.",
+  "legs": [
+    {
+      "id": "leg-bree-noord-walk",
+      "mode": "walk",
+      "fromRankId": "rank-jhb-bree",
+      "toRankId": "rank-jhb-noord",
+      "fareZar": 0,
+      "estimatedMinutes": 12,
+      "distanceKm": 0.9,
+      "reliability": 1,
+      "departsWhenFull": false
+    },
+    {
+      "id": "leg-noord-ermelo",
+      "mode": "long_distance_taxi",
+      "fromRankId": "rank-jhb-noord",
+      "toRankId": "rank-ermelo",
+      "fareZar": 380,
+      "estimatedMinutes": 210,
+      "distanceKm": 300,
+      "reliability": 0.8,
+      "departsWhenFull": true
+    },
+    {
+      "id": "leg-ermelo-mbombela",
+      "mode": "long_distance_taxi",
+      "fromRankId": "rank-ermelo",
+      "toRankId": "rank-mbombela",
+      "fareZar": 180,
+      "estimatedMinutes": 120,
+      "distanceKm": 180,
+      "reliability": 0.75,
+      "departsWhenFull": true
+    },
+    {
+      "id": "leg-noord-mbombela-direct",
+      "mode": "long_distance_taxi",
+      "fromRankId": "rank-jhb-noord",
+      "toRankId": "rank-mbombela",
+      "fareZar": 520,
+      "estimatedMinutes": 300,
+      "distanceKm": 360,
+      "reliability": 0.7,
+      "departsWhenFull": true
+    },
+    {
+      "id": "leg-mbombela-white-river",
+      "mode": "mini_bus_taxi",
+      "fromRankId": "rank-mbombela",
+      "toRankId": "rank-white-river",
+      "fareZar": 35,
+      "estimatedMinutes": 35,
+      "distanceKm": 22,
+      "reliability": 0.9,
+      "departsWhenFull": true
+    }
+  ]
+}
