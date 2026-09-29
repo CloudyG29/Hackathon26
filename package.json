@@ -23,5 +23,8 @@
   "overrides": {
     "react": "19.2.3",
     "react-dom": "19.2.3"
+  },
+  "dependencies": {
+    "@supabase/server": "^1.8.0"
   }
 }
