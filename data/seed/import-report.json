@@ -1,0 +1,130 @@
+{
+  "generatedAt": "2026-09-26T14:38:31.356Z",
+  "sources": {
+    "routesLayer": "https://pta-gis-2-web1.csir.co.za/server2/rest/services/Hosted/Tshwane_Taxi_Routes_shp/FeatureServer/0/query",
+    "facilitiesLayer": "https://pta-gis-2-web1.csir.co.za/server2/rest/services/Hosted/TaxiFacilities/FeatureServer/0/query",
+    "attribution": "Council for Scientific and Industrial Research (CSIR), South Africa - public ArcGIS services (query-only). Route survey December 2018; facility survey 2021."
+  },
+  "counts": {
+    "routeTracksFetched": 661,
+    "facilitiesFetched": 105,
+    "associations": 30,
+    "ranks": {
+      "total": 191,
+      "fromFacilitySurvey": 89,
+      "derivedFromRouteEndpoints": 102
+    },
+    "routes": 188,
+    "legs": {
+      "total": 335,
+      "out": 188,
+      "return": 147
+    },
+    "fareSnapshots": 369,
+    "demoDemandSignals": 1649
+  },
+  "issues": {
+    "zeroFareLegs": [
+      "leg-cr0011-out"
+    ],
+    "routesMissingDirection": [
+      "rt-cr0006 (return)",
+      "rt-cr0011 (return)",
+      "rt-cr0034-3 (return)",
+      "rt-cr0034-4 (return)",
+      "rt-cr0040 (return)",
+      "rt-cr0040-2 (return)",
+      "rt-cr0043-3 (return)",
+      "rt-cr0044-2 (return)",
+      "rt-cr0054-2 (return)",
+      "rt-cr0055-2 (return)",
+      "rt-cr0055-3 (return)",
+      "rt-cr0057 (return)",
+      "rt-cr0057-2 (return)",
+      "rt-cr0066-2 (return)",
+      "rt-cr0067-2 (return)",
+      "rt-cr0067-3 (return)",
+      "rt-cr0071 (return)",
+      "rt-cr0071-2 (return)",
+      "rt-cr0088 (return)",
+      "rt-cr0088-2 (return)",
+      "rt-cr0140 (return)",
+      "rt-cr0141 (return)",
+      "rt-cr0144 (return)",
+      "rt-cr0148-2 (return)",
+      "rt-cr0149 (return)",
+      "rt-cr0154 (return)",
+      "rt-cr0156-2 (return)",
+      "rt-cr0159 (return)",
+      "rt-cr0160 (return)",
+      "rt-cr0161 (return)",
+      "rt-cr0162 (return)",
+      "rt-cr0169 (return)",
+      "rt-cr0170 (return)",
+      "rt-cr0173 (return)",
+      "rt-cr0198 (return)",
+      "rt-cr0199 (return)",
+      "rt-cr0200 (return)",
+      "rt-cr0201 (return)",
+      "rt-cr0206 (return)",
+      "rt-cr0210 (return)",
+      "rt-cr0211 (return)",
+      "rt-cr0212 (return)"
+    ],
+    "splitRouteGroups": [
+      "CR0034 -> rt-cr0034-2",
+      "CR0034 -> rt-cr0034-3",
+      "CR0034 -> rt-cr0034-4",
+      "CR0040 -> rt-cr0040-2",
+      "CR0043 -> rt-cr0043-2",
+      "CR0043 -> rt-cr0043-3",
+      "CR0044 -> rt-cr0044-2",
+      "CR0054 -> rt-cr0054-2",
+      "CR0055 -> rt-cr0055-2",
+      "CR0055 -> rt-cr0055-3",
+      "CR0057 -> rt-cr0057-2",
+      "CR0066 -> rt-cr0066-2",
+      "CR0067 -> rt-cr0067-2",
+      "CR0067 -> rt-cr0067-3",
+      "CR0071 -> rt-cr0071-2",
+      "CR0071 -> rt-cr0071-3",
+      "CR0088 -> rt-cr0088-2",
+      "CR0096 -> rt-cr0096-2",
+      "CR0148 -> rt-cr0148-2",
+      "CR0156 -> rt-cr0156-2"
+    ],
+    "splitRouteGroupCount": 20,
+    "selfLoopLegsSkipped": [
+      "leg-cr0043-3-out"
+    ],
+    "routesWithoutLegs": [
+      "rt-cr0043-3"
+    ],
+    "mergedFacilityNames": [
+      "BOSMAN STATION SQUARE",
+      "Bosman taxi rank",
+      "GA-RANKUWA HOSPITAL (WEST GATE)",
+      "GA-RANKUWA HOSPITAL (MAIN GATE)",
+      "GA-RANKUWA ZONE 15 (OK)",
+      "KOPANONG SHOPPING CENTRE",
+      "HAMMANSKRAAL STATION",
+      "2-8 Jerusalem St Taxi Rank",
+      "187-156 Mogul St Taxi Rank",
+      "190-228 Lilian Ngoyi Str Taxi Rank",
+      "Scheiding St Taxi Rank",
+      "202 Boom St Taxi Rank",
+      "Jubilee Mall Taxi Rank",
+      "MABOPANE STATION MAIN",
+      "396 Grand St Taxi Rank",
+      "PRINSLOO STREET-TO-NELLMAPIUS"
+    ],
+    "facilitiesWithoutLocation": [],
+    "multiPathTrackCount": 44,
+    "assocIdCollisions": [],
+    "rankPlacementWarnings": {
+      "facilityAnchoredCount": 44,
+      "suspicious": [],
+      "suspiciousCount": 0
+    }
+  }
+}

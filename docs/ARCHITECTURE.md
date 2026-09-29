@@ -26,15 +26,14 @@ docs/              This file
 ## Request flow
 
 ```
-Expo app  --POST /routes/plan-->  services/api  --query-->  Supabase (ranks, legs)
+Expo app  --POST /routes/plan-->  services/api  --query-->  Supabase (ranks, legs, routes)
      ^                                 |
      |                                 v
-     |                          services/routing
-     |                          networkx graph search:
-     |                          cheapest / fastest / easiest / safest
+     |                          services/routing (per-request subprocess)
+     |                          networkx Dijkstra over unblocked legs:
+     |                          cheapest / fastest / fewest_transfers
      |                                 |
-     +---- PlanRouteResponse ----------+
-           (RouteOption[] + FareBreakdown)
+     +--- ordered legs + totalFareZar -+
 ```
 
 The app never talks to Supabase directly for routing. All journey logic lives
@@ -61,15 +60,15 @@ between the app being useful and being a fare calculator.
 
 Each priority needs a different edge weight over the same graph:
 
-| Priority  | Edge weight                                        |
-| --------- | -------------------------------------------------- |
-| cheapest  | `fareZar`                                          |
-| fastest   | `estimatedMinutes`                                 |
-| easiest   | transfer count, then total minutes                 |
-| safest    | inverse of `reliability`, weighted by `departAt`   |
+| Priority           | Edge weight                                  |
+| ------------------ | -------------------------------------------- |
+| `cheapest`         | `fareZar`                                    |
+| `fastest`          | `estimatedMinutes`                           |
+| `fewest_transfers` | 1 per leg, same-hop-count tie-break by time  |
 
-A single path rarely wins on every axis, so the API returns one option per
-priority with `tags` recording every axis an option satisfies.
+`easiest` / `safest` remain design targets; the API does not serve them yet.
+The wire contract for the journey-map screen is typed in `packages/shared`:
+`RankSearchResult`, `PlanJourneyRequest`, `PlanJourneyResponse`.
 
 ## Decisions and their trade-offs
 
@@ -114,9 +113,10 @@ fixtures and call the engine later.
 
 ## Status
 
-Implemented: workspace wiring, domain types, `GET /health`,
-`POST /routes/plan` (validates the request, then returns 501), PostGIS schema,
-seed fixtures.
+Implemented: workspace wiring, domain types, `GET /health`, `GET /ranks`,
+`POST /routes/plan` (NetworkX planner in `services/routing`), PostGIS schema,
+real CSIR seed data in `data/seed` (live Supabase seeding waits on migrations
+0001+0002 being applied to the shared project).
 
-Not implemented: graph search, fare calculation, every app screen except the
-placeholder home screen, auth, Supabase reads/writes.
+Not implemented: fare calculation beyond the per-leg sum, every app screen
+except the placeholder home screen, auth, marshal tooling, Supabase writes.
