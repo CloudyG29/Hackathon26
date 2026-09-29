@@ -1,17 +1,16 @@
 """Graph search over the rank/leg transit network.
 
-Not implemented yet. Intended responsibilities:
+The planner lives in :mod:`routing.planner`: ranks are graph nodes, legs are
+directed weighted edges, and the best journey for a priority is a Dijkstra
+shortest path over the unblocked legs (blocked = parent taxi route struck).
 
-1. Load ranks and legs from Supabase (or the fixtures in ``data/seed``) into a
-   ``networkx`` directed graph: ranks are nodes, legs are edges.
-2. Search for candidate journeys between two ranks. Each priority needs a
-   different edge weight:
-     - cheapest  -> fare_zar
-     - fastest   -> estimated_minutes
-     - easiest   -> transfer count, then total minutes
-     - safest    -> inverse of reliability, weighted by time of day
-3. Price each candidate and emit the shared ``RouteOption`` / ``FareBreakdown``
-   shapes so the API and the app agree on the payload.
+:mod:`routing.cli` is the stdin/stdout JSON bridge the Express API spawns per
+``POST /routes/plan`` request:
+
+    echo '{"fromRankId": "...", "toRankId": "...", "ranks": [...], "legs": [...]}' \
+        | python -m routing.cli
 """
 
-__all__: list[str] = []
+from .planner import PRIORITIES, build_graph, plan_journey
+
+__all__ = ["PRIORITIES", "build_graph", "plan_journey"]

@@ -123,6 +123,11 @@ export interface JourneyEndpoint {
   location?: GeoPoint;
 }
 
+/**
+ * @deprecated Superseded by {@link PlanJourneyRequest}. The journey-map screen
+ * posts { fromRankId, toRankId, priority? } to /routes/plan; the multi-option
+ * shape below is not served by the API today.
+ */
 export interface PlanRouteRequest {
   origin: JourneyEndpoint;
   destination: JourneyEndpoint;
@@ -132,12 +137,67 @@ export interface PlanRouteRequest {
   priorities?: RoutePriority[];
 }
 
+/**
+ * @deprecated Superseded by {@link PlanJourneyResponse} — not served by the
+ * API today.
+ */
 export interface PlanRouteResponse {
   planId: string;
   originLabel: string;
   destinationLabel: string;
   options: RouteOption[];
   generatedAt: string;
+}
+
+// ---------------------------------------------------------------------------
+// Journey-map API contract (GET /ranks, POST /routes/plan).
+//
+// These are the exact wire shapes the mobile journey-map screen is built
+// against. The short field names (rankId/lat/lng) deliberately differ from the
+// fuller domain model above — rename only in agreement with the mobile team.
+// ---------------------------------------------------------------------------
+
+/** One rank as returned by GET /ranks (search field + autocomplete list). */
+export interface RankSearchResult {
+  rankId: string;
+  name: string;
+  lat: number;
+  lng: number;
+}
+
+/** Wire-format geographic point used in journey-map payloads. */
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+/** Priorities the planner supports today; other modes are future work. */
+export type PlanPriority = 'cheapest' | 'fastest' | 'fewest_transfers';
+
+/** Request body for POST /routes/plan. */
+export interface PlanJourneyRequest {
+  fromRankId: string;
+  toRankId: string;
+  /** Defaults to "cheapest" when omitted. */
+  priority?: PlanPriority;
+}
+
+/** One ordered leg of a planned journey. */
+export interface PlannedJourneyLeg {
+  fromRankId: string;
+  fromName: string;
+  toRankId: string;
+  toName: string;
+  /** The leg's geometry, for drawing the map line. */
+  path: LatLng[];
+  fareZar: number;
+}
+
+/** Response body for POST /routes/plan (200 OK; a 404 carries { error, message }). */
+export interface PlanJourneyResponse {
+  legs: PlannedJourneyLeg[];
+  totalFareZar: number;
+  legCount: number;
 }
 
 /** A taxi association: the operator behind one or more taxi routes. */
