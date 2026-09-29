@@ -5,6 +5,8 @@ import { z } from 'zod';
 import type { HealthResponse, PlanRouteRequest } from '@hackathon26/shared';
 import { config, hasSupabaseCredentials } from './config';
 import { supabase } from './db';
+import demandRoutes from './routes/demand';
+import marshalRoutes from './routes/marshal';
 
 const ROUTING_SERVICE_URL = process.env.ROUTING_SERVICE_URL || 'http://localhost:8000';
 const ROUTE_PRIORITIES = ['cheapest', 'fastest', 'easiest', 'safest'] as const;
@@ -34,6 +36,9 @@ const startedAt = Date.now();
 app.use(cors());
 app.use(express.json());
 
+app.use('/demand', demandRoutes);
+app.use('/marshal', marshalRoutes);
+
 app.get('/health', (_req, res) => {
   const body: HealthResponse = {
     status: 'ok',
@@ -57,6 +62,11 @@ app.post('/routes/plan', async (req, res) => {
   const originRankId = request.origin.rankId || request.origin.label;
   const destinationRankId = request.destination.rankId || request.destination.label;
   const primaryPriority = request.priorities?.[0] || 'cheapest';
+
+  if (!supabase) {
+    res.status(503).json({ error: 'Database not configured' });
+    return;
+  }
 
   try {
     // 1. Fetch Ranks (Nodes) from Supabase
@@ -91,7 +101,7 @@ app.post('/routes/plan', async (req, res) => {
       throw new Error(`Routing engine error: ${pythonResponse.statusText}`);
     }
 
-    const routeResult = await pythonResponse.json();
+    const routeResult = (await pythonResponse.json()) as Record<string, any>;
 
     if (routeResult.error) {
       res.status(404).json({ error: routeResult.error, legs: [] });

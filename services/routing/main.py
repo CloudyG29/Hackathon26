@@ -1,85 +1,107 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Dict, Any, Optional
 import networkx as nx
 
-app = FastAPI(title="Taxi Routing Engine")
+app = FastAPI(title="Routing Engine Microservice")
 
-class Node(BaseModel):
-    id: str
-    name: str
-    lat: float
-    lng: float
-
-class Edge(BaseModel):
-    id: str
-    from_rank_id: str
-    to_rank_id: str
-    fare: float
-    time_mins: int
-    taxi_association: Optional[str] = "Independent"
-
-class RoutingRequest(BaseModel):
-    nodes: List[Node]
-    edges: List[Edge]
+# --- Pydantic Models ---
+class CalculateRouteRequest(BaseModel):
+    nodes: List[Dict[str, Any]]
+    edges: List[Dict[str, Any]]
     from_rank_id: str
     to_rank_id: str
     priority: str = "cheapest"
 
+# --- Main Endpoint ---
 @app.post("/calculate_route")
-def calculate_route(payload: RoutingRequest):
+async def calculate_route(req: CalculateRouteRequest):
+    # 1. Initialize an empty Directed Graph
     G = nx.DiGraph()
 
-    for n in payload.nodes:
-        G.add_node(n.id, name=n.name, lat=n.lat, lng=n.lng)
+    # 2. Add all ranks (nodes) to the graph
+    for node in req.nodes:
+        G.add_node(
+            node["id"], 
+            name=node["name"], 
+            lat=node["lat"], 
+            lng=node["lng"]
+        )
 
-    for e in payload.edges:
-        if e.from_rank_id in G and e.to_rank_id in G:
+    # 3. Add all unblocked routes (edges) to the graph
+    for edge in req.edges:
+        # Only add edge if both source and target nodes exist
+        if edge["from_rank_id"] in G and edge["to_rank_id"] in G:
             G.add_edge(
-                e.from_rank_id,
-                e.to_rank_id,
-                id=e.id,
-                fare=e.fare,
-                time_mins=e.time_mins,
-                taxi_association=e.taxi_association
+                edge["from_rank_id"],
+                edge["to_rank_id"],
+                id=edge["id"],
+                fare=float(edge["fare"]),
+                time_mins=int(edge["time_mins"]),
+                taxi_association=edge["taxi_association"]
             )
 
-    if payload.from_rank_id not in G or payload.to_rank_id not in G:
-        return {"error": "Origin or destination rank not found in graph."}
+    # 4. Check if Origin and Destination exist in the graph
+    if req.from_rank_id not in G or req.to_rank_id not in G:
+        return {
+            "error": "Origin or destination rank does not exist in the active network.",
+            "legs": []
+        }
 
-    # Map request priority to edge attribute
+    # 5. Determine the weight attribute for Dijkstra's algorithm
     weight_map = {
         "cheapest": "fare",
         "fastest": "time_mins",
-        "easiest": None,  # Fewest transfers
-        "safest": "fare"
+        "easiest": None, # Unweighted finds fewest transfers
+        "safest": None   # Same as easiest for now, can be updated later
     }
-    weight_attr = weight_map.get(payload.priority, "fare")
+    weight_attr = weight_map.get(req.priority, "fare")
 
+    # 6. Calculate Shortest Path
     try:
-        path = nx.shortest_path(G, source=payload.from_rank_id, target=payload.to_rank_id, weight=weight_attr)
-    except (nx.NetworkXNoPath, nx.NodeNotFound):
-        return {"error": "No route available between the specified ranks."}
+        path = nx.shortest_path(
+            G, 
+            source=req.from_rank_id, 
+            target=req.to_rank_id, 
+            weight=weight_attr
+        )
+    except nx.NetworkXNoPath:
+        return {
+            "error": "No viable route exists between these ranks due to strikes or missing links.",
+            "legs": []
+        }
 
+    # 7. Construct the response payload
     legs = []
     total_fare = 0.0
     total_time = 0
 
     for i in range(len(path) - 1):
         u, v = path[i], path[i + 1]
-        edge = G.get_edge_data(u, v)
+        edge_data = G.get_edge_data(u, v)
         u_node = G.nodes[u]
         v_node = G.nodes[v]
 
-        legs.append({
-            "from_rank": {"id": u, "name": u_node["name"], "lat": u_node["lat"], "lng": u_node["lng"]},
-            "to_rank": {"id": v, "name": v_node["name"], "lat": v_node["lat"], "lng": v_node["lng"]},
-            "fare": edge["fare"],
-            "time_mins": edge["time_mins"],
-            "taxi_association": edge["taxi_association"]
-        })
-        total_fare += edge["fare"]
-        total_time += edge["time_mins"]
+        leg = {
+            "from_rank": {
+                "id": u,
+                "name": u_node.get("name", u),
+                "lat": u_node.get("lat"),
+                "lng": u_node.get("lng")
+            },
+            "to_rank": {
+                "id": v,
+                "name": v_node.get("name", v),
+                "lat": v_node.get("lat"),
+                "lng": v_node.get("lng")
+            },
+            "fare": edge_data["fare"],
+            "time_mins": edge_data["time_mins"],
+            "taxi_association": edge_data["taxi_association"]
+        }
+        legs.append(leg)
+        total_fare += edge_data["fare"]
+        total_time += edge_data["time_mins"]
 
     return {
         "total_fare": round(total_fare, 2),
