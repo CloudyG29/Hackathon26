@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url';
 import type { LatLng, PlanJourneyResponse, PlanPriority, RankSearchResult } from '@hackathon26/shared';
 import { config } from './config';
 import { supabase } from './db';
-import { parseLineString } from './geo';
 import { fetchRanks } from './ranks';
 
 /** One leg of the network snapshot handed to the Python planner. */
@@ -65,39 +64,27 @@ export async function planJourney(options: {
     }
   }
 
-  const { data: legRows, error: legError } = await supabase
-    .from('legs')
-    .select('id, from_rank_id, to_rank_id, fare_zar, estimated_minutes, path, route_id');
-  if (legError) throw new Error(`${legError.code ?? 'error'}: ${legError.message}`);
-
-  const { data: routeRows, error: routeError } = await supabase
+  // The live "routes" table holds one row per directed leg (edge); fare,
+  // minutes and the strike toggle all live on the edge itself.
+  const { data: edgeRows, error: edgeError } = await supabase
     .from('routes')
-    .select('id, is_blocked');
-  if (routeError) throw new Error(`${routeError.code ?? 'error'}: ${routeError.message}`);
+    .select('id, from_rank_id, to_rank_id, fare, time_mins, is_blocked');
+  if (edgeError) throw new Error(`${edgeError.code ?? 'error'}: ${edgeError.message}`);
 
-  // A struck route blocks both of its directed legs; legs without a parent
-  // route are never blocked.
-  const blockedRouteIds = new Set(
-    (routeRows ?? [])
-      .filter((route) => route.is_blocked)
-      .map((route) => route.id as string),
-  );
-
-  const legs: PlannerLeg[] = (legRows ?? []).map((row) => {
-    const path = parseLineString(row.path);
-    if (row.path != null && path === null) {
-      throw new Error(`leg "${row.id}" has an unreadable path geometry`);
-    }
-    return {
-      legId: row.id as string,
-      fromRankId: row.from_rank_id as string,
-      toRankId: row.to_rank_id as string,
-      fareZar: Number(row.fare_zar),
-      minutes: Number(row.estimated_minutes),
-      blocked: row.route_id ? blockedRouteIds.has(row.route_id as string) : false,
-      path: path ?? [],
-    };
-  });
+  const coords = new Map(ranks.map((rank) => [rank.rankId, { lat: rank.lat, lng: rank.lng }]));
+  const legs: PlannerLeg[] = (edgeRows ?? []).map((row) => ({
+    legId: row.id as string,
+    fromRankId: row.from_rank_id as string,
+    toRankId: row.to_rank_id as string,
+    fareZar: Number(row.fare),
+    minutes: Number(row.time_mins),
+    blocked: Boolean(row.is_blocked),
+    // Edges carry no geometry: give the journey map a straight line between
+    // the rank coordinates so each hop still renders.
+    path: [coords.get(row.from_rank_id as string), coords.get(row.to_rank_id as string)].filter(
+      (point): point is LatLng => point !== undefined,
+    ),
+  }));
 
   return runPlanner({
     fromRankId: options.fromRankId,

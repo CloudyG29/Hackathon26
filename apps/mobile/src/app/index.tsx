@@ -9,8 +9,10 @@ import {
   View,
 } from 'react-native';
 import MapView, { Marker, Polyline, Region } from 'react-native-maps';
-import type { PlanLeg, PlanResult, RankSuggestion, RoutePriority } from '../lib/api';
+import { Link, router } from 'expo-router';
+import type { PlanLeg, PlanPriority, PlanResult, RankSuggestion } from '@hackathon26/shared';
 import { planJourney, searchRanks } from '../lib/api';
+import { savePlan } from '../lib/planStore';
 
 /**
  * Journey search + map screen.
@@ -25,7 +27,11 @@ import { planJourney, searchRanks } from '../lib/api';
 /** Distinct colors per leg so taxi changes are visually obvious. */
 const LEG_COLORS = ['#0b5cad', '#c2571a', '#2e7d32', '#7b1fa2'];
 
-const PRIORITY_OPTIONS: RoutePriority[] = ['cheapest', 'fastest', 'easiest', 'safest'];
+const PRIORITY_OPTIONS: Array<{ value: PlanPriority; label: string }> = [
+  { value: 'cheapest', label: 'Cheapest' },
+  { value: 'fastest', label: 'Fastest' },
+  { value: 'fewest_transfers', label: 'Fewest taxis' },
+];
 
 const INITIAL_REGION: Region = {
   // Tshwane, roughly.
@@ -47,7 +53,7 @@ function formatZar(amount: number): string {
 export default function HomeScreen() {
   const [from, setFrom] = useState<EndpointState>({ text: '' });
   const [to, setTo] = useState<EndpointState>({ text: '' });
-  const [priority, setPriority] = useState<RoutePriority>('cheapest');
+  const [priority, setPriority] = useState<PlanPriority>('cheapest');
   const [activeField, setActiveField] = useState<'from' | 'to' | null>(null);
   const [suggestions, setSuggestions] = useState<RankSuggestion[]>([]);
   const [plan, setPlan] = useState<PlanResult | null>(null);
@@ -93,8 +99,11 @@ export default function HomeScreen() {
     setError(null);
     setPlan(null);
     try {
-      const result = await planJourney(from.rank.rankId, to.rank.rankId, priority);
+      const { plan: result, source } = await planJourney(from.rank.rankId, to.rank.rankId, priority);
       setPlan(result); // null = no route found (404 empty result)
+      if (result) {
+        savePlan({ plan: result, fromLabel: from.rank.name, toLabel: to.rank.name, source });
+      }
       if (result && result.legs.length > 0 && mapRef.current) {
         const points = result.legs.flatMap((leg) =>
           leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng })),
@@ -169,12 +178,12 @@ export default function HomeScreen() {
         <View style={styles.priorityRow}>
           {PRIORITY_OPTIONS.map((option) => (
             <Pressable
-              key={option}
-              style={[styles.priorityChip, priority === option && styles.priorityChipActive]}
-              onPress={() => setPriority(option)}
+              key={option.value}
+              style={[styles.priorityChip, priority === option.value && styles.priorityChipActive]}
+              onPress={() => setPriority(option.value)}
             >
-              <Text style={[styles.priorityText, priority === option && styles.priorityTextActive]}>
-                {option}
+              <Text style={[styles.priorityText, priority === option.value && styles.priorityTextActive]}>
+                {option.label}
               </Text>
             </Pressable>
           ))}
@@ -266,6 +275,11 @@ export default function HomeScreen() {
                 <Text style={styles.summaryLabel}>Number of taxis</Text>
                 <Text style={styles.summaryValue}>{plan.legCount}</Text>
               </View>
+              <Link href="/route" asChild>
+                <Pressable style={styles.breakdownLink} onPress={() => router.push('/route')}>
+                  <Text style={styles.breakdownLinkText}>Full journey breakdown →</Text>
+                </Pressable>
+              </Link>
             </View>
           </>
         )}
@@ -359,6 +373,8 @@ const styles = StyleSheet.create({
   },
   searchButtonDisabled: { opacity: 0.5 },
   searchButtonText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  breakdownLink: { alignItems: 'center', paddingVertical: 6 },
+  breakdownLinkText: { color: '#0b5cad', fontSize: 14, fontWeight: '600' },
   map: { flex: 1 },
   fareBubble: {
     paddingHorizontal: 8,

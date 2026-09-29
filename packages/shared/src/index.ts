@@ -77,6 +77,7 @@ export interface Transfer {
   landmarkNotes?: string;
 }
 
+/** Historical multi-priority tags from the master option-cards UI. */
 export type RoutePriority = 'cheapest' | 'fastest' | 'easiest' | 'safest';
 
 /** A complete journey from origin to destination. */
@@ -124,41 +125,16 @@ export interface JourneyEndpoint {
 }
 
 /**
- * @deprecated Superseded by {@link PlanJourneyRequest}. The journey-map screen
- * posts { fromRankId, toRankId, priority? } to /routes/plan; the multi-option
- * shape below is not served by the API today.
+ * Journey-map API contract (GET /ranks, POST /routes/plan).
+ *
+ * These are the exact wire shapes the backend serves and the mobile app is
+ * built against. The short field names (rankId/lat/lng) deliberately differ
+ * from the fuller domain model above — rename only in agreement with the
+ * mobile team.
  */
-export interface PlanRouteRequest {
-  origin: JourneyEndpoint;
-  destination: JourneyEndpoint;
-  /** ISO-8601 departure time. Drives time-of-day reliability weighting. */
-  departAt?: string;
-  /** Which options to return. Defaults to all four. */
-  priorities?: RoutePriority[];
-}
-
-/**
- * @deprecated Superseded by {@link PlanJourneyResponse} — not served by the
- * API today.
- */
-export interface PlanRouteResponse {
-  planId: string;
-  originLabel: string;
-  destinationLabel: string;
-  options: RouteOption[];
-  generatedAt: string;
-}
-
-// ---------------------------------------------------------------------------
-// Journey-map API contract (GET /ranks, POST /routes/plan).
-//
-// These are the exact wire shapes the mobile journey-map screen is built
-// against. The short field names (rankId/lat/lng) deliberately differ from the
-// fuller domain model above — rename only in agreement with the mobile team.
-// ---------------------------------------------------------------------------
 
 /** One rank as returned by GET /ranks (search field + autocomplete list). */
-export interface RankSearchResult {
+export interface RankSuggestion {
   rankId: string;
   name: string;
   lat: number;
@@ -183,7 +159,7 @@ export interface PlanJourneyRequest {
 }
 
 /** One ordered leg of a planned journey. */
-export interface PlannedJourneyLeg {
+export interface PlanLeg {
   fromRankId: string;
   fromName: string;
   toRankId: string;
@@ -194,11 +170,25 @@ export interface PlannedJourneyLeg {
 }
 
 /** Response body for POST /routes/plan (200 OK; a 404 carries { error, message }). */
-export interface PlanJourneyResponse {
-  legs: PlannedJourneyLeg[];
+export interface PlanResult {
+  legs: PlanLeg[];
   totalFareZar: number;
   legCount: number;
 }
+
+// ---------------------------------------------------------------------------
+// Deprecated aliases for the names above. Kept so services/api keeps
+// compiling against the renamed contract types — do not use in new code.
+// ---------------------------------------------------------------------------
+
+/** @deprecated Use {@link RankSuggestion}. */
+export type RankSearchResult = RankSuggestion;
+
+/** @deprecated Use {@link PlanLeg}. */
+export type PlanJourneyLeg = PlanLeg;
+
+/** @deprecated Use {@link PlanResult}. */
+export type PlanJourneyResponse = PlanResult;
 
 /** A taxi association: the operator behind one or more taxi routes. */
 export interface TaxiAssociation {

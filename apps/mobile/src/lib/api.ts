@@ -8,45 +8,35 @@
  *
  * USE_STUBS forces the local fake responses regardless of connectivity.
  * When it is false, every call tries the real API first and falls back to
- * the stub fixtures on any failure (API down, timeout, bad status) so the
- * UI stays demoable offline — the same resilience pattern master used for
- * its fixture fallback.
+ * the seeded fixtures on any failure (API down, timeout, bad status) so the
+ * UI stays demoable offline.
+ *
+ * Default base URL: the Android emulator cannot reach the dev machine via
+ * localhost, so it gets the 10.0.2.2 host alias instead (see .env.example).
  */
 
+import { Platform } from 'react-native';
+import type { PlanLeg, PlanPriority, PlanResult, RankSuggestion } from '@hackathon26/shared';
+import { buildFixturePlan } from './fixtures';
 import { stubPlanJourney, stubSearchRanks } from './stubs';
 
-const USE_STUBS = true;
+const USE_STUBS = false;
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API_URL =
+  process.env.EXPO_PUBLIC_API_URL ??
+  (Platform.OS === 'android' ? 'http://10.0.2.2:4000' : 'http://localhost:4000');
 
-export interface RankSuggestion {
-  rankId: string;
-  name: string;
-  lat: number;
-  lng: number;
+// The mobile app speaks the same wire shapes as the backend, straight from
+// the shared package.
+export type { PlanLeg, PlanPriority, PlanResult, RankSuggestion };
+
+/** Where the currently displayed plan came from, shown as a badge on screen. */
+export type PlanSource = 'api' | 'fixtures' | 'stubs';
+
+interface PlanCallResult {
+  plan: PlanResult | null;
+  source: PlanSource;
 }
-
-export interface PlanLegPathPoint {
-  lat: number;
-  lng: number;
-}
-
-export interface PlanLeg {
-  fromRankId: string;
-  fromName: string;
-  toRankId: string;
-  toName: string;
-  path: PlanLegPathPoint[];
-  fareZar: number;
-}
-
-export interface PlanResult {
-  legs: PlanLeg[];
-  totalFareZar: number;
-  legCount: number;
-}
-
-export type RoutePriority = 'cheapest' | 'fastest' | 'easiest' | 'safest';
 
 async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
@@ -70,14 +60,22 @@ export function searchRanks(query: string): Promise<RankSuggestion[]> {
   ).catch(() => stubSearchRanks(query));
 }
 
-export function planJourney(
+export async function planJourney(
   fromRankId: string,
   toRankId: string,
-  priority: RoutePriority = 'cheapest',
-): Promise<PlanResult | null> {
-  if (USE_STUBS) return Promise.resolve(stubPlanJourney(fromRankId, toRankId));
-  return fetchJson<PlanResult | null>('/routes/plan', {
-    method: 'POST',
-    body: JSON.stringify({ fromRankId, toRankId, priority }),
-  }).catch(() => stubPlanJourney(fromRankId, toRankId));
+  priority: PlanPriority = 'cheapest',
+): Promise<PlanCallResult> {
+  if (USE_STUBS) {
+    return { plan: stubPlanJourney(fromRankId, toRankId), source: 'stubs' };
+  }
+  try {
+    const plan = await fetchJson<PlanResult | null>('/routes/plan', {
+      method: 'POST',
+      body: JSON.stringify({ fromRankId, toRankId, priority }),
+    });
+    return { plan, source: 'api' };
+  } catch {
+    // API unreachable: the seeded corridor keeps the demo alive.
+    return { plan: buildFixturePlan(fromRankId, toRankId), source: 'fixtures' };
+  }
 }
