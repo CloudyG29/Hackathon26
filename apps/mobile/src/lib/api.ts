@@ -2,7 +2,7 @@
  * API client for the journey screen.
  *
  * Contract (agreed with the backend team):
- *   GET  /ranks?q=<text>          -> [{ rankId, name, lat, lng }, ...]
+ *   GET  /ranks?q=<text>          -> [{ rankId, name, area?, lat, lng }, ...]
  *   POST /routes/plan             -> { legs, totalFareZar, legCount } | 404
  *   Request body: { fromRankId, toRankId, priority? }
  *

@@ -137,6 +137,8 @@ export interface JourneyEndpoint {
 export interface RankSuggestion {
   rankId: string;
   name: string;
+  /** Town/city context ("Temba, Hammanskraal"). Search matches it too. */
+  area?: string;
   lat: number;
   lng: number;
 }

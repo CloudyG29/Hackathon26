@@ -17,8 +17,9 @@ import { savePlan } from '../lib/planStore';
 /**
  * Journey search + map screen.
  *
- * From/To autocomplete calls GET /ranks?q= (our rank names only — no Google
- * Places/geocoding). Search calls POST /routes/plan and renders the returned
+ * From/To autocomplete calls GET /ranks?q= — our ranks, matched by rank name
+ * or town/city (no Google Places/geocoding). Search calls POST /routes/plan
+ * and renders the returned
  * legs: one <Polyline> per leg from its own path coordinates, a fare bubble
  * marker at each leg's path midpoint, and a rank marker at each stop. The
  * leg-by-leg breakdown with running total sits below the map.
@@ -303,7 +304,7 @@ function EndpointInput({ label, state, suggestions, onFocus, onChangeText, onPic
       <Text style={styles.endpointLabel}>{label}</Text>
       <TextInput
         style={styles.endpointInput}
-        placeholder={label === 'From' ? 'Starting rank' : 'Destination rank'}
+        placeholder={label === 'From' ? 'Starting town, city or rank' : 'Destination town, city or rank'}
         value={state.text}
         onFocus={onFocus}
         onChangeText={onChangeText}
@@ -313,6 +314,7 @@ function EndpointInput({ label, state, suggestions, onFocus, onChangeText, onPic
           {suggestions.map((rank) => (
             <Pressable key={rank.rankId} style={styles.suggestionRow} onPress={() => onPick(rank)}>
               <Text style={styles.suggestionName}>{rank.name}</Text>
+              {rank.area && <Text style={styles.suggestionArea}>{rank.area}</Text>}
             </Pressable>
           ))}
         </View>
@@ -355,6 +357,7 @@ const styles = StyleSheet.create({
   },
   suggestionRow: { paddingHorizontal: 12, paddingVertical: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eee' },
   suggestionName: { fontSize: 14 },
+  suggestionArea: { fontSize: 12, color: '#666', marginTop: 2 },
   priorityRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   priorityChip: {
     paddingHorizontal: 10,

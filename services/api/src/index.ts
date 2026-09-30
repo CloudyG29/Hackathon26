@@ -42,9 +42,9 @@ app.get('/health', (_req, res) => {
 });
 
 /**
- * Rank lookup for the search box: ?q=<fragment> matches names
- * case-insensitively (partial); no query returns the full list for the
- * initial autocomplete population.
+ * Rank lookup for the search box: ?q=<fragment> matches rank names or their
+ * town/city (partial, case-insensitive) so "Pretoria" or "Temba" works too;
+ * no query returns the full list for the initial autocomplete population.
  */
 app.get('/ranks', async (req, res) => {
   const query = typeof req.query.q === 'string' ? req.query.q : undefined;
