@@ -49,16 +49,28 @@ npx supabase link --project-ref <your-project-ref>
 npx supabase db push
 ```
 
-Or open the SQL editor in the Supabase dashboard and paste
-`supabase/migrations/0001_init.sql`. The migration enables PostGIS, creates the
-`ranks`, `legs` and `fare_snapshots` tables, and adds a `ranks_within()`
-function for "nearest rank to me" queries.
+Or open the SQL editor in the Supabase dashboard and paste the files from
+`supabase/migrations/` in order. They enable PostGIS, create the `ranks`,
+`legs`, `fare_snapshots`, `associations`, `routes` and `demand_signals` tables,
+add demand-aggregation functions and a `ranks_within()` helper for "nearest
+rank to me" queries.
 
-### 4. Seed sample data (optional)
+### 4. Seed real data (recommended)
 
-`data/seed/ranks.json` and `data/seed/legs.json` hold an illustrative
-Johannesburg → Mbombela corridor. They are **invented sample data**, not real
-fares. There is no loader yet — insert them by hand or write one.
+`data/seed/` holds **real Tshwane minibus-taxi data** imported from the CSIR's
+public ArcGIS server: 191 ranks, 188 routes, 335 legs and surveyed fares
+(December 2018 baseline) across the whole Tshwane study area. Provenance,
+field mappings and known limitations are documented in
+[data/seed/SOURCES.md](data/seed/SOURCES.md).
+
+To load it into Supabase (after steps 2 and 3):
+
+```sh
+npm run import:csir -- --push
+```
+
+Without `--push` the command just regenerates the JSON files in `data/seed/`
+(needs network access to the CSIR server).
 
 ### 5. Python routing engine (optional, not yet used)
 
@@ -125,7 +137,7 @@ apps/mobile        Expo (React Native) app — the user-facing product
 packages/shared    Domain types shared by the app and the API (types-only)
 services/api       Express REST API — the app's only backend
 services/routing   Python graph engine — ranks/legs in, ranked journeys out
-data/seed          Illustrative ranks and legs for local development
+data/seed          Real Tshwane taxi data imported from the CSIR ArcGIS server
 supabase/          Postgres + PostGIS migrations
 docs/              Architecture and product reasoning
 ```
@@ -139,6 +151,7 @@ Run from the repository root:
 | `npm run mobile`       | Start the Expo dev server                     |
 | `npm run mobile:android` | Start Expo and open on Android              |
 | `npm run api`          | Start the API with reload on change           |
+| `npm run import:csir`  | Regenerate `data/seed/` from the CSIR server  |
 | `npm run typecheck`    | Typecheck every workspace                     |
 
 ## API surface

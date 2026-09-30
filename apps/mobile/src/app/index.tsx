@@ -1,189 +1,409 @@
-import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { router } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import type { Rank } from '@hackathon26/shared';
-import { JourneyMap } from '../components/JourneyMap';
-import { RankPickerModal } from '../components/RankPickerModal';
-import { useCurrentLocation } from '../hooks/useCurrentLocation';
-import { planJourney } from '../lib/api';
-import { RANKS } from '../lib/fixtures';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import MapView, { Marker, Polyline, Region } from 'react-native-maps';
+import { Link, router } from 'expo-router';
+import type { PlanLeg, PlanPriority, PlanResult, RankSuggestion } from '@hackathon26/shared';
+import { planJourney, searchRanks } from '../lib/api';
 import { savePlan } from '../lib/planStore';
 
 /**
- * Journey search: pick the origin and destination ranks over the corridor
- * map, then hand the plan to the route screen. planJourney() degrades to
- * offline fixtures whenever the routing API is unavailable, so this screen
- * works end to end from day one.
+ * Journey search + map screen.
+ *
+ * From/To autocomplete calls GET /ranks?q= (our rank names only — no Google
+ * Places/geocoding). Search calls POST /routes/plan and renders the returned
+ * legs: one <Polyline> per leg from its own path coordinates, a fare bubble
+ * marker at each leg's path midpoint, and a rank marker at each stop. The
+ * leg-by-leg breakdown with running total sits below the map.
  */
+
+/** Distinct colors per leg so taxi changes are visually obvious. */
+const LEG_COLORS = ['#0b5cad', '#c2571a', '#2e7d32', '#7b1fa2'];
+
+const PRIORITY_OPTIONS: Array<{ value: PlanPriority; label: string }> = [
+  { value: 'cheapest', label: 'Cheapest' },
+  { value: 'fastest', label: 'Fastest' },
+  { value: 'fewest_transfers', label: 'Fewest taxis' },
+];
+
+const INITIAL_REGION: Region = {
+  // Tshwane, roughly.
+  latitude: -25.6,
+  longitude: 28.24,
+  latitudeDelta: 1.2,
+  longitudeDelta: 1.2,
+};
+
+interface EndpointState {
+  text: string;
+  rank?: RankSuggestion;
+}
+
+function formatZar(amount: number): string {
+  return `R${amount.toFixed(2).replace(/\.00$/, '')}`;
+}
+
 export default function HomeScreen() {
-  const insets = useSafeAreaInsets();
-  const [origin, setOrigin] = useState<Rank | null>(RANKS[0] ?? null);
-  const [destination, setDestination] = useState<Rank | null>(RANKS[RANKS.length - 1] ?? null);
-  const [picker, setPicker] = useState<'origin' | 'destination' | null>(null);
-  const [planning, setPlanning] = useState(false);
-  const location = useCurrentLocation();
+  const [from, setFrom] = useState<EndpointState>({ text: '' });
+  const [to, setTo] = useState<EndpointState>({ text: '' });
+  const [priority, setPriority] = useState<PlanPriority>('cheapest');
+  const [activeField, setActiveField] = useState<'from' | 'to' | null>(null);
+  const [suggestions, setSuggestions] = useState<RankSuggestion[]>([]);
+  const [plan, setPlan] = useState<PlanResult | null>(null);
+  const [searching, setSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const mapRef = useRef<MapView>(null);
 
-  const canPlan = Boolean(origin && destination && origin.id !== destination.id && !planning);
+  const searchIdRef = useRef(0);
 
-  async function handleFindRoutes() {
-    if (!origin || !destination) return;
-    setPlanning(true);
+  // Autocomplete against OUR ranks, debounced.
+  useEffect(() => {
+    if (!activeField) return;
+    const query = activeField === 'from' ? from.text : to.text;
+    const id = ++searchIdRef.current;
+    const timer = setTimeout(() => {
+      searchRanks(query)
+        .then((results) => {
+          if (searchIdRef.current === id) setSuggestions(results);
+        })
+        .catch(() => {
+          if (searchIdRef.current === id) setSuggestions([]);
+        });
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [activeField, from.text, to.text]);
+
+  const pickSuggestion = useCallback(
+    (field: 'from' | 'to', rank: RankSuggestion) => {
+      const next = { text: rank.name, rank };
+      if (field === 'from') setFrom(next);
+      else setTo(next);
+      setActiveField(null);
+      setSuggestions([]);
+    },
+    [],
+  );
+
+  const canSearch = Boolean(from.rank && to.rank) && !searching;
+
+  const onSearch = useCallback(async () => {
+    if (!from.rank || !to.rank) return;
+    setSearching(true);
+    setError(null);
+    setPlan(null);
     try {
-      const { plan, source } = await planJourney({
-        origin: { label: origin.name, rankId: origin.id, location: origin.location },
-        destination: {
-          label: destination.name,
-          rankId: destination.id,
-          location: destination.location,
-        },
-      });
-      savePlan({ plan, source });
-      router.push({ pathname: '/route', params: { planId: plan.planId } });
+      const { plan: result, source } = await planJourney(from.rank.rankId, to.rank.rankId, priority);
+      setPlan(result); // null = no route found (404 empty result)
+      if (result) {
+        savePlan({ plan: result, fromLabel: from.rank.name, toLabel: to.rank.name, source });
+      }
+      if (result && result.legs.length > 0 && mapRef.current) {
+        const points = result.legs.flatMap((leg) =>
+          leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng })),
+        );
+        if (points.length >= 2) {
+          // Let the map frame the whole journey on the next render.
+          setTimeout(
+            () => mapRef.current?.fitToCoordinates(points, { edgePadding: { top: 60, bottom: 60, left: 40, right: 40 } }),
+            100,
+          );
+        }
+      }
+    } catch {
+      setError('Could not reach the transit API. Is services/api running?');
     } finally {
-      setPlanning(false);
+      setSearching(false);
     }
-  }
+  }, [from.rank, to.rank, priority]);
+
+  // Stops along the plan: origin, every transfer, destination — each with
+  // coordinates taken from leg path endpoints (no geocoding involved).
+  const stops = useMemo(() => {
+    if (!plan || plan.legs.length === 0) return [];
+    const result: Array<{ key: string; name: string; lat: number; lng: number; kind: 'start' | 'transfer' | 'end' }> = [];
+    plan.legs.forEach((leg: PlanLeg, index: number) => {
+      const start = leg.path[0];
+      const end = leg.path[leg.path.length - 1];
+      if (start) {
+        result.push({
+          key: `from-${leg.fromRankId}-${index}`,
+          name: leg.fromName,
+          lat: start.lat,
+          lng: start.lng,
+          kind: index === 0 ? 'start' : 'transfer',
+        });
+      }
+      if (end && index === plan.legs.length - 1) {
+        result.push({
+          key: `to-${leg.toRankId}`,
+          name: leg.toName,
+          lat: end.lat,
+          lng: end.lng,
+          kind: 'end',
+        });
+      }
+    });
+    return result;
+  }, [plan]);
+
+  const suggestionsFor = (field: 'from' | 'to'): RankSuggestion[] =>
+    activeField === field ? suggestions : [];
 
   return (
-    <View style={[styles.container, { paddingBottom: Math.max(insets.bottom, 12) }]}>
-      <View style={styles.fields}>
-        <Pressable style={styles.field} onPress={() => setPicker('origin')}>
-          <Text style={styles.fieldLabel}>From</Text>
-          <Text style={styles.fieldValue} numberOfLines={1}>
-            {origin?.name ?? 'Choose a departure rank'}
-          </Text>
-          {origin ? (
-            <Text style={styles.fieldArea} numberOfLines={1}>
-              {origin.area}
-            </Text>
-          ) : null}
-        </Pressable>
-        <Pressable style={styles.field} onPress={() => setPicker('destination')}>
-          <Text style={styles.fieldLabel}>To</Text>
-          <Text style={styles.fieldValue} numberOfLines={1}>
-            {destination?.name ?? 'Choose a destination rank'}
-          </Text>
-          {destination ? (
-            <Text style={styles.fieldArea} numberOfLines={1}>
-              {destination.area}
-            </Text>
-          ) : null}
-        </Pressable>
-      </View>
-
-      <View style={styles.mapWrap}>
-        <JourneyMap
-          ranks={RANKS}
-          highlightRankIds={[origin?.id, destination?.id].filter((id): id is string =>
-            Boolean(id),
-          )}
-          showsUserLocation={location.status === 'ready'}
+    <View style={styles.container}>
+      <View style={styles.searchPanel}>
+        <EndpointInput
+          label="From"
+          state={from}
+          suggestions={suggestionsFor('from')}
+          onFocus={() => setActiveField('from')}
+          onChangeText={(text) => setFrom({ text })}
+          onPick={(rank) => pickSuggestion('from', rank)}
         />
-        {location.status === 'unavailable' ? (
-          <Text style={styles.locationHint}>
-            Location is off — enable it to see your position on the map.
-          </Text>
-        ) : null}
+        <EndpointInput
+          label="To"
+          state={to}
+          suggestions={suggestionsFor('to')}
+          onFocus={() => setActiveField('to')}
+          onChangeText={(text) => setTo({ text })}
+          onPick={(rank) => pickSuggestion('to', rank)}
+        />
+        <View style={styles.priorityRow}>
+          {PRIORITY_OPTIONS.map((option) => (
+            <Pressable
+              key={option.value}
+              style={[styles.priorityChip, priority === option.value && styles.priorityChipActive]}
+              onPress={() => setPriority(option.value)}
+            >
+              <Text style={[styles.priorityText, priority === option.value && styles.priorityTextActive]}>
+                {option.label}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        <Pressable style={[styles.searchButton, !canSearch && styles.searchButtonDisabled]} onPress={onSearch} disabled={!canSearch}>
+          {searching ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.searchButtonText}>Find taxis</Text>
+          )}
+        </Pressable>
       </View>
 
-      <Pressable
-        style={[styles.cta, !canPlan && styles.ctaDisabled]}
-        onPress={handleFindRoutes}
-        disabled={!canPlan}
-      >
-        <Text style={styles.ctaText}>{planning ? 'Finding routes…' : 'Find routes'}</Text>
-      </Pressable>
+      <MapView ref={mapRef} style={styles.map} initialRegion={INITIAL_REGION}>
+        {plan?.legs.map((leg, index) => {
+          const coordinates = leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }));
+          const color = LEG_COLORS[index % LEG_COLORS.length]!;
+          const midpoint = leg.path[Math.floor(leg.path.length / 2)];
+          return (
+            <View key={`leg-${index}`}>
+              <Polyline coordinates={coordinates} strokeColor={color} strokeWidth={4} />
+              {midpoint && (
+                <Marker coordinate={{ latitude: midpoint.lat, longitude: midpoint.lng }} anchor={{ x: 0.5, y: 0.5 }} tracksViewChanges={false}>
+                  <View style={[styles.fareBubble, { backgroundColor: color }]}>
+                    <Text style={styles.fareBubbleText}>{formatZar(leg.fareZar)}</Text>
+                  </View>
+                </Marker>
+              )}
+            </View>
+          );
+        })}
+        {stops.map((stop) => (
+          <Marker
+            key={stop.key}
+            coordinate={{ latitude: stop.lat, longitude: stop.lng }}
+            title={stop.name}
+            description={stop.kind === 'transfer' ? 'Change taxis here' : undefined}
+            pinColor={stop.kind === 'start' ? '#2e7d32' : stop.kind === 'end' ? '#c62828' : '#f9a825'}
+          />
+        ))}
+      </MapView>
 
-      <RankPickerModal
-        visible={picker === 'origin'}
-        title="Departing from"
-        ranks={RANKS}
-        selectedRankId={origin?.id}
-        onSelect={setOrigin}
-        onClose={() => setPicker(null)}
+      <ScrollView style={styles.breakdown} contentContainerStyle={styles.breakdownContent}>
+        {error && <Text style={styles.errorText}>{error}</Text>}
+
+        {!error && plan === null && !searching && (from.rank || to.rank) && (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyTitle}>No route found</Text>
+            <Text style={styles.emptyBody}>
+              We could not find a taxi route between these ranks. Try a different
+              combination, or pick a nearby rank.
+            </Text>
+          </View>
+        )}
+
+        {!error && !plan && !searching && !from.rank && !to.rank && (
+          <Text style={styles.hint}>Pick a From and To rank, then tap Find taxis.</Text>
+        )}
+
+        {plan && plan.legs.length > 0 && (
+          <>
+            {plan.legs.map((leg, index) => {
+              let running = 0;
+              for (let i = 0; i <= index; i++) running += plan.legs[i]!.fareZar;
+              return (
+                <View key={`row-${index}`} style={styles.legRow}>
+                  <View style={[styles.legDot, { backgroundColor: LEG_COLORS[index % LEG_COLORS.length] }]} />
+                  <View style={styles.legText}>
+                    <Text style={styles.legNames} numberOfLines={2}>
+                      {leg.fromName} → {leg.toName}
+                    </Text>
+                    {index < plan.legs.length - 1 && (
+                      <Text style={styles.transferNote}>Change taxis at {leg.toName}</Text>
+                    )}
+                  </View>
+                  <View style={styles.legFares}>
+                    <Text style={styles.legFare}>{formatZar(leg.fareZar)}</Text>
+                    <Text style={styles.runningTotal}>{formatZar(running)} total</Text>
+                  </View>
+                </View>
+              );
+            })}
+            <View style={styles.summary}>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Total fare</Text>
+                <Text style={styles.summaryValue}>{formatZar(plan.totalFareZar)}</Text>
+              </View>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Number of taxis</Text>
+                <Text style={styles.summaryValue}>{plan.legCount}</Text>
+              </View>
+              <Link href="/route" asChild>
+                <Pressable style={styles.breakdownLink} onPress={() => router.push('/route')}>
+                  <Text style={styles.breakdownLinkText}>Full journey breakdown →</Text>
+                </Pressable>
+              </Link>
+            </View>
+          </>
+        )}
+      </ScrollView>
+    </View>
+  );
+}
+
+interface EndpointInputProps {
+  label: string;
+  state: EndpointState;
+  suggestions: RankSuggestion[];
+  onFocus: () => void;
+  onChangeText: (text: string) => void;
+  onPick: (rank: RankSuggestion) => void;
+}
+
+function EndpointInput({ label, state, suggestions, onFocus, onChangeText, onPick }: EndpointInputProps) {
+  return (
+    <View style={styles.endpointBlock}>
+      <Text style={styles.endpointLabel}>{label}</Text>
+      <TextInput
+        style={styles.endpointInput}
+        placeholder={label === 'From' ? 'Starting rank' : 'Destination rank'}
+        value={state.text}
+        onFocus={onFocus}
+        onChangeText={onChangeText}
       />
-      <RankPickerModal
-        visible={picker === 'destination'}
-        title="Going to"
-        ranks={RANKS}
-        selectedRankId={destination?.id}
-        onSelect={setDestination}
-        onClose={() => setPicker(null)}
-      />
+      {suggestions.length > 0 && (
+        <View style={styles.suggestionList}>
+          {suggestions.map((rank) => (
+            <Pressable key={rank.rankId} style={styles.suggestionRow} onPress={() => onPick(rank)}>
+              <Text style={styles.suggestionName}>{rank.name}</Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    gap: 12,
-  },
-  fields: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    gap: 8,
-  },
-  field: {
-    borderWidth: 1,
-    borderColor: '#d9e3ee',
-    borderRadius: 12,
+  container: { flex: 1, backgroundColor: '#fff' },
+  searchPanel: {
     padding: 12,
-    backgroundColor: '#f7fafd',
+    gap: 8,
+    backgroundColor: '#fff',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ddd',
   },
-  fieldLabel: {
-    fontSize: 12,
-    color: '#555',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  fieldValue: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#111',
-    marginTop: 2,
-  },
-  fieldArea: {
-    fontSize: 13,
-    color: '#555',
-    marginTop: 2,
-  },
-  mapWrap: {
-    flex: 1,
-    marginHorizontal: 16,
-    borderRadius: 12,
-    overflow: 'hidden',
+  endpointBlock: { position: 'relative', zIndex: 2 },
+  endpointLabel: { fontSize: 12, color: '#666', marginBottom: 2 },
+  endpointInput: {
     borderWidth: 1,
-    borderColor: '#d9e3ee',
-  },
-  locationHint: {
-    position: 'absolute',
-    bottom: 8,
-    left: 8,
-    right: 8,
-    fontSize: 12,
-    color: '#b45309',
-    backgroundColor: 'rgba(255, 255, 255, 0.92)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    borderColor: '#ccc',
     borderRadius: 8,
-    overflow: 'hidden',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    fontSize: 15,
+    backgroundColor: '#fafafa',
   },
-  cta: {
-    marginHorizontal: 16,
-    backgroundColor: '#0b5cad',
+  suggestionList: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#ccc',
+    zIndex: 3,
+    elevation: 4,
+  },
+  suggestionRow: { paddingHorizontal: 12, paddingVertical: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eee' },
+  suggestionName: { fontSize: 14 },
+  priorityRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  priorityChip: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
     borderRadius: 12,
-    paddingVertical: 14,
+    backgroundColor: '#e8f1fb',
+  },
+  priorityChipActive: { backgroundColor: '#0b5cad' },
+  priorityText: { fontSize: 12, color: '#0b5cad', textTransform: 'capitalize' },
+  priorityTextActive: { color: '#fff' },
+  searchButton: {
+    backgroundColor: '#0b5cad',
+    borderRadius: 8,
+    paddingVertical: 12,
     alignItems: 'center',
   },
-  ctaDisabled: {
-    backgroundColor: '#9db8d2',
+  searchButtonDisabled: { opacity: 0.5 },
+  searchButtonText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  breakdownLink: { alignItems: 'center', paddingVertical: 6 },
+  breakdownLinkText: { color: '#0b5cad', fontSize: 14, fontWeight: '600' },
+  map: { flex: 1 },
+  fareBubble: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
   },
-  ctaText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+  fareBubbleText: { color: '#fff', fontSize: 12, fontWeight: '700' },
+  breakdown: { maxHeight: 260, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: '#ddd' },
+  breakdownContent: { padding: 12, gap: 10 },
+  hint: { color: '#666', textAlign: 'center', paddingVertical: 8 },
+  errorText: { color: '#c62828', textAlign: 'center' },
+  emptyState: { alignItems: 'center', gap: 6, paddingVertical: 8 },
+  emptyTitle: { fontSize: 16, fontWeight: '600' },
+  emptyBody: { color: '#666', textAlign: 'center', fontSize: 13 },
+  legRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  legDot: { width: 10, height: 10, borderRadius: 5 },
+  legText: { flex: 1 },
+  legNames: { fontSize: 14, fontWeight: '500' },
+  transferNote: { fontSize: 12, color: '#b26a00', marginTop: 2 },
+  legFares: { alignItems: 'flex-end' },
+  legFare: { fontSize: 14, fontWeight: '600' },
+  runningTotal: { fontSize: 11, color: '#888' },
+  summary: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: '#ddd',
+    paddingTop: 8,
+    gap: 4,
   },
+  summaryRow: { flexDirection: 'row', justifyContent: 'space-between' },
+  summaryLabel: { fontSize: 15, color: '#444' },
+  summaryValue: { fontSize: 15, fontWeight: '700' },
 });

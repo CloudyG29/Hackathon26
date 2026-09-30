@@ -1,11 +1,8 @@
 import type {
   Leg,
-  PlanRouteRequest,
-  PlanRouteResponse,
+  PlanLeg,
+  PlanResult,
   Rank,
-  RouteOption,
-  RoutePriority,
-  Transfer,
   TransportMode,
 } from '@hackathon26/shared';
 
@@ -13,11 +10,10 @@ import type {
  * Offline journey fixtures.
  *
  * Mirrors data/seed/ranks.json and data/seed/legs.json (same ids, fares,
- * durations and reliabilities) so the UI stays demoable while
- * POST /routes/plan still returns 501. planJourney() falls back to here
- * whenever the API is unreachable, so the swap to real data is automatic
- * once the routing engine lands — keep the numbers in sync with the seed
- * files until then.
+ * durations and reliabilities) so the UI stays demoable while the API is
+ * unreachable. planJourney() falls back to here whenever the API call fails,
+ * so the swap to real data is automatic — keep the numbers in sync with the
+ * seed files.
  */
 
 export const RANKS: Rank[] = [
@@ -156,13 +152,6 @@ const TRUNKS: string[][] = [
   ['leg-bree-noord-walk', 'leg-noord-mbombela-direct', 'leg-mbombela-white-river'],
 ];
 
-const TAG_ROUTE_LABELS: Record<RoutePriority, string> = {
-  cheapest: 'Cheapest route',
-  fastest: 'Fastest route',
-  easiest: 'Easiest route',
-  safest: 'Safest route',
-};
-
 function toLeg(template: LegTemplate): Leg {
   const from = RANK_BY_ID.get(template.fromRankId);
   const to = RANK_BY_ID.get(template.toRankId);
@@ -170,13 +159,51 @@ function toLeg(template: LegTemplate): Leg {
   return { ...template, path };
 }
 
-function averageReliability(legs: Leg[]): number {
-  if (legs.length === 0) return 0;
-  return legs.reduce((sum, leg) => sum + (leg.reliability ?? 1), 0) / legs.length;
+/**
+ * Builds a plan over the seeded corridor for the requested rank pair, in the
+ * exact POST /routes/plan wire shape. Unreachable or reverse-direction pairs
+ * return null — the same meaning as the API's 404 "no route found".
+ */
+export function buildFixturePlan(fromRankId: string, toRankId: string): PlanResult | null {
+  const options: RouteOptionLite[] = TRUNKS.map((trunk) => sliceTrunk(trunk, fromRankId, toRankId))
+    .filter((option): option is RouteOptionLite => option !== null);
+  if (options.length === 0) return null;
+
+  // Match the planner's contract: one best option per priority call.
+  // Cheapest first, then fastest as the API's priority-aware tiebreak.
+  options.sort((a, b) => a.totalFareZar - b.totalFareZar || a.totalMinutes - b.totalMinutes);
+  const best = options[0];
+
+  const legs: PlanLeg[] = best.legs.map((leg) => {
+    const from = RANK_BY_ID.get(leg.fromRankId);
+    const to = RANK_BY_ID.get(leg.toRankId);
+    const path = from && to ? [from.location, to.location] : [];
+    return {
+      fromRankId: leg.fromRankId,
+      fromName: from?.name ?? leg.fromRankId,
+      toRankId: leg.toRankId,
+      toName: to?.name ?? leg.toRankId,
+      path: path.map((point) => ({ lat: point.latitude, lng: point.longitude })),
+      fareZar: leg.fareZar,
+    };
+  });
+
+  return {
+    legs,
+    totalFareZar: best.totalFareZar,
+    legCount: legs.length,
+  };
+}
+
+/** Internal slice of a trunk: master-style legs plus the totals we display. */
+interface RouteOptionLite {
+  legs: Leg[];
+  totalFareZar: number;
+  totalMinutes: number;
 }
 
 /** Slices one trunk between the origin and destination ranks, if it serves both in order. */
-function sliceOption(trunk: string[], originRankId: string, destinationRankId: string, index: number): RouteOption | null {
+function sliceTrunk(trunk: string[], fromRankId: string, toRankId: string): RouteOptionLite | null {
   const legs = trunk
     .map((id) => LEG_TEMPLATES.find((template) => template.id === id))
     .filter((template): template is LegTemplate => Boolean(template))
@@ -184,78 +211,14 @@ function sliceOption(trunk: string[], originRankId: string, destinationRankId: s
   if (legs.length === 0) return null;
 
   const rankSequence = [legs[0].fromRankId, ...legs.map((leg) => leg.toRankId)];
-  const start = rankSequence.indexOf(originRankId);
-  const end = rankSequence.indexOf(destinationRankId);
+  const start = rankSequence.indexOf(fromRankId);
+  const end = rankSequence.indexOf(toRankId);
   if (start === -1 || end === -1 || end <= start) return null;
 
   const chosen = legs.slice(start, end);
-  const transfers: Transfer[] = rankSequence.slice(start + 1, end).map((rankId) => ({
-    rankId,
-    instructions: RANK_BY_ID.get(rankId)?.landmarkNotes,
-  }));
-
-  const totalFareZar = chosen.reduce((sum, leg) => sum + leg.fareZar, 0);
-  const totalMinutes = chosen.reduce((sum, leg) => sum + leg.estimatedMinutes, 0);
-  const totalDistanceKm = chosen.reduce((sum, leg) => sum + (leg.distanceKm ?? 0), 0);
-
   return {
-    id: `fixture-option-${index}`,
-    label: '',
-    tags: [],
     legs: chosen,
-    transfers,
-    totalFareZar,
-    /** Rounded up to note denominations — see cashNeededZar in packages/shared. */
-    cashNeededZar: Math.ceil(totalFareZar / 20) * 20,
-    totalMinutes,
-    totalDistanceKm: Math.round(totalDistanceKm * 10) / 10,
-    transferCount: transfers.length,
-  };
-}
-
-/** Assigns cheapest/fastest/easiest/safest tags and labels once all options exist. */
-function assignTags(options: RouteOption[]): void {
-  if (options.length === 0) return;
-  const minFare = Math.min(...options.map((option) => option.totalFareZar));
-  const minMinutes = Math.min(...options.map((option) => option.totalMinutes));
-  const minTransfers = Math.min(...options.map((option) => option.transferCount));
-  const maxReliability = Math.max(...options.map((option) => averageReliability(option.legs)));
-
-  for (const option of options) {
-    const tags: RoutePriority[] = [];
-    if (option.totalFareZar === minFare) tags.push('cheapest');
-    if (option.totalMinutes === minMinutes) tags.push('fastest');
-    if (option.transferCount === minTransfers) tags.push('easiest');
-    if (averageReliability(option.legs) === maxReliability) tags.push('safest');
-    option.tags = tags;
-    const firstTag = tags[0];
-    option.label = firstTag ? TAG_ROUTE_LABELS[firstTag] : 'Alternative route';
-  }
-
-  options.sort((a, b) => a.totalFareZar - b.totalFareZar);
-}
-
-/**
- * Builds a plan over the seeded corridor for whatever endpoints were asked
- * for. Unreachable or reverse-direction pairs return an empty options array —
- * the same shape the real API will use for "no route found".
- */
-export function buildFixturePlan(request: PlanRouteRequest): PlanRouteResponse {
-  // The rank pickers always send rankIds; the fallbacks keep free-text
-  // endpoints demoable at corridor defaults.
-  const originRankId = request.origin.rankId ?? 'rank-jhb-bree';
-  const destinationRankId = request.destination.rankId ?? 'rank-white-river';
-
-  const options = TRUNKS.map((trunk, index) =>
-    sliceOption(trunk, originRankId, destinationRankId, index),
-  ).filter((option): option is RouteOption => option !== null);
-  assignTags(options);
-
-  return {
-    planId: `fixture-${originRankId}-${destinationRankId}-${Date.now()}`,
-    originLabel: request.origin.label,
-    destinationLabel: request.destination.label,
-    options,
-    generatedAt: new Date().toISOString(),
+    totalFareZar: chosen.reduce((sum, leg) => sum + leg.fareZar, 0),
+    totalMinutes: chosen.reduce((sum, leg) => sum + leg.estimatedMinutes, 0),
   };
 }

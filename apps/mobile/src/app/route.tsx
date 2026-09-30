@@ -1,61 +1,56 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Link, useLocalSearchParams } from 'expo-router';
-import type { RouteOption } from '@hackathon26/shared';
-import { JourneyMap } from '../components/JourneyMap';
-import { RANKS } from '../lib/fixtures';
-import {
-  MODE_ICONS,
-  MODE_LABELS,
-  TAG_LABELS,
-  formatDistance,
-  formatDuration,
-  formatZar,
-} from '../lib/format';
+import { Link } from 'expo-router';
+import type { PlanLeg } from '@hackathon26/shared';
+import { formatZar } from '../lib/format';
 import { loadPlan } from '../lib/planStore';
 
-const RANK_BY_ID = new Map(RANKS.map((rank) => [rank.id, rank]));
+/** Distinct colors per leg so taxi changes are visually obvious. */
+const LEG_COLORS = ['#0b5cad', '#c2571a', '#2e7d32', '#7b1fa2'];
 
-function rankName(rankId: string): string {
-  return RANK_BY_ID.get(rankId)?.name ?? rankId;
+const INITIAL_REGION = {
+  latitude: -25.6,
+  longitude: 28.24,
+  latitudeDelta: 1.2,
+  longitudeDelta: 1.2,
+};
+
+/** Cash to carry: fares are rounded up to note denominations, change is scarce. */
+function cashNeeded(totalFareZar: number): number {
+  return Math.ceil(totalFareZar / 20) * 20;
 }
 
-/** "Finding it" guidance for the rank where the journey starts. */
-function renderStartLandmark(rankId: string) {
-  const rank = RANK_BY_ID.get(rankId);
-  if (!rank?.landmarkNotes) return null;
-  return <Text style={styles.legNote}>Finding it: {rank.landmarkNotes}</Text>;
-}
-
-/** Transfer guidance after the given leg: what to do at the next rank. */
-function renderTransferNote(option: RouteOption, legIndex: number) {
-  const transfer = option.transfers.find(
-    (item) => item.rankId === option.legs[legIndex].toRankId,
+function LegRow({ leg, index, isLast }: { leg: PlanLeg; index: number; isLast: boolean }) {
+  return (
+    <View style={styles.legCard}>
+      <View style={styles.legRow}>
+        <View style={[styles.legDot, { backgroundColor: LEG_COLORS[index % LEG_COLORS.length] }]} />
+        <View style={styles.legText}>
+          <Text style={styles.legEnds} numberOfLines={2}>
+            {leg.fromName} → {leg.toName}
+          </Text>
+          {!isLast ? (
+            <Text style={styles.transferNote}>Change taxis at {leg.toName}</Text>
+          ) : null}
+        </View>
+        <Text style={styles.legFare}>{leg.fareZar > 0 ? formatZar(leg.fareZar) : 'Free'}</Text>
+      </View>
+    </View>
   );
-  if (!transfer) return null;
-  const name = rankName(transfer.rankId);
-  const text = transfer.instructions ? `Change at ${name}: ${transfer.instructions}` : `Change at ${name}.`;
-  return <Text style={styles.transferNote}>{text}</Text>;
 }
 
 /**
- * Route breakdown: option cards (cheapest / fastest / easiest / safest), the
- * leg-by-leg plan with fares and landmark guidance, the cash-to-carry
- * figure, and the demand signal button.
+ * Route breakdown: the full leg-by-leg plan from the saved journey with fares,
+ * a running total, the cash-to-carry figure and the demand signal button.
+ * The plan lives in the module store for the current session only.
  */
 export default function RouteScreen() {
-  const { planId } = useLocalSearchParams<{ planId?: string }>();
-  const saved = loadPlan(planId);
-  const options = saved?.plan.options ?? [];
-  const [selectedId, setSelectedId] = useState(options[0]?.id);
+  const saved = loadPlan();
   const [demandSent, setDemandSent] = useState(false);
+  const mapRef = useRef<MapView>(null);
 
-  const selected = useMemo(
-    () => options.find((option) => option.id === selectedId) ?? options[0],
-    [options, selectedId],
-  );
-
-  if (!saved) {
+  if (!saved || saved.plan.legs.length === 0) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyTitle}>This plan is no longer available</Text>
@@ -71,151 +66,126 @@ export default function RouteScreen() {
     );
   }
 
-  const { plan, source } = saved;
+  const { plan, fromLabel, toLabel, source } = saved;
+  const cash = cashNeeded(plan.totalFareZar);
 
-  if (options.length === 0) {
-    return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>No route found yet</Text>
-        <Text style={styles.emptyBody}>
-          There is no seeded connection from {plan.originLabel} to {plan.destinationLabel} in this
-          direction yet.
-        </Text>
-        <Link href="/" asChild>
-          <Pressable style={styles.cta}>
-            <Text style={styles.ctaText}>Plan a different trip</Text>
-          </Pressable>
-        </Link>
-      </View>
-    );
-  }
+  const points = plan.legs.flatMap((leg) =>
+    leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng })),
+  );
+
+  useEffect(() => {
+    if (points.length >= 2) {
+      setTimeout(
+        () => mapRef.current?.fitToCoordinates(points, { edgePadding: { top: 60, bottom: 60, left: 40, right: 40 } }),
+        100,
+      );
+    }
+    // The route is fixed for the lifetime of the screen.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <Text style={styles.corridor} numberOfLines={2}>
-          {plan.originLabel} → {plan.destinationLabel}
+          {fromLabel} → {toLabel}
         </Text>
-        {selected ? (
-          <Text style={styles.totals}>
-            {formatZar(selected.totalFareZar)} · {formatDuration(selected.totalMinutes)} ·{' '}
-            {selected.transferCount} change{selected.transferCount === 1 ? '' : 's'}
-          </Text>
-        ) : null}
-        {source === 'fixtures' ? (
+        <Text style={styles.totals}>
+          {formatZar(plan.totalFareZar)} · {plan.legCount} taxi{plan.legCount === 1 ? '' : 's'}
+        </Text>
+        {source !== 'api' ? (
           <Text style={styles.sampleBadge}>Sample data — routing API offline</Text>
         ) : null}
       </View>
 
-      {options.map((option) => (
-        <Pressable
-          key={option.id}
-          style={[styles.optionCard, option.id === selected?.id && styles.optionCardSelected]}
-          onPress={() => setSelectedId(option.id)}
+      <View style={styles.mapWrap}>
+        <MapView
+          ref={mapRef}
+          style={styles.map}
+          initialRegion={INITIAL_REGION}
         >
-          <View style={styles.optionHead}>
-            <Text style={styles.optionLabel} numberOfLines={1}>
-              {option.label}
-            </Text>
-            <View style={styles.tagRow}>
-              {option.tags.map((tag) => (
-                <Text key={tag} style={styles.tag}>
-                  {TAG_LABELS[tag]}
-                </Text>
-              ))}
-            </View>
-          </View>
-          <Text style={styles.optionMeta}>
-            {formatZar(option.totalFareZar)} · {formatDuration(option.totalMinutes)} ·{' '}
-            {option.transferCount} changes · {formatDistance(option.totalDistanceKm)}
-          </Text>
-        </Pressable>
-      ))}
-
-      {selected ? (
-        <>
-          <View style={styles.mapWrap}>
-            <JourneyMap
-              ranks={RANKS}
-              legs={selected.legs}
-              highlightRankIds={[
-                selected.legs[0]?.fromRankId ?? '',
-                ...selected.legs.map((leg) => leg.toRankId),
-              ]}
-            />
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Step by step</Text>
-            {selected.legs.map((leg, index) => (
-              <View key={leg.id} style={styles.legCard}>
-                <View style={styles.legRow}>
-                  <Text style={styles.legIcon}>{MODE_ICONS[leg.mode]}</Text>
-                  <View style={styles.legText}>
-                    <Text style={styles.legMode}>{MODE_LABELS[leg.mode]}</Text>
-                    <Text style={styles.legEnds} numberOfLines={1}>
-                      {rankName(leg.fromRankId)} → {rankName(leg.toRankId)}
-                    </Text>
-                  </View>
-                  <View style={styles.legNumbers}>
-                    <Text style={styles.legFare}>
-                      {leg.fareZar > 0 ? formatZar(leg.fareZar) : 'Free'}
-                    </Text>
-                    <Text style={styles.legMeta}>
-                      {formatDuration(leg.estimatedMinutes)}
-                      {leg.distanceKm ? ` · ${formatDistance(leg.distanceKm)}` : ''}
-                    </Text>
-                  </View>
-                </View>
-                {leg.departsWhenFull ? (
-                  <Text style={styles.legNote}>Leaves when full — allow extra time.</Text>
+          {plan.legs.map((leg, index) => {
+            const coordinates = leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }));
+            const color = LEG_COLORS[index % LEG_COLORS.length]!;
+            const midpoint = leg.path[Math.floor(leg.path.length / 2)];
+            return (
+              <View key={`leg-${index}`}>
+                <Polyline coordinates={coordinates} strokeColor={color} strokeWidth={4} />
+                {midpoint ? (
+                  <Marker
+                    coordinate={{ latitude: midpoint.lat, longitude: midpoint.lng }}
+                    anchor={{ x: 0.5, y: 0.5 }}
+                    tracksViewChanges={false}
+                  >
+                    <View style={[styles.fareBubble, { backgroundColor: color }]}>
+                      <Text style={styles.fareBubbleText}>{formatZar(leg.fareZar)}</Text>
+                    </View>
+                  </Marker>
                 ) : null}
-                {index === 0 ? renderStartLandmark(leg.fromRankId) : null}
-                {index < selected.legs.length - 1 ? renderTransferNote(selected, index) : null}
               </View>
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Fares and cash</Text>
-            {selected.legs.map((leg) => (
-              <View key={leg.id} style={styles.fareRow}>
-                <Text style={styles.fareLabel} numberOfLines={1}>
-                  {MODE_LABELS[leg.mode]} · to {rankName(leg.toRankId)}
-                </Text>
-                <Text style={styles.fareAmount}>
-                  {leg.fareZar > 0 ? formatZar(leg.fareZar) : 'Free'}
-                </Text>
+            );
+          })}
+          {plan.legs.map((leg, index) => {
+            const start = leg.path[0];
+            const end = leg.path[leg.path.length - 1];
+            const lastLeg = index === plan.legs.length - 1;
+            return (
+              <View key={`stops-${index}`}>
+                {start ? (
+                  <Marker
+                    coordinate={{ latitude: start.lat, longitude: start.lng }}
+                    title={leg.fromName}
+                    pinColor={index === 0 ? '#2e7d32' : '#f9a825'}
+                  />
+                ) : null}
+                {end && lastLeg ? (
+                  <Marker
+                    coordinate={{ latitude: end.lat, longitude: end.lng }}
+                    title={leg.toName}
+                    pinColor="#c62828"
+                  />
+                ) : null}
               </View>
-            ))}
-            <View style={[styles.fareRow, styles.fareTotalRow]}>
-              <Text style={styles.fareTotalLabel}>Total fare</Text>
-              <Text style={styles.fareTotalAmount}>{formatZar(selected.totalFareZar)}</Text>
-            </View>
-            <View style={styles.cashCard}>
-              <Text style={styles.cashAmount}>
-                Carry {formatZar(selected.cashNeededZar)} in cash
-              </Text>
-              <Text style={styles.cashNote}>
-                Operators rarely have change — fares are rounded up to note denominations, so carry
-                small notes and coins.
-              </Text>
-            </View>
-          </View>
+            );
+          })}
+        </MapView>
+      </View>
 
-          {/* TODO(person 3): wire to the demand aggregation endpoint once it
-              lands (proposed shape: POST /demand with the plan and route ids). */}
-          <Pressable
-            style={[styles.demandButton, demandSent && styles.demandButtonSent]}
-            onPress={() => setDemandSent(true)}
-            disabled={demandSent}
-          >
-            <Text style={demandSent ? styles.demandTextSent : styles.demandText}>
-              {demandSent ? 'Demand reported — marshals notified' : 'Report high demand on this route'}
-            </Text>
-          </Pressable>
-        </>
-      ) : null}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Step by step</Text>
+        {plan.legs.map((leg, index) => (
+          <LegRow
+            key={`${leg.fromRankId}-${leg.toRankId}-${index}`}
+            leg={leg}
+            index={index}
+            isLast={index === plan.legs.length - 1}
+          />
+        ))}
+      </View>
+
+      <View style={styles.section}>
+        <View style={[styles.fareRow, styles.fareTotalRow]}>
+          <Text style={styles.fareTotalLabel}>Total fare</Text>
+          <Text style={styles.fareTotalAmount}>{formatZar(plan.totalFareZar)}</Text>
+        </View>
+        <View style={styles.cashCard}>
+          <Text style={styles.cashAmount}>Carry {formatZar(cash)} in cash</Text>
+          <Text style={styles.cashNote}>
+            Operators rarely have change — fares are rounded up to note denominations, so carry
+            small notes and coins.
+          </Text>
+        </View>
+      </View>
+
+      <Pressable
+        style={[styles.demandButton, demandSent && styles.demandButtonSent]}
+        onPress={() => setDemandSent(true)}
+        disabled={demandSent}
+      >
+        <Text style={demandSent ? styles.demandTextSent : styles.demandText}>
+          {demandSent ? 'Demand reported — marshals notified' : 'Report high demand on this route'}
+        </Text>
+      </Pressable>
     </ScrollView>
   );
 }
@@ -252,52 +222,25 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginTop: 4,
   },
-  optionCard: {
-    borderWidth: 1,
-    borderColor: '#d9e3ee',
-    borderRadius: 12,
-    padding: 12,
-    gap: 6,
-  },
-  optionCardSelected: {
-    borderColor: '#0b5cad',
-    backgroundColor: '#e8f1fb',
-  },
-  optionHead: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 8,
-  },
-  optionLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    flexShrink: 1,
-  },
-  tagRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
-  },
-  tag: {
-    fontSize: 12,
-    color: '#0b5cad',
-    backgroundColor: '#ddebfa',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  optionMeta: {
-    fontSize: 13,
-    color: '#555',
-  },
   mapWrap: {
     height: 240,
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#d9e3ee',
+  },
+  map: {
+    flex: 1,
+  },
+  fareBubble: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  fareBubbleText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '700',
   },
   section: {
     gap: 8,
@@ -319,37 +262,24 @@ const styles = StyleSheet.create({
     gap: 10,
     alignItems: 'flex-start',
   },
-  legIcon: {
-    fontSize: 20,
+  legDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginTop: 5,
   },
   legText: {
     flex: 1,
-    gap: 2,
-  },
-  legMode: {
-    fontSize: 15,
-    fontWeight: '600',
+    gap: 4,
   },
   legEnds: {
-    fontSize: 13,
-    color: '#555',
-  },
-  legNumbers: {
-    alignItems: 'flex-end',
-    gap: 2,
+    fontSize: 14,
+    fontWeight: '500',
   },
   legFare: {
     fontSize: 15,
     fontWeight: '600',
     color: '#0b5cad',
-  },
-  legMeta: {
-    fontSize: 12,
-    color: '#555',
-  },
-  legNote: {
-    fontSize: 12,
-    color: '#b45309',
   },
   transferNote: {
     fontSize: 12,
@@ -362,15 +292,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 12,
-  },
-  fareLabel: {
-    fontSize: 14,
-    color: '#333',
-    flexShrink: 1,
-  },
-  fareAmount: {
-    fontSize: 14,
-    fontWeight: '600',
   },
   fareTotalRow: {
     borderTopWidth: 1,

@@ -41,6 +41,8 @@ export interface Rank {
   landmarkPhotoUrl?: string;
   /** Paid facilities: toilets, guarded parking, indoor waiting area. */
   facilities?: string[];
+  /** Formal rank vs informal roadside loading point (from the facility survey). */
+  kind?: 'formal' | 'informal';
 }
 
 /** One hop of a journey, from one rank to the next. */
@@ -59,6 +61,10 @@ export interface Leg {
   departsWhenFull?: boolean;
   /** Geometric path between the two ranks, for drawing the map line. */
   path?: GeoPoint[];
+  /** The taxi route this hop belongs to, when the hop came from route data. */
+  routeId?: string;
+  /** Direction of travel along the parent taxi route. */
+  direction?: 'out' | 'return';
 }
 
 /** What a commuter must physically do at a change-over, and what to watch for. */
@@ -71,6 +77,7 @@ export interface Transfer {
   landmarkNotes?: string;
 }
 
+/** Historical multi-priority tags from the master option-cards UI. */
 export type RoutePriority = 'cheapest' | 'fastest' | 'easiest' | 'safest';
 
 /** A complete journey from origin to destination. */
@@ -117,21 +124,133 @@ export interface JourneyEndpoint {
   location?: GeoPoint;
 }
 
-export interface PlanRouteRequest {
-  origin: JourneyEndpoint;
-  destination: JourneyEndpoint;
-  /** ISO-8601 departure time. Drives time-of-day reliability weighting. */
-  departAt?: string;
-  /** Which options to return. Defaults to all four. */
-  priorities?: RoutePriority[];
+/**
+ * Journey-map API contract (GET /ranks, POST /routes/plan).
+ *
+ * These are the exact wire shapes the backend serves and the mobile app is
+ * built against. The short field names (rankId/lat/lng) deliberately differ
+ * from the fuller domain model above — rename only in agreement with the
+ * mobile team.
+ */
+
+/** One rank as returned by GET /ranks (search field + autocomplete list). */
+export interface RankSuggestion {
+  rankId: string;
+  name: string;
+  lat: number;
+  lng: number;
 }
 
-export interface PlanRouteResponse {
-  planId: string;
-  originLabel: string;
-  destinationLabel: string;
-  options: RouteOption[];
+/** Wire-format geographic point used in journey-map payloads. */
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+/** Priorities the planner supports today; other modes are future work. */
+export type PlanPriority = 'cheapest' | 'fastest' | 'fewest_transfers';
+
+/** Request body for POST /routes/plan. */
+export interface PlanJourneyRequest {
+  fromRankId: string;
+  toRankId: string;
+  /** Defaults to "cheapest" when omitted. */
+  priority?: PlanPriority;
+}
+
+/** One ordered leg of a planned journey. */
+export interface PlanLeg {
+  fromRankId: string;
+  fromName: string;
+  toRankId: string;
+  toName: string;
+  /** The leg's geometry, for drawing the map line. */
+  path: LatLng[];
+  fareZar: number;
+}
+
+/** Response body for POST /routes/plan (200 OK; a 404 carries { error, message }). */
+export interface PlanResult {
+  legs: PlanLeg[];
+  totalFareZar: number;
+  legCount: number;
+}
+
+// ---------------------------------------------------------------------------
+// Deprecated aliases for the names above. Kept so services/api keeps
+// compiling against the renamed contract types — do not use in new code.
+// ---------------------------------------------------------------------------
+
+/** @deprecated Use {@link RankSuggestion}. */
+export type RankSearchResult = RankSuggestion;
+
+/** @deprecated Use {@link PlanLeg}. */
+export type PlanJourneyLeg = PlanLeg;
+
+/** @deprecated Use {@link PlanResult}. */
+export type PlanJourneyResponse = PlanResult;
+
+/** A taxi association: the operator behind one or more taxi routes. */
+export interface TaxiAssociation {
+  id: string;
+  name: string;
+}
+
+/** Distance band of a taxi route, from the route survey. */
+export type TaxiRouteCategory = 'short' | 'medium' | 'long';
+
+/**
+ * A taxi route as a marshal manages it: a named service between two ranks,
+ * operated by one association. Each route carries two directed legs ("out" and
+ * "return") because fares and travel times differ by direction. Blocking a
+ * route (strike) disables both legs at once.
+ */
+export interface TaxiRoute {
+  id: string;
+  /** Human label, e.g. "Marabastad ↔ Marble Hall". */
+  label: string;
+  associationId?: string;
+  category: TaxiRouteCategory;
+  mode: TransportMode;
+  /** Seats per vehicle: 9 = minibus, 15 = quantum/sprinter. */
+  seats?: number;
+  /** Strike toggle. Blocked routes are excluded from journey planning. */
+  isBlocked: boolean;
+  blockedReason?: string;
+  blockedAt?: string;
+  /** Provenance, e.g. "CSIR taxi route survey (route_id CR0008, 2018-12-07)". */
+  sourceNote?: string;
+}
+
+/** One demand event: a commuter (or marshal) signalling they want to travel. */
+export interface DemandSignal {
+  id: string;
+  /** Route the demand is for, when the commuter picked one. */
+  routeId?: string;
+  /** Rank the demand was raised at, when no specific route was picked. */
+  rankId?: string;
+  direction?: 'out' | 'return';
+  passengers: number;
+  signalAt: string;
+  /** Where the signal came from: 'commuter_app', 'marshal', 'demo_seed'. */
+  source: string;
+}
+
+/** Aggregated demand for one route over a time window, for the demand display. */
+export interface DemandSummaryEntry {
+  routeId: string;
+  label: string;
+  associationName?: string;
+  isBlocked: boolean;
+  signals: number;
+  passengers: number;
+}
+
+/** Shape returned by GET /demand. */
+export interface DemandSummaryResponse {
+  windowHours: number;
   generatedAt: string;
+  entries: DemandSummaryEntry[];
 }
 
 /** Shape returned by GET /health on the API. */
