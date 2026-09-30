@@ -2,16 +2,18 @@ import 'dotenv/config';
 import cors from 'cors';
 import express, { type Response } from 'express';
 import { z } from 'zod';
-import type { HealthResponse, PlanPriority } from '@hackathon26/shared';
+import type { HealthResponse, PlanPriority, PlanResult } from '@hackathon26/shared';
 import { config, hasSupabaseCredentials } from './config';
-import { planJourney } from './planner';
+import { PlanError, planRoute } from './planner';
 import { fetchRanks } from './ranks';
+import demandRoutes from './routes/demand';
+import marshalRoutes from './routes/marshal';
 
 /** Runtime copy of the shared PlanPriority union, kept in sync by `satisfies`. */
 const PLAN_PRIORITIES = [
   'cheapest',
   'fastest',
-  'fewest_transfers',
+  'easiest',
 ] as const satisfies readonly PlanPriority[];
 
 const planRequestSchema = z.object({
@@ -25,6 +27,10 @@ const startedAt = Date.now();
 
 app.use(cors());
 app.use(express.json());
+
+// Marshal (strike toggles) and commuter-demand endpoints.
+app.use('/demand', demandRoutes);
+app.use('/marshal', marshalRoutes);
 
 app.get('/health', (_req, res) => {
   const body: HealthResponse = {
@@ -63,33 +69,28 @@ app.post('/routes/plan', async (req, res) => {
     return;
   }
 
+  const { fromRankId, toRankId } = parsed.data;
+  // The planner engine returns one option per requested priority; the app
+  // asks for exactly one, so that single option is the response.
+  const priority: PlanPriority = parsed.data.priority ?? 'cheapest';
+
   try {
-    const result = await planJourney(parsed.data);
-
-    if (result.found) {
-      res.json({ legs: result.legs, totalFareZar: result.totalFareZar, legCount: result.legCount });
-      return;
-    }
-
-    if (result.reason === 'unknown_rank') {
-      res.status(404).json({ error: 'Unknown rank', message: `Rank ${result.detail}.` });
-      return;
-    }
-
-    if (result.reason === 'bad_priority') {
-      // Unreachable through the schema above; kept so a planner-side change
-      // cannot turn into a silent 404.
-      res.status(400).json({ error: 'Invalid priority', message: result.detail });
-      return;
-    }
-
-    res.status(404).json({
-      error: 'No route found',
-      message:
-        `No journey from "${parsed.data.fromRankId}" to "${parsed.data.toRankId}" ` +
-        'exists in the current network (disconnected ranks or blocked routes).',
-    });
+    const plan = await planRoute({ fromRankId, toRankId, priorities: [priority] });
+    const option = plan.options[0]!;
+    const result: PlanResult = {
+      legs: option.legs,
+      totalFareZar: option.totalFareZar,
+      legCount: option.legs.length,
+    };
+    res.json(result);
   } catch (error) {
+    if (error instanceof PlanError) {
+      res.status(error.status).json({
+        error: error.status === 404 ? 'No route found' : 'Planning unavailable',
+        message: error.message,
+      });
+      return;
+    }
     sendDataLayerError(res, error);
   }
 });
