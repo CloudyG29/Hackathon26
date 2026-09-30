@@ -84,7 +84,7 @@ python -m venv venv
 .\venv\Scripts\Activate.ps1      # the prompt gains a (venv) prefix
 pip install -r requirements.txt  # planner + HTTP wrapper dependencies
 pip install pytest               # test runner (not in requirements.txt)
-python -m pytest                 # expect: 9 passed
+python -m pytest                 # expect: 10 passed
 ```
 
 The Express API plans journeys in-process, so nothing above needs to stay

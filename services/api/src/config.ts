@@ -15,12 +15,6 @@ export const config = {
   supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY,
   /** JSON Web Key Set, for verifying user JWTs if we add auth. */
   supabaseJwksUrl: process.env.SUPABASE_JWKS_URL,
-  /**
-   * Python executable for the services/routing planner, spawned per
-   * POST /routes/plan request. Override when `python` is not on PATH
-   * (e.g. "py" or a virtualenv interpreter).
-   */
-  routingPython: process.env.ROUTING_PYTHON ?? 'python',
 } as const;
 
 /** True when the API has enough credentials to talk to Supabase. */

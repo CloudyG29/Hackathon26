@@ -31,7 +31,7 @@ const LEG_COLORS = ['#0b5cad', '#c2571a', '#2e7d32', '#7b1fa2'];
 const PRIORITY_OPTIONS: Array<{ value: PlanPriority; label: string }> = [
   { value: 'cheapest', label: 'Cheapest' },
   { value: 'fastest', label: 'Fastest' },
-  { value: 'fewest_transfers', label: 'Fewest taxis' },
+  { value: 'easiest', label: 'Fewest taxis' },
 ];
 
 const INITIAL_REGION: Region = {
