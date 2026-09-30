@@ -4,11 +4,10 @@ import express from 'express';
 import { z } from 'zod';
 import type { HealthResponse, PlanRouteRequest } from '@hackathon26/shared';
 import { config, hasSupabaseCredentials } from './config';
-import { supabase } from './db';
+import { PlanError, planRoute } from './planner';
 import demandRoutes from './routes/demand';
 import marshalRoutes from './routes/marshal';
 
-const ROUTING_SERVICE_URL = process.env.ROUTING_SERVICE_URL || 'http://localhost:8000';
 const ROUTE_PRIORITIES = ['cheapest', 'fastest', 'easiest', 'safest'] as const;
 
 const geoPointSchema = z.object({
@@ -58,59 +57,19 @@ app.post('/routes/plan', async (req, res) => {
 
   const request: PlanRouteRequest = parsed.data;
 
-  // Resolve Rank IDs from schema
-  const originRankId = request.origin.rankId || request.origin.label;
-  const destinationRankId = request.destination.rankId || request.destination.label;
-  const primaryPriority = request.priorities?.[0] || 'cheapest';
-
-  if (!supabase) {
-    res.status(503).json({ error: 'Database not configured' });
-    return;
-  }
-
   try {
-    // 1. Fetch Ranks (Nodes) from Supabase
-    const { data: ranks, error: ranksError } = await supabase
-      .from('ranks')
-      .select('id, name, lat, lng');
-
-    if (ranksError) throw ranksError;
-
-    // 2. Fetch Unblocked Routes (Edges) from Supabase
-    const { data: routes, error: routesError } = await supabase
-      .from('routes')
-      .select('id, from_rank_id, to_rank_id, fare, time_mins, taxi_association')
-      .eq('is_blocked', false);
-
-    if (routesError) throw routesError;
-
-    // 3. Call Python Routing Microservice
-    const pythonResponse = await fetch(`${ROUTING_SERVICE_URL}/calculate_route`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        nodes: ranks,
-        edges: routes,
-        from_rank_id: originRankId,
-        to_rank_id: destinationRankId,
-        priority: primaryPriority,
-      }),
+    const plan = await planRoute({
+      fromRankId: request.origin.rankId || request.origin.label,
+      toRankId: request.destination.rankId || request.destination.label,
+      priorities: request.priorities,
     });
-
-    if (!pythonResponse.ok) {
-      throw new Error(`Routing engine error: ${pythonResponse.statusText}`);
-    }
-
-    const routeResult = (await pythonResponse.json()) as Record<string, any>;
-
-    if (routeResult.error) {
-      res.status(404).json({ error: routeResult.error, legs: [] });
+    res.json(plan);
+  } catch (error) {
+    if (error instanceof PlanError) {
+      res.status(error.status).json({ error: error.message });
       return;
     }
-
-    res.json(routeResult);
-  } catch (error: any) {
-    console.error('Route planning failure:', error.message || error);
+    console.error('Route planning failure:', error);
     res.status(500).json({ error: 'Failed to calculate route.' });
   }
 });

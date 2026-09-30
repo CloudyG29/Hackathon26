@@ -110,6 +110,42 @@ export interface FareBreakdown {
   notes?: string[];
 }
 
+/**
+ * One leg of a planner-produced journey — the wire format the routing engine
+ * and the API's planner emit for the options of POST /routes/plan. Unlike
+ * `Leg` (catalogue shape), a planned leg is already resolved: geometry, fare
+ * and (when known) per-leg duration and mode.
+ */
+export interface PlanLeg {
+  fromRankId: string;
+  toRankId: string;
+  /** Fare in rand, including the planner's imputed value for unknown fares. */
+  fareZar: number;
+  /** Traversal minutes. Present only when the source duration is known. */
+  minutes?: number;
+  mode?: TransportMode;
+  /** Road-following geometry when the DB has a path, straight line otherwise. */
+  path?: GeoPoint[];
+}
+
+/**
+ * One leg of a planner-produced journey — the wire format the routing engine
+ * and the API's planner emit for the options of POST /routes/plan. Unlike
+ * `Leg` (catalogue shape), a planned leg is already resolved: geometry, fare
+ * and (when known) per-leg duration and mode.
+ */
+export interface PlanLeg {
+  fromRankId: string;
+  toRankId: string;
+  /** Fare in rand, including the planner's imputed value for unknown fares. */
+  fareZar: number;
+  /** Traversal minutes. Present only when the source duration is known. */
+  minutes?: number;
+  mode?: TransportMode;
+  /** Road-following geometry when the DB has a path, straight line otherwise. */
+  path?: GeoPoint[];
+}
+
 /** An endpoint of a journey: either a known rank or a free-text/geo location. */
 export interface JourneyEndpoint {
   label: string;
