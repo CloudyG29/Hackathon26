@@ -13,6 +13,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7855945,
+          "longitude": 28.0437619
+        },
+        {
           "latitude": -25.7854576,
           "longitude": 28.0438844
         },
@@ -92,6 +96,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
+        },
+        {
           "latitude": -25.7807553,
           "longitude": 28.0570926
         },
@@ -150,6 +158,10 @@
         {
           "latitude": -25.7855894,
           "longitude": 28.043477
+        },
+        {
+          "latitude": -25.7855945,
+          "longitude": 28.0437619
         }
       ],
       "routeId": "rt-cr0001",
@@ -166,6 +178,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
+        },
         {
           "latitude": -25.7799835,
           "longitude": 28.0534444
@@ -313,6 +329,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7636197,
+          "longitude": 28.0743903
+        },
         {
           "latitude": -25.7635361,
           "longitude": 28.0746969
@@ -883,6 +903,10 @@
         {
           "latitude": -25.7873285,
           "longitude": 28.1051425
+        },
+        {
+          "latitude": -25.7872736,
+          "longitude": 28.1053067
         }
       ],
       "routeId": "rt-cr0003",
@@ -899,6 +923,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7872736,
+          "longitude": 28.1053067
+        },
         {
           "latitude": -25.7872204,
           "longitude": 28.10542
@@ -1258,6 +1286,10 @@
         {
           "latitude": -25.7852358,
           "longitude": 28.0440663
+        },
+        {
+          "latitude": -25.7855945,
+          "longitude": 28.0437619
         }
       ],
       "routeId": "rt-cr0003",
@@ -1274,6 +1306,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
+        },
         {
           "latitude": -25.7808096,
           "longitude": 28.0571231
@@ -1761,6 +1797,10 @@
         {
           "latitude": -25.7402958,
           "longitude": 28.1920644
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0004",
@@ -1777,6 +1817,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
+        },
         {
           "latitude": -25.740321,
           "longitude": 28.1918917
@@ -2008,6 +2052,10 @@
         {
           "latitude": -25.7807286,
           "longitude": 28.0572603
+        },
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
         }
       ],
       "routeId": "rt-cr0004",
@@ -2024,6 +2072,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
+        },
         {
           "latitude": -25.7806425,
           "longitude": 28.0571571
@@ -2231,6 +2283,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7705916,
+          "longitude": 28.1156372
+        },
         {
           "latitude": -25.7705922,
           "longitude": 28.1155199
@@ -2462,6 +2518,10 @@
         {
           "latitude": -25.7807174,
           "longitude": 28.0571191
+        },
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
         }
       ],
       "routeId": "rt-cr0005",
@@ -2478,6 +2538,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7385614,
           "longitude": 28.1774074
@@ -3037,6 +3101,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7386034,
           "longitude": 28.1773328
@@ -4195,6 +4263,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7383343,
           "longitude": 28.1768007
@@ -5405,6 +5477,10 @@
         {
           "latitude": -25.7411125,
           "longitude": 28.1753287
+        },
+        {
+          "latitude": -25.7408565,
+          "longitude": 28.175349
         }
       ],
       "routeId": "rt-cr0008",
@@ -5421,6 +5497,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7381534,
           "longitude": 28.1765711
@@ -6099,6 +6179,10 @@
         {
           "latitude": -25.7381534,
           "longitude": 28.1765711
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0009",
@@ -6115,6 +6199,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7382898,
           "longitude": 28.1765506
@@ -7097,6 +7185,10 @@
         {
           "latitude": -25.7377674,
           "longitude": 28.176648
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0010",
@@ -7107,12 +7199,16 @@
       "mode": "long_distance_taxi",
       "fromRankId": "rank-f38",
       "toRankId": "rank-groblersdal-taxi-rank",
-      "fareZar": 0,
+      "fareZar": 125,
       "estimatedMinutes": 141,
       "distanceKm": 152.4,
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7400349,
+          "longitude": 28.1745611
+        },
         {
           "latitude": -25.7401675,
           "longitude": 28.1749387
@@ -7652,6 +7748,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7386034,
           "longitude": 28.1773328
@@ -8790,6 +8890,10 @@
         {
           "latitude": -25.7389408,
           "longitude": 28.1769804
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0012",
@@ -8806,6 +8910,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7384072,
           "longitude": 28.1770474
@@ -9916,6 +10024,10 @@
         {
           "latitude": -25.7401271,
           "longitude": 28.1747513
+        },
+        {
+          "latitude": -25.7400349,
+          "longitude": 28.1745611
         }
       ],
       "routeId": "rt-cr0013",
@@ -10163,6 +10275,10 @@
         {
           "latitude": -25.7447108,
           "longitude": 28.1922826
+        },
+        {
+          "latitude": -25.7447609,
+          "longitude": 28.1918131
         }
       ],
       "routeId": "rt-cr0014",
@@ -10179,6 +10295,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7442432,
+          "longitude": 28.1930543
+        },
         {
           "latitude": -25.7445671,
           "longitude": 28.1926734
@@ -10494,6 +10614,10 @@
         {
           "latitude": -25.7806331,
           "longitude": 28.0601764
+        },
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
         }
       ],
       "routeId": "rt-cr0014",
@@ -10510,6 +10634,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.761661,
+          "longitude": 28.0891982
+        },
         {
           "latitude": -25.761924,
           "longitude": 28.0878519
@@ -10649,6 +10777,10 @@
         {
           "latitude": -25.780914,
           "longitude": 28.0568562
+        },
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
         }
       ],
       "routeId": "rt-cr0015",
@@ -10665,6 +10797,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
+        },
         {
           "latitude": -25.78093,
           "longitude": 28.056667
@@ -10912,6 +11048,10 @@
         {
           "latitude": -25.7617957,
           "longitude": 28.0878817
+        },
+        {
+          "latitude": -25.761661,
+          "longitude": 28.0891982
         }
       ],
       "routeId": "rt-cr0015",
@@ -10928,6 +11068,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
+        },
         {
           "latitude": -25.7808409,
           "longitude": 28.0567116
@@ -11182,6 +11326,10 @@
         {
           "latitude": -25.7809067,
           "longitude": 28.0566971
+        },
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
         }
       ],
       "routeId": "rt-cr0016",
@@ -11198,6 +11346,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
+        },
         {
           "latitude": -25.7809667,
           "longitude": 28.0566281
@@ -11590,6 +11742,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7499926,
+          "longitude": 28.1784383
+        },
+        {
           "latitude": -25.7472431,
           "longitude": 28.1774542
         },
@@ -11936,6 +12092,10 @@
         {
           "latitude": -25.7807424,
           "longitude": 28.0572641
+        },
+        {
+          "latitude": -25.7806195,
+          "longitude": 28.0570528
         }
       ],
       "routeId": "rt-cr0017",
@@ -11952,6 +12112,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.73819,
           "longitude": 28.1771598
@@ -12508,6 +12672,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.9331624,
+          "longitude": 28.1430205
+        },
+        {
           "latitude": -25.9332506,
           "longitude": 28.1427748
         },
@@ -12990,6 +13158,10 @@
         {
           "latitude": -25.73819,
           "longitude": 28.1771598
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0018",
@@ -13006,6 +13178,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7382114,
           "longitude": 28.1769882
@@ -13558,6 +13734,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.9331624,
+          "longitude": 28.1430205
+        },
+        {
           "latitude": -25.9332506,
           "longitude": 28.1427748
         },
@@ -14060,6 +14240,10 @@
         {
           "latitude": -25.73819,
           "longitude": 28.1771598
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0019",
@@ -14076,6 +14260,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7381934,
           "longitude": 28.1771782
@@ -14543,6 +14731,10 @@
         {
           "latitude": -25.4044504,
           "longitude": 28.2833751
+        },
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
         }
       ],
       "routeId": "rt-cr0020",
@@ -14559,6 +14751,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
+        },
         {
           "latitude": -25.4046364,
           "longitude": 28.283467
@@ -15034,6 +15230,10 @@
         {
           "latitude": -25.7392117,
           "longitude": 28.187001
+        },
+        {
+          "latitude": -25.7389325,
+          "longitude": 28.1873792
         }
       ],
       "routeId": "rt-cr0020",
@@ -15050,6 +15250,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7383695,
           "longitude": 28.1770085
@@ -15506,6 +15710,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.4574252,
+          "longitude": 28.1277082
+        },
+        {
           "latitude": -25.4487914,
           "longitude": 28.1178883
         },
@@ -15944,6 +16152,10 @@
         {
           "latitude": -25.7398022,
           "longitude": 28.1781959
+        },
+        {
+          "latitude": -25.7401664,
+          "longitude": 28.1771933
         }
       ],
       "routeId": "rt-cr0034-2",
@@ -15960,6 +16172,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7381914,
           "longitude": 28.1767556
@@ -16456,6 +16672,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.4139895,
+          "longitude": 28.1073757
+        },
+        {
           "latitude": -25.4266108,
           "longitude": 28.1035494
         },
@@ -16922,6 +17142,10 @@
         {
           "latitude": -25.7405385,
           "longitude": 28.1877604
+        },
+        {
+          "latitude": -25.7389325,
+          "longitude": 28.1873792
         }
       ],
       "routeId": "rt-cr0034-4",
@@ -16938,6 +17162,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7383744,
           "longitude": 28.1769937
@@ -17410,6 +17638,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.4469465,
+          "longitude": 28.1217968
+        },
+        {
           "latitude": -25.4510538,
           "longitude": 28.1186915
         },
@@ -17844,6 +18076,10 @@
         {
           "latitude": -25.7400922,
           "longitude": 28.172771
+        },
+        {
+          "latitude": -25.7412334,
+          "longitude": 28.1739151
         }
       ],
       "routeId": "rt-cr0034",
@@ -17860,6 +18096,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7382793,
           "longitude": 28.1768237
@@ -18518,6 +18758,10 @@
         {
           "latitude": -25.7399451,
           "longitude": 28.1762885
+        },
+        {
+          "latitude": -25.7408565,
+          "longitude": 28.175349
         }
       ],
       "routeId": "rt-cr0035",
@@ -18534,6 +18778,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
+        },
         {
           "latitude": -25.7391979,
           "longitude": 28.1918696
@@ -19500,6 +19748,10 @@
         {
           "latitude": -25.7401163,
           "longitude": 28.194087
+        },
+        {
+          "latitude": -25.7409609,
+          "longitude": 28.1927944
         }
       ],
       "routeId": "rt-cr0037",
@@ -19516,6 +19768,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
+        },
         {
           "latitude": -25.7391682,
           "longitude": 28.1918659
@@ -20455,6 +20711,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
+        },
+        {
           "latitude": -25.4046286,
           "longitude": 28.2834796
         },
@@ -20905,6 +21165,10 @@
         {
           "latitude": -25.739237,
           "longitude": 28.190876
+        },
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
         }
       ],
       "routeId": "rt-cr0040-2",
@@ -20921,6 +21185,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
+        },
         {
           "latitude": -25.740337,
           "longitude": 28.1907895
@@ -21401,6 +21669,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
+        {
           "latitude": -25.7385323,
           "longitude": 28.1812884
         },
@@ -21855,6 +22127,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7951951,
+          "longitude": 28.3606538
+        },
         {
           "latitude": -25.7952784,
           "longitude": 28.3605063
@@ -22314,6 +22590,10 @@
         {
           "latitude": -25.7415417,
           "longitude": 28.1768711
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0041",
@@ -22330,6 +22610,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7384616,
           "longitude": 28.181032
@@ -22750,6 +23034,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.8100803,
+          "longitude": 28.3192637
+        },
+        {
           "latitude": -25.8101943,
           "longitude": 28.3194513
         },
@@ -23132,6 +23420,10 @@
         {
           "latitude": -25.7392416,
           "longitude": 28.1768203
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0042",
@@ -23148,6 +23440,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7384144,
           "longitude": 28.1810195
@@ -23588,6 +23884,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.8196325,
+          "longitude": 28.288876
+        },
+        {
           "latitude": -25.8178868,
           "longitude": 28.2943907
         },
@@ -23946,6 +24246,10 @@
         {
           "latitude": -25.7392757,
           "longitude": 28.1767453
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0043-2",
@@ -23962,6 +24266,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7387781,
           "longitude": 28.1815717
@@ -24864,6 +25172,10 @@
         {
           "latitude": -25.7392757,
           "longitude": 28.1767453
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0043",
@@ -24880,6 +25192,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.9244255,
+          "longitude": 28.262093
+        },
         {
           "latitude": -25.9244042,
           "longitude": 28.2617714
@@ -25367,6 +25683,10 @@
         {
           "latitude": -25.7403066,
           "longitude": 28.1923751
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0044-2",
@@ -25383,6 +25703,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.7559301,
           "longitude": 28.1843223
@@ -25854,6 +26178,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.9244255,
+          "longitude": 28.262093
+        },
         {
           "latitude": -25.9244042,
           "longitude": 28.2617714
@@ -26337,6 +26665,10 @@
         {
           "latitude": -25.7559301,
           "longitude": 28.1843223
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0044",
@@ -26353,6 +26685,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.9244255,
           "longitude": 28.262093
@@ -26812,6 +27148,10 @@
         {
           "latitude": -25.7562498,
           "longitude": 28.1847007
+        },
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
         }
       ],
       "routeId": "rt-cr0045",
@@ -26828,6 +27168,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
+        },
         {
           "latitude": -25.756152,
           "longitude": 28.1843767
@@ -27371,6 +27715,10 @@
         {
           "latitude": -25.9244042,
           "longitude": 28.2617714
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0045",
@@ -27387,6 +27735,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.73819,
           "longitude": 28.1771598
@@ -27935,6 +28287,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.9230268,
+          "longitude": 28.0984835
+        },
+        {
           "latitude": -25.9127776,
           "longitude": 28.0975686
         },
@@ -28377,6 +28733,10 @@
         {
           "latitude": -25.7400976,
           "longitude": 28.1750687
+        },
+        {
+          "latitude": -25.7400349,
+          "longitude": 28.1745611
         }
       ],
       "routeId": "rt-cr0046",
@@ -28393,6 +28753,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7385075,
           "longitude": 28.1807602
@@ -28941,6 +29305,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.9331624,
+          "longitude": 28.1430205
+        },
+        {
           "latitude": -25.9332506,
           "longitude": 28.1427748
         },
@@ -29435,6 +29803,10 @@
         {
           "latitude": -25.7408005,
           "longitude": 28.1753293
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0047",
@@ -29451,6 +29823,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7383621,
           "longitude": 28.1772024
@@ -30457,6 +30833,10 @@
         {
           "latitude": -25.7383613,
           "longitude": 28.1772049
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0048",
@@ -30473,6 +30853,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7429757,
+          "longitude": 28.1952213
+        },
         {
           "latitude": -25.7418433,
           "longitude": 28.192971
@@ -30804,6 +31188,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8037907,
           "longitude": 28.7457461
@@ -31155,6 +31543,10 @@
         {
           "latitude": -25.7389719,
           "longitude": 28.196209
+        },
+        {
+          "latitude": -25.7429757,
+          "longitude": 28.1952213
         }
       ],
       "routeId": "rt-cr0049",
@@ -31171,6 +31563,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7389325,
+          "longitude": 28.1873792
+        },
         {
           "latitude": -25.7404953,
           "longitude": 28.1882084
@@ -31654,6 +32050,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.9331624,
+          "longitude": 28.1430205
+        },
         {
           "latitude": -25.9332506,
           "longitude": 28.1427748
@@ -32161,6 +32561,10 @@
         {
           "latitude": -25.73819,
           "longitude": 28.1771598
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0050",
@@ -32177,6 +32581,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7425993,
+          "longitude": 28.1925897
+        },
         {
           "latitude": -25.7417889,
           "longitude": 28.1926357
@@ -33135,6 +33543,10 @@
         {
           "latitude": -25.7403437,
           "longitude": 28.1924134
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0051",
@@ -33554,6 +33966,10 @@
         {
           "latitude": -25.7383951,
           "longitude": 28.1809357
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0053",
@@ -33570,6 +33986,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.738389,
           "longitude": 28.1808377
@@ -33969,6 +34389,10 @@
         {
           "latitude": -25.8586003,
           "longitude": 28.1875864
+        },
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
         }
       ],
       "routeId": "rt-cr0053",
@@ -34476,6 +34900,10 @@
         {
           "latitude": -25.738276,
           "longitude": 28.1964043
+        },
+        {
+          "latitude": -25.7400597,
+          "longitude": 28.1949233
         }
       ],
       "routeId": "rt-cr0054-2",
@@ -34492,6 +34920,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7384624,
           "longitude": 28.1811316
@@ -35510,6 +35942,10 @@
         {
           "latitude": -25.7419861,
           "longitude": 28.1951059
+        },
+        {
+          "latitude": -25.7429012,
+          "longitude": 28.1952568
         }
       ],
       "routeId": "rt-cr0054",
@@ -35881,6 +36317,10 @@
         {
           "latitude": -25.7386407,
           "longitude": 28.1958086
+        },
+        {
+          "latitude": -25.7400597,
+          "longitude": 28.1949233
         }
       ],
       "routeId": "rt-cr0055-2",
@@ -35897,6 +36337,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7429012,
+          "longitude": 28.1952568
+        },
         {
           "latitude": -25.7419494,
           "longitude": 28.1948668
@@ -36260,6 +36704,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7429012,
+          "longitude": 28.1952568
+        },
         {
           "latitude": -25.7421715,
           "longitude": 28.1945899
@@ -36631,6 +37079,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8086443,
+          "longitude": 28.2549324
+        },
         {
           "latitude": -25.821103,
           "longitude": 28.2560322
@@ -37022,6 +37474,10 @@
         {
           "latitude": -25.741573,
           "longitude": 28.1950396
+        },
+        {
+          "latitude": -25.7429012,
+          "longitude": 28.1952568
         }
       ],
       "routeId": "rt-cr0055",
@@ -37038,6 +37494,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.7245131,
           "longitude": 27.9644731
@@ -37365,6 +37825,10 @@
         {
           "latitude": -25.7387318,
           "longitude": 28.1773753
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0057-2",
@@ -37381,6 +37845,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.9331624,
+          "longitude": 28.1430205
+        },
         {
           "latitude": -25.9332506,
           "longitude": 28.1427748
@@ -37864,6 +38332,10 @@
         {
           "latitude": -25.7406905,
           "longitude": 28.1752586
+        },
+        {
+          "latitude": -25.7408565,
+          "longitude": 28.175349
         }
       ],
       "routeId": "rt-cr0057",
@@ -37880,6 +38352,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7387318,
           "longitude": 28.1773753
@@ -38602,6 +39078,10 @@
         {
           "latitude": -25.739351,
           "longitude": 28.1921496
+        },
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
         }
       ],
       "routeId": "rt-cr0058",
@@ -38618,6 +39098,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
+        },
         {
           "latitude": -25.7403583,
           "longitude": 28.1919716
@@ -38661,6 +39145,10 @@
         {
           "latitude": -25.75615,
           "longitude": 28.184698
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0059",
@@ -38677,6 +39165,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.75615,
           "longitude": 28.184698
@@ -38740,6 +39232,10 @@
         {
           "latitude": -25.7397161,
           "longitude": 28.1910187
+        },
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
         }
       ],
       "routeId": "rt-cr0059",
@@ -38756,6 +39252,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
+        },
         {
           "latitude": -25.7402899,
           "longitude": 28.1922416
@@ -39264,6 +39764,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7395001,
+          "longitude": 28.1537688
+        },
+        {
           "latitude": -25.7381632,
           "longitude": 28.1593789
         },
@@ -39454,6 +39958,10 @@
         {
           "latitude": -25.7430667,
           "longitude": 28.1925749
+        },
+        {
+          "latitude": -25.743201,
+          "longitude": 28.1925527
         }
       ],
       "routeId": "rt-cr0060",
@@ -39470,6 +39978,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
+        },
         {
           "latitude": -25.7559838,
           "longitude": 28.1844736
@@ -39993,6 +40505,10 @@
         {
           "latitude": -25.3394318,
           "longitude": 28.2976392
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0061",
@@ -40009,6 +40525,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.3393633,
           "longitude": 28.2979551
@@ -40440,6 +40960,10 @@
         {
           "latitude": -25.7558039,
           "longitude": 28.1846883
+        },
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
         }
       ],
       "routeId": "rt-cr0061",
@@ -40456,6 +40980,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.7558079,
           "longitude": 28.1843059
@@ -40988,6 +41516,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
+        },
+        {
           "latitude": -25.7416821,
           "longitude": 28.1922237
         },
@@ -41466,6 +41998,10 @@
         {
           "latitude": -25.9332506,
           "longitude": 28.1427748
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0062",
@@ -41482,6 +42018,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.75601,
           "longitude": 28.1839984
@@ -41997,6 +42537,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7412334,
+          "longitude": 28.1739151
+        },
         {
           "latitude": -25.7408929,
           "longitude": 28.1733686
@@ -42564,6 +43108,10 @@
         {
           "latitude": -25.9112693,
           "longitude": 28.0300123
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0063",
@@ -42580,6 +43128,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
+        },
         {
           "latitude": -25.7559838,
           "longitude": 28.1844736
@@ -43035,6 +43587,10 @@
         {
           "latitude": -25.3426875,
           "longitude": 28.2824243
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0064",
@@ -43051,6 +43607,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.3393633,
           "longitude": 28.2979551
@@ -43466,6 +44026,10 @@
         {
           "latitude": -25.7559838,
           "longitude": 28.1844736
+        },
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
         }
       ],
       "routeId": "rt-cr0064",
@@ -43482,6 +44046,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
+        },
         {
           "latitude": -25.7559838,
           "longitude": 28.1844736
@@ -44005,6 +44573,10 @@
         {
           "latitude": -25.3394318,
           "longitude": 28.2976392
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0065",
@@ -44021,6 +44593,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.3393657,
           "longitude": 28.2979442
@@ -44545,6 +45121,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
+        {
           "latitude": -25.7393367,
           "longitude": 28.1755095
         },
@@ -44684,6 +45264,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
+        {
           "latitude": -25.7556738,
           "longitude": 28.1860647
         },
@@ -44822,6 +45406,10 @@
         {
           "latitude": -25.7394338,
           "longitude": 28.174359
+        },
+        {
+          "latitude": -25.7400349,
+          "longitude": 28.1745611
         }
       ],
       "routeId": "rt-cr0066",
@@ -44838,6 +45426,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7400349,
+          "longitude": 28.1745611
+        },
         {
           "latitude": -25.7398777,
           "longitude": 28.1752896
@@ -44953,6 +45545,10 @@
         {
           "latitude": -25.7567086,
           "longitude": 28.190254
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0066",
@@ -45456,6 +46052,10 @@
         {
           "latitude": -25.7418562,
           "longitude": 28.1770988
+        },
+        {
+          "latitude": -25.7401664,
+          "longitude": 28.1771933
         }
       ],
       "routeId": "rt-cr0067-2",
@@ -45472,6 +46072,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.9244255,
+          "longitude": 28.262093
+        },
         {
           "latitude": -25.9244042,
           "longitude": 28.2617714
@@ -45975,6 +46579,10 @@
         {
           "latitude": -25.7414939,
           "longitude": 28.1926248
+        },
+        {
+          "latitude": -25.7409609,
+          "longitude": 28.1927944
         }
       ],
       "routeId": "rt-cr0067-3",
@@ -45991,6 +46599,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7567815,
+          "longitude": 28.1901153
+        },
         {
           "latitude": -25.7567032,
           "longitude": 28.1901714
@@ -46973,6 +47585,10 @@
         {
           "latitude": -25.7567212,
           "longitude": 28.1900204
+        },
+        {
+          "latitude": -25.7567815,
+          "longitude": 28.1901153
         }
       ],
       "routeId": "rt-cr0067",
@@ -46989,6 +47605,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7400597,
+          "longitude": 28.1949233
+        },
         {
           "latitude": -25.7384727,
           "longitude": 28.1962569
@@ -47588,6 +48208,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8773702,
+          "longitude": 28.94105
+        },
         {
           "latitude": -25.8776185,
           "longitude": 28.9409879
@@ -48207,6 +48831,10 @@
         {
           "latitude": -25.7388687,
           "longitude": 28.1956874
+        },
+        {
+          "latitude": -25.7400597,
+          "longitude": 28.1949233
         }
       ],
       "routeId": "rt-cr0068",
@@ -48223,6 +48851,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7400597,
+          "longitude": 28.1949233
+        },
         {
           "latitude": -25.7384727,
           "longitude": 28.1962569
@@ -48823,6 +49455,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.8773702,
+          "longitude": 28.94105
+        },
+        {
           "latitude": -25.8776224,
           "longitude": 28.9409869
         },
@@ -49309,6 +49945,10 @@
         {
           "latitude": -25.7389545,
           "longitude": 28.1956585
+        },
+        {
+          "latitude": -25.7400597,
+          "longitude": 28.1949233
         }
       ],
       "routeId": "rt-cr0069",
@@ -49325,6 +49965,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7400597,
+          "longitude": 28.1949233
+        },
         {
           "latitude": -25.7388945,
           "longitude": 28.1960848
@@ -50455,6 +51099,10 @@
         {
           "latitude": -25.7389668,
           "longitude": 28.177084
+        },
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
         }
       ],
       "routeId": "rt-cr0070",
@@ -50471,6 +51119,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7409609,
+          "longitude": 28.1927944
+        },
         {
           "latitude": -25.7402406,
           "longitude": 28.1935494
@@ -50947,6 +51599,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7409609,
+          "longitude": 28.1927944
+        },
+        {
           "latitude": -25.7402406,
           "longitude": 28.1935494
         },
@@ -51389,6 +52045,10 @@
         {
           "latitude": -25.4444302,
           "longitude": 28.1217122
+        },
+        {
+          "latitude": -25.4469465,
+          "longitude": 28.1217968
         }
       ],
       "routeId": "rt-cr0071-3",
@@ -51405,6 +52065,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4469465,
+          "longitude": 28.1217968
+        },
         {
           "latitude": -25.4441212,
           "longitude": 28.1167605
@@ -51836,6 +52500,10 @@
         {
           "latitude": -25.7393101,
           "longitude": 28.1932361
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0071-3",
@@ -51852,6 +52520,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4139895,
+          "longitude": 28.1073757
+        },
         {
           "latitude": -25.4139545,
           "longitude": 28.1080179
@@ -52319,6 +52991,10 @@
         {
           "latitude": -25.7444768,
           "longitude": 28.1917897
+        },
+        {
+          "latitude": -25.7447609,
+          "longitude": 28.1918131
         }
       ],
       "routeId": "rt-cr0071",
@@ -53524,6 +54200,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7558082,
+          "longitude": 28.1843469
+        },
+        {
           "latitude": -25.7556839,
           "longitude": 28.1838505
         },
@@ -54042,6 +54722,10 @@
         {
           "latitude": -25.9331624,
           "longitude": 28.1430205
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0074",
@@ -54058,6 +54742,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.9332506,
           "longitude": 28.1427748
@@ -54557,6 +55245,10 @@
         {
           "latitude": -25.7554873,
           "longitude": 28.1849733
+        },
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
         }
       ],
       "routeId": "rt-cr0074",
@@ -54573,6 +55265,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7400597,
+          "longitude": 28.1949233
+        },
         {
           "latitude": -25.738498,
           "longitude": 28.1961888
@@ -55683,6 +56379,10 @@
         {
           "latitude": -25.7401675,
           "longitude": 28.1749387
+        },
+        {
+          "latitude": -25.7400349,
+          "longitude": 28.1745611
         }
       ],
       "routeId": "rt-cr0075",
@@ -56849,6 +57549,10 @@
         {
           "latitude": -25.7179305,
           "longitude": 28.3397246
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0076",
@@ -57132,6 +57836,10 @@
         {
           "latitude": -25.7402626,
           "longitude": 28.1928227
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0077",
@@ -57148,6 +57856,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7409609,
+          "longitude": 28.1927944
+        },
         {
           "latitude": -25.7416296,
           "longitude": 28.192758
@@ -57427,6 +58139,10 @@
         {
           "latitude": -25.7166034,
           "longitude": 28.3335505
+        },
+        {
+          "latitude": -25.716514,
+          "longitude": 28.3306181
         }
       ],
       "routeId": "rt-cr0077",
@@ -57443,6 +58159,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7458176,
+          "longitude": 28.2853376
+        },
         {
           "latitude": -25.705741,
           "longitude": 28.40793
@@ -58002,6 +58722,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6701973,
+          "longitude": 28.1081358
+        },
         {
           "latitude": -25.6728648,
           "longitude": 28.108717
@@ -58577,6 +59301,10 @@
         {
           "latitude": -25.6982463,
           "longitude": 28.4209136
+        },
+        {
+          "latitude": -25.7458176,
+          "longitude": 28.2853376
         }
       ],
       "routeId": "rt-cr0078",
@@ -58593,6 +59321,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7172102,
           "longitude": 28.3375831
@@ -59767,6 +60499,10 @@
         {
           "latitude": -25.7184873,
           "longitude": 28.3444072
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0079",
@@ -59783,6 +60519,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.717289,
           "longitude": 28.3375612
@@ -60937,6 +61677,10 @@
         {
           "latitude": -25.7180444,
           "longitude": 28.3389052
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0080",
@@ -60953,6 +61697,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7173491,
           "longitude": 28.3377027
@@ -62107,6 +62855,10 @@
         {
           "latitude": -25.717999,
           "longitude": 28.3388696
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0081",
@@ -62123,6 +62875,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7199452,
           "longitude": 28.3437393
@@ -62638,6 +63394,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.827765,
+          "longitude": 28.2592914
+        },
         {
           "latitude": -25.8275297,
           "longitude": 28.2596541
@@ -63161,6 +63921,10 @@
         {
           "latitude": -25.7196932,
           "longitude": 28.3437244
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0082",
@@ -63177,6 +63941,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7199452,
           "longitude": 28.3437393
@@ -63737,6 +64505,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.827765,
+          "longitude": 28.2592914
+        },
+        {
           "latitude": -25.8275297,
           "longitude": 28.2596541
         },
@@ -64271,6 +65043,10 @@
         {
           "latitude": -25.7182268,
           "longitude": 28.3437155
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0083",
@@ -64287,6 +65063,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7177463,
           "longitude": 28.3389975
@@ -64550,6 +65330,10 @@
         {
           "latitude": -25.7137782,
           "longitude": 28.4051208
+        },
+        {
+          "latitude": -25.7855945,
+          "longitude": 28.0437619
         }
       ],
       "routeId": "rt-cr0084",
@@ -64566,6 +65350,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7855945,
+          "longitude": 28.0437619
+        },
         {
           "latitude": -25.7137782,
           "longitude": 28.4051208
@@ -64793,6 +65581,10 @@
         {
           "latitude": -25.7177128,
           "longitude": 28.338871
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0084",
@@ -64809,6 +65601,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7176346,
           "longitude": 28.3388671
@@ -65535,6 +66331,10 @@
         {
           "latitude": -25.7180172,
           "longitude": 28.3390384
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0085",
@@ -65551,6 +66351,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7199421,
           "longitude": 28.3441115
@@ -66163,6 +66967,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.9331624,
+          "longitude": 28.1430205
+        },
+        {
           "latitude": -25.9332506,
           "longitude": 28.1427748
         },
@@ -66713,6 +67521,10 @@
         {
           "latitude": -25.7181802,
           "longitude": 28.3446011
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0086",
@@ -66729,6 +67541,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7399394,
+          "longitude": 28.3910589
+        },
         {
           "latitude": -25.7397363,
           "longitude": 28.3607895
@@ -67108,6 +67924,10 @@
         {
           "latitude": -25.7399443,
           "longitude": 28.1786191
+        },
+        {
+          "latitude": -25.7401664,
+          "longitude": 28.1771933
         }
       ],
       "routeId": "rt-cr0087",
@@ -67124,6 +67944,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7389272,
           "longitude": 28.1810934
@@ -67551,6 +68375,10 @@
         {
           "latitude": -25.7345302,
           "longitude": 28.3853066
+        },
+        {
+          "latitude": -25.7399394,
+          "longitude": 28.3910589
         }
       ],
       "routeId": "rt-cr0087",
@@ -67567,6 +68395,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7399394,
+          "longitude": 28.3910589
+        },
         {
           "latitude": -25.7397363,
           "longitude": 28.3607895
@@ -67930,6 +68762,10 @@
         {
           "latitude": -25.7401022,
           "longitude": 28.1924056
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0088-2",
@@ -67946,6 +68782,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7429012,
+          "longitude": 28.1952568
+        },
         {
           "latitude": -25.7414758,
           "longitude": 28.1950125
@@ -68325,6 +69165,10 @@
         {
           "latitude": -25.7345795,
           "longitude": 28.367256
+        },
+        {
+          "latitude": -25.7399394,
+          "longitude": 28.3910589
         }
       ],
       "routeId": "rt-cr0088",
@@ -68341,6 +69185,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7151613,
           "longitude": 28.3346029
@@ -69287,6 +70135,10 @@
         {
           "latitude": -25.7202177,
           "longitude": 28.3428987
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0089",
@@ -69303,6 +70155,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.708795,
+          "longitude": 28.4135256
+        },
         {
           "latitude": -25.7094281,
           "longitude": 28.4131687
@@ -69866,6 +70722,10 @@
         {
           "latitude": -25.7707487,
           "longitude": 28.2354259
+        },
+        {
+          "latitude": -25.7695928,
+          "longitude": 28.2344782
         }
       ],
       "routeId": "rt-cr0090",
@@ -69882,6 +70742,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7695928,
+          "longitude": 28.2344782
+        },
         {
           "latitude": -25.7707899,
           "longitude": 28.2352679
@@ -70441,6 +71305,10 @@
         {
           "latitude": -25.709841,
           "longitude": 28.4127483
+        },
+        {
+          "latitude": -25.708795,
+          "longitude": 28.4135256
         }
       ],
       "routeId": "rt-cr0090",
@@ -70745,6 +71613,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.6984896,
+          "longitude": 28.4210741
+        },
+        {
           "latitude": -25.6984397,
           "longitude": 28.4209626
         },
@@ -70951,6 +71823,10 @@
         {
           "latitude": -25.7193216,
           "longitude": 28.3437553
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0091",
@@ -70967,6 +71843,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7199452,
           "longitude": 28.3437393
@@ -71601,6 +72481,10 @@
         {
           "latitude": -25.7196951,
           "longitude": 28.3434741
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0092",
@@ -71617,6 +72501,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7201374,
           "longitude": 28.3436651
@@ -72156,6 +73044,10 @@
         {
           "latitude": -25.8080169,
           "longitude": 28.3004392
+        },
+        {
+          "latitude": -25.8100803,
+          "longitude": 28.3192637
         }
       ],
       "routeId": "rt-cr0093",
@@ -72172,6 +73064,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8100803,
+          "longitude": 28.3192637
+        },
         {
           "latitude": -25.807806,
           "longitude": 28.3002405
@@ -72607,6 +73503,10 @@
         {
           "latitude": -25.71703,
           "longitude": 28.3356709
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0093",
@@ -72623,6 +73523,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7199636,
           "longitude": 28.3445073
@@ -73058,6 +73962,10 @@
         {
           "latitude": -25.7404415,
           "longitude": 28.1752317
+        },
+        {
+          "latitude": -25.7408565,
+          "longitude": 28.175349
         }
       ],
       "routeId": "rt-cr0096-2",
@@ -73074,6 +73982,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7408565,
+          "longitude": 28.175349
+        },
         {
           "latitude": -25.7404243,
           "longitude": 28.1752737
@@ -73373,6 +74285,10 @@
         {
           "latitude": -25.7182155,
           "longitude": 28.3437177
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0096-2",
@@ -73389,6 +74305,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7199636,
           "longitude": 28.3445073
@@ -73828,6 +74748,10 @@
         {
           "latitude": -25.7561705,
           "longitude": 28.1846212
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0096",
@@ -73844,6 +74768,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.7558296,
           "longitude": 28.1862628
@@ -74203,6 +75131,10 @@
         {
           "latitude": -25.7182161,
           "longitude": 28.3440154
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0096",
@@ -74219,6 +75151,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7199636,
           "longitude": 28.3445073
@@ -74658,6 +75594,10 @@
         {
           "latitude": -25.7413541,
           "longitude": 28.1754023
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0097",
@@ -74674,6 +75614,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7384072,
           "longitude": 28.1770474
@@ -75049,6 +75993,10 @@
         {
           "latitude": -25.7181792,
           "longitude": 28.343528
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0097",
@@ -75065,6 +76013,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7196953,
           "longitude": 28.3438727
@@ -75644,6 +76596,10 @@
         {
           "latitude": -25.4958165,
           "longitude": 28.0924763
+        },
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
         }
       ],
       "routeId": "rt-cr0098",
@@ -75660,6 +76616,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
+        },
         {
           "latitude": -25.4958125,
           "longitude": 28.0924689
@@ -76219,6 +77179,10 @@
         {
           "latitude": -25.7173846,
           "longitude": 28.3375263
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0098",
@@ -76235,6 +77199,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.708795,
+          "longitude": 28.4135256
+        },
         {
           "latitude": -25.7099006,
           "longitude": 28.4131934
@@ -76818,6 +77786,10 @@
         {
           "latitude": -25.8585615,
           "longitude": 28.1843758
+        },
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
         }
       ],
       "routeId": "rt-cr0099",
@@ -76834,6 +77806,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
+        },
         {
           "latitude": -25.859034,
           "longitude": 28.1844932
@@ -77429,6 +78405,10 @@
         {
           "latitude": -25.7099404,
           "longitude": 28.4138853
+        },
+        {
+          "latitude": -25.708795,
+          "longitude": 28.4135256
         }
       ],
       "routeId": "rt-cr0099",
@@ -77872,6 +78852,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6793759,
+          "longitude": 28.1828065
+        },
         {
           "latitude": -25.6785297,
           "longitude": 28.1827742
@@ -78327,6 +79311,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7196671,
           "longitude": 28.3435397
@@ -78898,6 +79886,10 @@
         {
           "latitude": -25.8590925,
           "longitude": 28.18511
+        },
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
         }
       ],
       "routeId": "rt-cr0101",
@@ -78914,6 +79906,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
+        },
         {
           "latitude": -25.8660229,
           "longitude": 28.1923254
@@ -79533,6 +80529,10 @@
         {
           "latitude": -25.7184221,
           "longitude": 28.3435663
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0101",
@@ -79549,6 +80549,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7198187,
           "longitude": 28.3443361
@@ -80112,6 +81116,10 @@
         {
           "latitude": -25.4046807,
           "longitude": 28.2832867
+        },
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
         }
       ],
       "routeId": "rt-cr0102",
@@ -80128,6 +81136,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
+        },
         {
           "latitude": -25.4047666,
           "longitude": 28.2833668
@@ -80627,6 +81639,10 @@
         {
           "latitude": -25.7181603,
           "longitude": 28.3426683
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0102",
@@ -80643,6 +81659,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7198168,
           "longitude": 28.3437993
@@ -81247,6 +82267,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.9244255,
+          "longitude": 28.262093
+        },
+        {
           "latitude": -25.9244042,
           "longitude": 28.2617714
         },
@@ -81841,6 +82865,10 @@
         {
           "latitude": -25.7197075,
           "longitude": 28.3439416
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0103",
@@ -83027,6 +84055,10 @@
         {
           "latitude": -25.7183694,
           "longitude": 28.3439464
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0104",
@@ -84213,6 +85245,10 @@
         {
           "latitude": -25.7183694,
           "longitude": 28.3439464
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0105",
@@ -84796,6 +85832,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7102518,
+          "longitude": 28.2691201
+        },
+        {
           "latitude": -25.7088256,
           "longitude": 28.2696246
         },
@@ -85103,6 +86143,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.6345666,
+          "longitude": 28.3226261
+        },
+        {
           "latitude": -25.6345335,
           "longitude": 28.3221981
         },
@@ -85361,6 +86405,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7102518,
+          "longitude": 28.2691201
+        },
         {
           "latitude": -25.7107034,
           "longitude": 28.2691132
@@ -86047,6 +87095,10 @@
         {
           "latitude": -25.7103152,
           "longitude": 28.2690281
+        },
+        {
+          "latitude": -25.7102518,
+          "longitude": 28.2691201
         }
       ],
       "routeId": "rt-cr0108",
@@ -86063,6 +87115,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7201303,
           "longitude": 28.3431781
@@ -87237,6 +88293,10 @@
         {
           "latitude": -25.7199918,
           "longitude": 28.3442826
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0109",
@@ -88403,6 +89463,10 @@
         {
           "latitude": -25.7179305,
           "longitude": 28.3397246
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0110",
@@ -88419,6 +89483,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7174073,
           "longitude": 28.3378408
@@ -89565,6 +90633,10 @@
         {
           "latitude": -25.7179526,
           "longitude": 28.3388244
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0111",
@@ -89581,6 +90653,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7198168,
           "longitude": 28.3437993
@@ -90675,6 +91751,10 @@
         {
           "latitude": -25.7199174,
           "longitude": 28.3434938
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0112",
@@ -90691,6 +91771,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7198168,
           "longitude": 28.3437993
@@ -91235,6 +92319,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.793666,
+          "longitude": 28.2822661
+        },
+        {
           "latitude": -25.7983788,
           "longitude": 28.2794941
         },
@@ -91685,6 +92773,10 @@
         {
           "latitude": -25.7199174,
           "longitude": 28.3434938
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0113",
@@ -91701,6 +92793,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.716514,
+          "longitude": 28.3306181
+        },
         {
           "latitude": -25.7165131,
           "longitude": 28.3327409
@@ -92172,6 +93268,10 @@
         {
           "latitude": -25.6712422,
           "longitude": 28.1085025
+        },
+        {
+          "latitude": -25.6701973,
+          "longitude": 28.1081358
         }
       ],
       "routeId": "rt-cr0114",
@@ -92188,6 +93288,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6701973,
+          "longitude": 28.1081358
+        },
         {
           "latitude": -25.6713386,
           "longitude": 28.1085257
@@ -92711,6 +93815,10 @@
         {
           "latitude": -25.7182155,
           "longitude": 28.3437177
+        },
+        {
+          "latitude": -25.7164759,
+          "longitude": 28.3263861
         }
       ],
       "routeId": "rt-cr0114",
@@ -92727,6 +93835,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7409609,
+          "longitude": 28.1927944
+        },
         {
           "latitude": -25.7402406,
           "longitude": 28.1935494
@@ -93581,6 +94693,10 @@
         {
           "latitude": -25.7391972,
           "longitude": 28.1899976
+        },
+        {
+          "latitude": -25.739334,
+          "longitude": 28.1896581
         }
       ],
       "routeId": "rt-cr0115",
@@ -94029,6 +95145,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.8850429,
+          "longitude": 28.1611157
+        },
+        {
           "latitude": -25.8849411,
           "longitude": 28.161491
         },
@@ -94267,6 +95387,10 @@
         {
           "latitude": -25.876044,
           "longitude": 28.2234522
+        },
+        {
+          "latitude": -25.8757766,
+          "longitude": 28.2239076
         }
       ],
       "routeId": "rt-cr0116",
@@ -94283,6 +95407,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
+        },
         {
           "latitude": -25.859283,
           "longitude": 28.1853625
@@ -94737,6 +95865,10 @@
         {
           "latitude": -25.8593676,
           "longitude": 28.1853633
+        },
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
         }
       ],
       "routeId": "rt-cr0117",
@@ -94753,6 +95885,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
+        },
         {
           "latitude": -25.859669,
           "longitude": 28.1855731
@@ -94892,6 +96028,10 @@
         {
           "latitude": -25.834799,
           "longitude": 28.210111
+        },
+        {
+          "latitude": -25.8353964,
+          "longitude": 28.209958
         }
       ],
       "routeId": "rt-cr0118",
@@ -94908,6 +96048,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8353964,
+          "longitude": 28.209958
+        },
         {
           "latitude": -25.8352377,
           "longitude": 28.2102715
@@ -95031,6 +96175,10 @@
         {
           "latitude": -25.8595555,
           "longitude": 28.1858057
+        },
+        {
+          "latitude": -25.8597706,
+          "longitude": 28.1860624
         }
       ],
       "routeId": "rt-cr0118",
@@ -95047,6 +96195,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7384,
+          "longitude": 28.1760346
+        },
         {
           "latitude": -25.7382313,
           "longitude": 28.1773485
@@ -95633,6 +96785,10 @@
         {
           "latitude": -25.7398548,
           "longitude": 28.1786031
+        },
+        {
+          "latitude": -25.7401664,
+          "longitude": 28.1771933
         }
       ],
       "routeId": "rt-cr0120",
@@ -95649,6 +96805,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7870053,
+          "longitude": 28.0789115
+        },
         {
           "latitude": -25.7872103,
           "longitude": 28.0788083
@@ -96167,6 +97327,10 @@
         {
           "latitude": -25.7872064,
           "longitude": 28.078816
+        },
+        {
+          "latitude": -25.7870053,
+          "longitude": 28.0789115
         }
       ],
       "routeId": "rt-cr0121",
@@ -96410,6 +97574,10 @@
         {
           "latitude": -25.7472235,
           "longitude": 28.1954724
+        },
+        {
+          "latitude": -25.7461049,
+          "longitude": 28.1955294
         }
       ],
       "routeId": "rt-cr0122",
@@ -96426,6 +97594,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7486504,
+          "longitude": 28.1979394
+        },
         {
           "latitude": -25.7487131,
           "longitude": 28.197866
@@ -96677,6 +97849,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7870053,
+          "longitude": 28.0789115
+        },
         {
           "latitude": -25.7870927,
           "longitude": 28.0788056
@@ -97093,6 +98269,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.870016,
+          "longitude": 28.1623316
+        },
+        {
           "latitude": -25.8681037,
           "longitude": 28.1624767
         },
@@ -97447,6 +98627,10 @@
         {
           "latitude": -25.7869073,
           "longitude": 28.0789122
+        },
+        {
+          "latitude": -25.7870053,
+          "longitude": 28.0789115
         }
       ],
       "routeId": "rt-cr0123",
@@ -97463,6 +98647,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
+        },
         {
           "latitude": -25.4043101,
           "longitude": 28.2834822
@@ -97990,6 +99178,10 @@
         {
           "latitude": -25.7193965,
           "longitude": 28.343672
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0124",
@@ -98006,6 +99198,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7196807,
           "longitude": 28.3436128
@@ -98517,6 +99713,10 @@
         {
           "latitude": -25.403082,
           "longitude": 28.2852471
+        },
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
         }
       ],
       "routeId": "rt-cr0124",
@@ -98533,6 +99733,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
+        },
         {
           "latitude": -25.4090288,
           "longitude": 28.281027
@@ -99128,6 +100332,10 @@
         {
           "latitude": -25.6206233,
           "longitude": 28.0119069
+        },
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
         }
       ],
       "routeId": "rt-cr0125",
@@ -99144,6 +100352,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
+        },
         {
           "latitude": -25.6201611,
           "longitude": 28.0120884
@@ -99723,6 +100935,10 @@
         {
           "latitude": -25.4095171,
           "longitude": 28.2810425
+        },
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
         }
       ],
       "routeId": "rt-cr0125",
@@ -99739,6 +100955,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
+        },
         {
           "latitude": -25.3701586,
           "longitude": 28.3021491
@@ -99898,6 +101118,10 @@
         {
           "latitude": -25.4089822,
           "longitude": 28.2818424
+        },
+        {
+          "latitude": -25.4087289,
+          "longitude": 28.2813855
         }
       ],
       "routeId": "rt-cr0126",
@@ -99914,6 +101138,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4087289,
+          "longitude": 28.2813855
+        },
         {
           "latitude": -25.409745,
           "longitude": 28.2806196
@@ -100057,6 +101285,10 @@
         {
           "latitude": -25.3677736,
           "longitude": 28.3056453
+        },
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
         }
       ],
       "routeId": "rt-cr0126",
@@ -100073,6 +101305,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
+        },
         {
           "latitude": -25.3492606,
           "longitude": 28.2517073
@@ -100228,6 +101464,10 @@
         {
           "latitude": -25.408968,
           "longitude": 28.2813698
+        },
+        {
+          "latitude": -25.4087289,
+          "longitude": 28.2813855
         }
       ],
       "routeId": "rt-cr0127",
@@ -100244,6 +101484,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4087289,
+          "longitude": 28.2813855
+        },
         {
           "latitude": -25.4094647,
           "longitude": 28.281278
@@ -100479,6 +101723,10 @@
         {
           "latitude": -25.3492475,
           "longitude": 28.2517418
+        },
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
         }
       ],
       "routeId": "rt-cr0127",
@@ -100495,6 +101743,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
+        },
         {
           "latitude": -25.4089663,
           "longitude": 28.2813418
@@ -100929,6 +102181,10 @@
         {
           "latitude": -25.4074958,
           "longitude": 28.2808938
+        },
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
         }
       ],
       "routeId": "rt-cr0128",
@@ -100945,6 +102201,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
+        },
         {
           "latitude": -25.4089383,
           "longitude": 28.2810897
@@ -101240,6 +102500,10 @@
         {
           "latitude": -25.4943278,
           "longitude": 28.0883205
+        },
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
         }
       ],
       "routeId": "rt-cr0130",
@@ -101256,6 +102520,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
+        },
         {
           "latitude": -25.4944756,
           "longitude": 28.0882454
@@ -101543,6 +102811,10 @@
         {
           "latitude": -25.4096866,
           "longitude": 28.2813093
+        },
+        {
+          "latitude": -25.4725738,
+          "longitude": 28.1216205
         }
       ],
       "routeId": "rt-cr0130",
@@ -101559,6 +102831,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
+        },
         {
           "latitude": -25.4038258,
           "longitude": 28.2834428
@@ -101745,6 +103021,10 @@
         {
           "latitude": -25.4089928,
           "longitude": 28.2806985
+        },
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
         }
       ],
       "routeId": "rt-cr0131",
@@ -101761,6 +103041,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
+        },
         {
           "latitude": -25.4046224,
           "longitude": 28.2834289
@@ -102304,6 +103588,10 @@
         {
           "latitude": -25.7392938,
           "longitude": 28.1866102
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0132",
@@ -102320,6 +103608,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7391828,
           "longitude": 28.1907884
@@ -102827,6 +104119,10 @@
         {
           "latitude": -25.4043561,
           "longitude": 28.2833665
+        },
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
         }
       ],
       "routeId": "rt-cr0132",
@@ -102843,6 +104139,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
+        },
         {
           "latitude": -25.4047463,
           "longitude": 28.2834431
@@ -103346,6 +104646,10 @@
         {
           "latitude": -25.7392144,
           "longitude": 28.1909116
+        },
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
         }
       ],
       "routeId": "rt-cr0133",
@@ -103362,6 +104666,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
+        },
         {
           "latitude": -25.740069,
           "longitude": 28.1909204
@@ -103857,6 +105165,10 @@
         {
           "latitude": -25.404641,
           "longitude": 28.2833581
+        },
+        {
+          "latitude": -25.4040821,
+          "longitude": 28.2821172
         }
       ],
       "routeId": "rt-cr0133",
@@ -104376,6 +105688,10 @@
         {
           "latitude": -25.7394766,
           "longitude": 28.1826614
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0134",
@@ -104392,6 +105708,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7373077,
           "longitude": 28.1760801
@@ -104859,6 +106179,10 @@
         {
           "latitude": -25.3931537,
           "longitude": 28.1575292
+        },
+        {
+          "latitude": -25.396056,
+          "longitude": 28.1504848
         }
       ],
       "routeId": "rt-cr0134",
@@ -104875,6 +106199,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.396056,
+          "longitude": 28.1504848
+        },
         {
           "latitude": -25.3933829,
           "longitude": 28.157587
@@ -105334,6 +106662,10 @@
         {
           "latitude": -25.7407091,
           "longitude": 28.1925305
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0135",
@@ -105350,6 +106682,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7393428,
+          "longitude": 28.19123
+        },
         {
           "latitude": -25.739251,
           "longitude": 28.1918671
@@ -105893,6 +107229,10 @@
         {
           "latitude": -25.3927796,
           "longitude": 28.1567572
+        },
+        {
+          "latitude": -25.396056,
+          "longitude": 28.1504848
         }
       ],
       "routeId": "rt-cr0135",
@@ -105909,6 +107249,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.396056,
+          "longitude": 28.1504848
+        },
         {
           "latitude": -25.3929466,
           "longitude": 28.1570229
@@ -106109,6 +107453,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.3805283,
+          "longitude": 28.2591678
+        },
+        {
           "latitude": -25.3787052,
           "longitude": 28.2585673
         },
@@ -106279,6 +107627,10 @@
         {
           "latitude": -25.3928623,
           "longitude": 28.1568725
+        },
+        {
+          "latitude": -25.396056,
+          "longitude": 28.1504848
         }
       ],
       "routeId": "rt-cr0136",
@@ -106754,6 +108106,10 @@
         {
           "latitude": -25.6806045,
           "longitude": 28.1831474
+        },
+        {
+          "latitude": -25.6793759,
+          "longitude": 28.1828065
         }
       ],
       "routeId": "rt-cr0137",
@@ -106770,6 +108126,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6793759,
+          "longitude": 28.1828065
+        },
         {
           "latitude": -25.6795044,
           "longitude": 28.1832801
@@ -107628,6 +108988,10 @@
         {
           "latitude": -25.7402947,
           "longitude": 28.1923835
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0138",
@@ -107644,6 +109008,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
+        },
         {
           "latitude": -25.7402402,
           "longitude": 28.1919232
@@ -108730,6 +110098,10 @@
         {
           "latitude": -25.7405155,
           "longitude": 28.1901321
+        },
+        {
+          "latitude": -25.739334,
+          "longitude": 28.1896581
         }
       ],
       "routeId": "rt-cr0139",
@@ -108746,6 +110118,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.739334,
+          "longitude": 28.1896581
+        },
         {
           "latitude": -25.7405222,
           "longitude": 28.1901406
@@ -110603,6 +111979,10 @@
         {
           "latitude": -25.7438493,
           "longitude": 28.203671
+        },
+        {
+          "latitude": -25.7329215,
+          "longitude": 28.2021493
         }
       ],
       "routeId": "rt-cr0141",
@@ -111214,6 +112594,10 @@
         {
           "latitude": -25.7381905,
           "longitude": 28.180952
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0142",
@@ -111230,6 +112614,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.738202,
           "longitude": 28.1809083
@@ -112637,6 +114025,10 @@
         {
           "latitude": -25.6162244,
           "longitude": 28.0837959
+        },
+        {
+          "latitude": -25.6261887,
+          "longitude": 28.0964
         }
       ],
       "routeId": "rt-cr0146",
@@ -112653,6 +114045,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6261887,
+          "longitude": 28.0964
+        },
         {
           "latitude": -25.6162782,
           "longitude": 28.0842131
@@ -113215,6 +114611,10 @@
         {
           "latitude": -25.4925617,
           "longitude": 28.0878304
+        },
+        {
+          "latitude": -25.4932418,
+          "longitude": 28.0862257
         }
       ],
       "routeId": "rt-cr0147",
@@ -113231,6 +114631,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4932418,
+          "longitude": 28.0862257
+        },
         {
           "latitude": -25.4925968,
           "longitude": 28.0878081
@@ -113515,6 +114919,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
+        },
+        {
           "latitude": -25.6203354,
           "longitude": 28.0123711
         },
@@ -113733,6 +115141,10 @@
         {
           "latitude": -25.6013741,
           "longitude": 27.9730059
+        },
+        {
+          "latitude": -25.6011982,
+          "longitude": 27.9729629
         }
       ],
       "routeId": "rt-cr0148-2",
@@ -113880,6 +115292,10 @@
         {
           "latitude": -25.6203664,
           "longitude": 28.0118134
+        },
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
         }
       ],
       "routeId": "rt-cr0148",
@@ -113896,6 +115312,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
+        },
         {
           "latitude": -25.6202794,
           "longitude": 28.0125443
@@ -114083,6 +115503,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
+        },
         {
           "latitude": -25.6202454,
           "longitude": 28.0120246
@@ -114374,6 +115798,10 @@
         {
           "latitude": -25.6013676,
           "longitude": 27.9730043
+        },
+        {
+          "latitude": -25.6011982,
+          "longitude": 27.9729629
         }
       ],
       "routeId": "rt-cr0149",
@@ -114390,6 +115818,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
+        },
         {
           "latitude": -25.6202592,
           "longitude": 28.0119709
@@ -114689,6 +116121,10 @@
         {
           "latitude": -25.6013684,
           "longitude": 27.9730045
+        },
+        {
+          "latitude": -25.6011982,
+          "longitude": 27.9729629
         }
       ],
       "routeId": "rt-cr0150",
@@ -114800,6 +116236,10 @@
         {
           "latitude": -25.6205104,
           "longitude": 28.013032
+        },
+        {
+          "latitude": -25.6207211,
+          "longitude": 28.0121824
         }
       ],
       "routeId": "rt-cr0150",
@@ -114816,6 +116256,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
+        },
         {
           "latitude": -25.620158,
           "longitude": 28.0121796
@@ -115199,6 +116643,10 @@
         {
           "latitude": -25.4929436,
           "longitude": 28.0929028
+        },
+        {
+          "latitude": -25.7484974,
+          "longitude": 28.2772
         }
       ],
       "routeId": "rt-cr0151",
@@ -115215,6 +116663,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484974,
+          "longitude": 28.2772
+        },
         {
           "latitude": -25.4929884,
           "longitude": 28.0930205
@@ -115610,6 +117062,10 @@
         {
           "latitude": -25.6201266,
           "longitude": 28.013159
+        },
+        {
+          "latitude": -25.6207211,
+          "longitude": 28.0121824
         }
       ],
       "routeId": "rt-cr0151",
@@ -115626,6 +117082,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
+        },
         {
           "latitude": -25.6201766,
           "longitude": 28.0125294
@@ -115965,6 +117425,10 @@
         {
           "latitude": -25.4959892,
           "longitude": 28.0921312
+        },
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
         }
       ],
       "routeId": "rt-cr0152",
@@ -115981,6 +117445,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
+        },
         {
           "latitude": -25.496135,
           "longitude": 28.0907635
@@ -116388,6 +117856,10 @@
         {
           "latitude": -25.6201304,
           "longitude": 28.0122316
+        },
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
         }
       ],
       "routeId": "rt-cr0152",
@@ -116404,6 +117876,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.5517062,
+          "longitude": 28.0096435
+        },
         {
           "latitude": -25.5517462,
           "longitude": 28.0097695
@@ -116723,6 +118199,10 @@
         {
           "latitude": -25.6201644,
           "longitude": 28.012177
+        },
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
         }
       ],
       "routeId": "rt-cr0154",
@@ -117218,6 +118698,10 @@
         {
           "latitude": -25.7421104,
           "longitude": 28.1925389
+        },
+        {
+          "latitude": -25.7425993,
+          "longitude": 28.1925897
         }
       ],
       "routeId": "rt-cr0155",
@@ -117234,6 +118718,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7425993,
+          "longitude": 28.1925897
+        },
         {
           "latitude": -25.7428515,
           "longitude": 28.1926771
@@ -117669,6 +119157,10 @@
         {
           "latitude": -25.6187161,
           "longitude": 28.0069016
+        },
+        {
+          "latitude": -25.6194102,
+          "longitude": 28.0066302
         }
       ],
       "routeId": "rt-cr0155",
@@ -117685,6 +119177,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6194102,
+          "longitude": 28.0066302
+        },
         {
           "latitude": -25.6192881,
           "longitude": 28.0065315
@@ -118188,6 +119684,10 @@
         {
           "latitude": -25.7398593,
           "longitude": 28.1924401
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0156-2",
@@ -118711,6 +120211,10 @@
         {
           "latitude": -25.6191258,
           "longitude": 28.0063537
+        },
+        {
+          "latitude": -25.6194102,
+          "longitude": 28.0066302
         }
       ],
       "routeId": "rt-cr0156",
@@ -118727,6 +120231,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6194102,
+          "longitude": 28.0066302
+        },
         {
           "latitude": -25.6192881,
           "longitude": 28.0065315
@@ -119230,6 +120738,10 @@
         {
           "latitude": -25.7398593,
           "longitude": 28.1924401
+        },
+        {
+          "latitude": -25.7408827,
+          "longitude": 28.1925675
         }
       ],
       "routeId": "rt-cr0156",
@@ -119246,6 +120758,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.5517062,
+          "longitude": 28.0096435
+        },
         {
           "latitude": -25.5517459,
           "longitude": 28.0097684
@@ -119641,6 +121157,10 @@
         {
           "latitude": -25.6204062,
           "longitude": 28.011785
+        },
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
         }
       ],
       "routeId": "rt-cr0159",
@@ -119657,6 +121177,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6203857,
+          "longitude": 28.0120123
+        },
         {
           "latitude": -25.6201601,
           "longitude": 28.0121772
@@ -120152,6 +121676,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
+        },
         {
           "latitude": -25.4945306,
           "longitude": 28.0880403
@@ -121070,6 +122598,10 @@
         {
           "latitude": -25.4943182,
           "longitude": 28.0880851
+        },
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
         }
       ],
       "routeId": "rt-cr0162",
@@ -121086,6 +122618,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
+        },
         {
           "latitude": -25.4953811,
           "longitude": 28.0877936
@@ -121554,6 +123090,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.4834743,
+          "longitude": 28.0082597
+        },
+        {
           "latitude": -25.4886143,
           "longitude": 28.007604
         },
@@ -121904,6 +123444,10 @@
         {
           "latitude": -25.4954748,
           "longitude": 28.0877888
+        },
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
         }
       ],
       "routeId": "rt-cr0163",
@@ -121920,6 +123464,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
+        },
         {
           "latitude": -25.4945306,
           "longitude": 28.0880403
@@ -122328,6 +123876,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
+        },
+        {
           "latitude": -25.4945306,
           "longitude": 28.0880403
         },
@@ -122734,6 +124286,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
+        },
         {
           "latitude": -25.4982762,
           "longitude": 28.0917209
@@ -123250,6 +124806,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.7424199,
+          "longitude": 28.1974858
+        },
+        {
           "latitude": -25.7425224,
           "longitude": 28.2032194
         },
@@ -123740,6 +125300,10 @@
         {
           "latitude": -25.5027571,
           "longitude": 28.0906021
+        },
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
         }
       ],
       "routeId": "rt-cr0171",
@@ -123756,6 +125320,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
+        },
         {
           "latitude": -25.4987499,
           "longitude": 28.0917166
@@ -124255,6 +125823,10 @@
         {
           "latitude": -25.7381912,
           "longitude": 28.1808678
+        },
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
         }
       ],
       "routeId": "rt-cr0172",
@@ -124271,6 +125843,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7385087,
+          "longitude": 28.1805604
+        },
         {
           "latitude": -25.7396772,
           "longitude": 28.1799798
@@ -124702,6 +126278,10 @@
         {
           "latitude": -25.4987355,
           "longitude": 28.0914843
+        },
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
         }
       ],
       "routeId": "rt-cr0172",
@@ -124718,6 +126298,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7389325,
+          "longitude": 28.1873792
+        },
         {
           "latitude": -25.7401298,
           "longitude": 28.1875936
@@ -125081,6 +126665,10 @@
         {
           "latitude": -25.4984137,
           "longitude": 28.0919244
+        },
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
         }
       ],
       "routeId": "rt-cr0173",
@@ -125097,6 +126685,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
+        },
         {
           "latitude": -25.4946992,
           "longitude": 28.087569
@@ -125748,6 +127340,10 @@
         {
           "latitude": -25.7443635,
           "longitude": 28.1955198
+        },
+        {
+          "latitude": -25.7429757,
+          "longitude": 28.1952213
         }
       ],
       "routeId": "rt-cr0174",
@@ -125764,6 +127360,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7429757,
+          "longitude": 28.1952213
+        },
         {
           "latitude": -25.7443682,
           "longitude": 28.1955241
@@ -126223,6 +127823,10 @@
         {
           "latitude": -25.4946741,
           "longitude": 28.0877255
+        },
+        {
+          "latitude": -25.4944616,
+          "longitude": 28.0889772
         }
       ],
       "routeId": "rt-cr0174",
@@ -126239,6 +127843,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
+        },
         {
           "latitude": -25.4978328,
           "longitude": 28.0911172
@@ -127305,6 +128913,10 @@
         {
           "latitude": -25.4975504,
           "longitude": 28.0907292
+        },
+        {
+          "latitude": -25.4962867,
+          "longitude": 28.0907047
         }
       ],
       "routeId": "rt-cr0175",
@@ -127584,6 +129196,10 @@
         {
           "latitude": -25.6725316,
           "longitude": 28.5203684
+        },
+        {
+          "latitude": -25.6714488,
+          "longitude": 28.5308193
         }
       ],
       "routeId": "rt-cr0195",
@@ -127600,6 +129216,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6714488,
+          "longitude": 28.5308193
+        },
         {
           "latitude": -25.6725297,
           "longitude": 28.5203691
@@ -127827,6 +129447,10 @@
         {
           "latitude": -25.6368847,
           "longitude": 28.5220087
+        },
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
         }
       ],
       "routeId": "rt-cr0195",
@@ -127843,6 +129467,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
+        },
         {
           "latitude": -25.6410501,
           "longitude": 28.5336971
@@ -128290,6 +129918,10 @@
         {
           "latitude": -25.8039035,
           "longitude": 28.7448638
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr0196",
@@ -128306,6 +129938,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8041899,
           "longitude": 28.7456783
@@ -128809,6 +130445,10 @@
         {
           "latitude": -25.6419232,
           "longitude": 28.533108
+        },
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
         }
       ],
       "routeId": "rt-cr0196",
@@ -128825,6 +130465,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8042641,
           "longitude": 28.7462697
@@ -129679,6 +131323,10 @@
         {
           "latitude": -25.8043094,
           "longitude": 28.7465079
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr0197",
@@ -129695,6 +131343,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8064341,
           "longitude": 28.7467528
@@ -130106,6 +131758,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8073111,
           "longitude": 28.7466997
@@ -130546,6 +132202,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
+        {
           "latitude": -25.8064459,
           "longitude": 28.7467412
         },
@@ -130965,6 +132625,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
+        {
           "latitude": -25.806429,
           "longitude": 28.7467333
         },
@@ -131372,6 +133036,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
+        {
           "latitude": -25.8051563,
           "longitude": 28.7462739
         },
@@ -131746,6 +133414,10 @@
         {
           "latitude": -25.9826485,
           "longitude": 28.4543475
+        },
+        {
+          "latitude": -25.9828012,
+          "longitude": 28.4542441
         }
       ],
       "routeId": "rt-cr0202",
@@ -131762,6 +133434,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.9732499,
+          "longitude": 28.4633371
+        },
         {
           "latitude": -25.9737794,
           "longitude": 28.4630919
@@ -132041,6 +133717,10 @@
         {
           "latitude": -25.8063832,
           "longitude": 28.7467437
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr0202",
@@ -132057,6 +133737,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8773702,
+          "longitude": 28.94105
+        },
         {
           "latitude": -25.860226,
           "longitude": 28.9449574
@@ -132276,6 +133960,10 @@
         {
           "latitude": -25.804359,
           "longitude": 28.7463248
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr0205",
@@ -132292,6 +133980,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.804359,
           "longitude": 28.7463248
@@ -132539,6 +134231,10 @@
         {
           "latitude": -25.8602416,
           "longitude": 28.9449536
+        },
+        {
+          "latitude": -25.8773702,
+          "longitude": 28.94105
         }
       ],
       "routeId": "rt-cr0205",
@@ -132555,6 +134251,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8773702,
+          "longitude": 28.94105
+        },
         {
           "latitude": -25.8776297,
           "longitude": 28.9409851
@@ -132678,6 +134378,10 @@
         {
           "latitude": -25.8067023,
           "longitude": 28.74676
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr0206",
@@ -133253,6 +134957,10 @@
         {
           "latitude": -25.7417116,
           "longitude": 28.1928678
+        },
+        {
+          "latitude": -25.7409609,
+          "longitude": 28.1927944
         }
       ],
       "routeId": "rt-cr0210",
@@ -133269,6 +134977,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7425993,
+          "longitude": 28.1925897
+        },
         {
           "latitude": -25.7418271,
           "longitude": 28.1929635
@@ -133612,6 +135324,10 @@
         {
           "latitude": -25.685781,
           "longitude": 28.7165478
+        },
+        {
+          "latitude": -25.6864224,
+          "longitude": 28.7165136
         }
       ],
       "routeId": "rt-cr0211",
@@ -133628,6 +135344,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6864224,
+          "longitude": 28.7165136
+        },
         {
           "latitude": -25.689697,
           "longitude": 28.7146833
@@ -133883,6 +135603,10 @@
         {
           "latitude": -25.8032134,
           "longitude": 28.7454724
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr0212",
@@ -133899,6 +135623,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8033494,
           "longitude": 28.7460473
@@ -134146,6 +135874,10 @@
         {
           "latitude": -25.6851969,
           "longitude": 28.7167875
+        },
+        {
+          "latitude": -25.6864224,
+          "longitude": 28.7165136
         }
       ],
       "routeId": "rt-cr0213",
@@ -134162,6 +135894,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6864224,
+          "longitude": 28.7165136
+        },
         {
           "latitude": -25.6852027,
           "longitude": 28.7167856
@@ -134393,6 +136129,10 @@
         {
           "latitude": -25.8037355,
           "longitude": 28.7457369
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr0213",
@@ -134409,6 +136149,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
+        },
         {
           "latitude": -25.6412043,
           "longitude": 28.5333659
@@ -134972,6 +136716,10 @@
         {
           "latitude": -25.71651,
           "longitude": 28.3340261
+        },
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
         }
       ],
       "routeId": "rt-cr0214",
@@ -134988,6 +136736,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7176477,
+          "longitude": 28.339723
+        },
         {
           "latitude": -25.7158745,
           "longitude": 28.3338257
@@ -135487,6 +137239,10 @@
         {
           "latitude": -25.6405145,
           "longitude": 28.5338052
+        },
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
         }
       ],
       "routeId": "rt-cr0214",
@@ -135503,6 +137259,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
+        },
         {
           "latitude": -25.6410495,
           "longitude": 28.5335746
@@ -135879,6 +137639,10 @@
       "departsWhenFull": true,
       "path": [
         {
+          "latitude": -25.679372,
+          "longitude": 28.4990262
+        },
+        {
           "latitude": -25.6792236,
           "longitude": 28.4989051
         },
@@ -136205,6 +137969,10 @@
         {
           "latitude": -25.6393705,
           "longitude": 28.5346522
+        },
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
         }
       ],
       "routeId": "rt-cr0215",
@@ -136221,6 +137989,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
+        },
         {
           "latitude": -25.6395646,
           "longitude": 28.534547
@@ -136804,6 +138576,10 @@
         {
           "latitude": -25.7568811,
           "longitude": 28.1885425
+        },
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
         }
       ],
       "routeId": "rt-cr0216",
@@ -136820,6 +138596,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7484025,
+          "longitude": 28.0935575
+        },
         {
           "latitude": -25.7417984,
           "longitude": 28.1915778
@@ -137391,6 +139171,10 @@
         {
           "latitude": -25.6407399,
           "longitude": 28.5357954
+        },
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
         }
       ],
       "routeId": "rt-cr0216",
@@ -137962,6 +139746,10 @@
         {
           "latitude": -25.7556939,
           "longitude": 28.1847889
+        },
+        {
+          "latitude": -25.7560556,
+          "longitude": 28.1863567
         }
       ],
       "routeId": "rt-cr0217",
@@ -137978,6 +139766,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7459299,
+          "longitude": 28.1928469
+        },
         {
           "latitude": -25.7474768,
           "longitude": 28.1932129
@@ -138581,6 +140373,10 @@
         {
           "latitude": -25.6393705,
           "longitude": 28.5346522
+        },
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
         }
       ],
       "routeId": "rt-cr0217",
@@ -138597,6 +140393,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
+        },
         {
           "latitude": -25.6410719,
           "longitude": 28.5335713
@@ -139119,6 +140919,10 @@
         {
           "latitude": -25.6414512,
           "longitude": 28.5332968
+        },
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
         }
       ],
       "routeId": "rt-cr0218",
@@ -139135,6 +140939,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8064212,
           "longitude": 28.746726
@@ -139565,6 +141373,10 @@
         {
           "latitude": -25.8064105,
           "longitude": 28.7466892
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr0219",
@@ -139581,6 +141393,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
+        },
         {
           "latitude": -25.641077,
           "longitude": 28.5335671
@@ -139944,6 +141760,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.7458045,
+          "longitude": 28.5293785
+        },
         {
           "latitude": -25.7459303,
           "longitude": 28.5292639
@@ -140359,6 +142179,10 @@
         {
           "latitude": -25.6415113,
           "longitude": 28.5332288
+        },
+        {
+          "latitude": -25.6420306,
+          "longitude": 28.5331363
         }
       ],
       "routeId": "rt-cr0220",
@@ -140375,6 +142199,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8043726,
           "longitude": 28.7463043
@@ -141005,6 +142833,10 @@
         {
           "latitude": -25.8049897,
           "longitude": 28.747132
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr207",
@@ -141021,6 +142853,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8043726,
           "longitude": 28.7463043
@@ -141651,6 +143487,10 @@
         {
           "latitude": -25.8049897,
           "longitude": 28.747132
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr208",
@@ -141667,6 +143507,10 @@
       "reliability": 0.8,
       "departsWhenFull": true,
       "path": [
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
+        },
         {
           "latitude": -25.8043726,
           "longitude": 28.7463043
@@ -142297,6 +144141,10 @@
         {
           "latitude": -25.8049897,
           "longitude": 28.747132
+        },
+        {
+          "latitude": -25.8038439,
+          "longitude": 28.7458669
         }
       ],
       "routeId": "rt-cr209",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T14:38:31.356Z",
+  "generatedAt": "2026-09-30T18:08:18.831Z",
   "sources": {
     "routesLayer": "https://pta-gis-2-web1.csir.co.za/server2/rest/services/Hosted/Tshwane_Taxi_Routes_shp/FeatureServer/0/query",
     "facilitiesLayer": "https://pta-gis-2-web1.csir.co.za/server2/rest/services/Hosted/TaxiFacilities/FeatureServer/0/query",
@@ -23,10 +23,22 @@
     "fareSnapshots": 369,
     "demoDemandSignals": 1649
   },
+  "repairs": {
+    "snappedPathEndpoints": 462,
+    "fareRatePerKm": {
+      "short": 0.96,
+      "medium": 0.64,
+      "long": 0.82
+    },
+    "imputedFareLegs": [
+      {
+        "legId": "leg-cr0011-out",
+        "fareZar": 125
+      }
+    ]
+  },
   "issues": {
-    "zeroFareLegs": [
-      "leg-cr0011-out"
-    ],
+    "zeroFareLegs": [],
     "routesMissingDirection": [
       "rt-cr0006 (return)",
       "rt-cr0011 (return)",

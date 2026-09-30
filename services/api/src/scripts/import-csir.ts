@@ -32,6 +32,12 @@
  * Fares are the 2018 surveyed baseline. Marshals correct them through the
  * admin tool; their edits should become new fare_snapshots, not edits of these
  * files. Generated files carry provenance notes - do not hand-edit them.
+ *
+ * Two data repairs run during import (see the "repairs" block of the report):
+ * leg path endpoints are pinned to their rank anchors so drawn lines reach the
+ * map pins, and legs the survey left without a fare are imputed from the
+ * median fare per km of their category (a R0 leg would otherwise dominate
+ * both priority rankings in the planner).
  */
 import 'dotenv/config';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -98,6 +104,9 @@ const DERIVED_NAME_MATCH_RADIUS_M = 2000;
 
 /** Legs whose rank anchor sits farther than this from the path are flagged. */
 const RANK_PLACEMENT_WARN_RADIUS_M = 2000;
+
+/** Rank anchors closer than this to a path end are treated as already joined. */
+const PATH_PIN_SNAP_MIN_GAP_M = 10;
 
 /** Affinity scores for pairing survey endpoint labels with track endpoints
  *  (lower = better agreement between a name and a location). Survey tracks
@@ -187,6 +196,12 @@ function num(value: unknown): number | undefined {
 
 function roundTo(value: number, decimals: number): number {
   return Number(value.toFixed(decimals));
+}
+
+function median(values: number[]): number {
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = sorted.length >> 1;
+  return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
 }
 
 function titleCaseWords(s: string): string {
@@ -872,7 +887,7 @@ async function main(): Promise<void> {
     }
   }
 
-  // Sanity check: every leg's ranks should sit near its path endpoints.
+  // Sanity check: every leg's rank anchor should sit near its surveyed track.
   // Facility-anchored warnings are expected (a name match on a surveyed
   // facility intentionally outranks a partial track's endpoint); anything
   // else means a rank landed far from where the vehicle actually goes.
@@ -890,6 +905,57 @@ async function main(): Promise<void> {
     check(leg.fromRankId, leg.path?.[0], 'from');
     check(leg.toRankId, leg.path?.[leg.path.length - 1], 'to');
   }
+
+  // --- Pin drawn lines to their rank anchors -------------------------------
+  // The rank anchor is the ground truth (surveyed facility or track end), so
+  // drawn lines must start and end there; without this a line stops short of
+  // its map pin. The bridge is a straight connector, not surveyed road - the
+  // placement check above deliberately runs first so it keeps measuring the
+  // surveyed track rather than the bridge it exists to flag.
+  let snappedPathEndpoints = 0;
+  for (const leg of legs) {
+    if (!leg.path || leg.path.length < 2) continue;
+    const fromRank = ranks.get(leg.fromRankId);
+    const toRank = ranks.get(leg.toRankId);
+    if (fromRank && haversineMeters(fromRank.location, leg.path[0]!) > PATH_PIN_SNAP_MIN_GAP_M) {
+      leg.path.unshift(fromRank.location);
+      snappedPathEndpoints++;
+    }
+    if (toRank && haversineMeters(toRank.location, leg.path[leg.path.length - 1]!) > PATH_PIN_SNAP_MIN_GAP_M) {
+      leg.path.push(toRank.location);
+      snappedPathEndpoints++;
+    }
+  }
+
+  // --- Impute missing fares ------------------------------------------------
+  // The survey leaves a few legs with no usable fare. A R0 leg outranks every
+  // priced alternative in both "cheapest" and "fastest" ranking, so it must
+  // not reach the planner: fill each one from the median fare per km of its
+  // category (surveyed legs only), rounded to whole rand. Imputed values are
+  // estimates, not fare snapshots - they are listed in the report's repairs.
+  const fareRateSamples: Record<TaxiRouteCategory, number[]> = { short: [], medium: [], long: [] };
+  for (const leg of legs) {
+    const category = leg.routeId ? routes.get(leg.routeId)?.category : undefined;
+    if (!category || leg.fareZar <= 0 || !leg.distanceKm) continue;
+    fareRateSamples[category].push(leg.fareZar / leg.distanceKm);
+  }
+  const fareRatePerKm: Partial<Record<TaxiRouteCategory, number>> = {};
+  for (const category of ['short', 'medium', 'long'] as const) {
+    const samples = fareRateSamples[category];
+    if (samples.length > 0) fareRatePerKm[category] = roundTo(median(samples), 2);
+  }
+  const imputedFareLegs: Array<{ legId: string; fareZar: number }> = [];
+  for (const leg of legs) {
+    if (leg.fareZar !== 0) continue;
+    const category = leg.routeId ? routes.get(leg.routeId)?.category : undefined;
+    const rate = category ? fareRatePerKm[category] : undefined;
+    if (rate === undefined || !leg.distanceKm) continue;
+    leg.fareZar = Math.max(1, Math.round(leg.distanceKm * rate));
+    imputedFareLegs.push({ legId: leg.id, fareZar: leg.fareZar });
+  }
+  // Whatever stays at zero had no imputation rate: keep it flagged.
+  const imputedIds = new Set(imputedFareLegs.map((imputed) => imputed.legId));
+  issues.zeroFareLegs = issues.zeroFareLegs.filter((legId) => !imputedIds.has(legId));
 
   // --- Synthetic demo demand ----------------------------------------------
   const demandSignals: DemandSignal[] = [];
@@ -1002,6 +1068,11 @@ async function main(): Promise<void> {
       fareSnapshots: fareSnapshots.length,
       demoDemandSignals: demandSignals.length,
     },
+    repairs: {
+      snappedPathEndpoints,
+      fareRatePerKm,
+      imputedFareLegs,
+    },
     issues: {
       zeroFareLegs: issues.zeroFareLegs,
       routesMissingDirection: issues.routesMissingDirection.slice(0, 60),
@@ -1033,13 +1104,19 @@ async function main(): Promise<void> {
   );
   console.log(`  ${report.counts.fareSnapshots} fare snapshots`);
   console.log(`  ${report.counts.demoDemandSignals} demo demand signals`);
+  if (snappedPathEndpoints > 0) {
+    console.log(`  repaired: pinned ${snappedPathEndpoints} path endpoint(s) to their rank anchors`);
+  }
+  if (imputedFareLegs.length > 0) {
+    console.log(`  repaired: imputed ${imputedFareLegs.length} zero-fare leg(s) from category fare rates`);
+  }
   console.log(`Files written to ${outDir}`);
   if (report.counts.legs.total === 0) {
     console.error('WARNING: no legs were produced - check import-report.json.');
   }
   if (rankPlacementWarnings.suspicious.length > 0) {
     console.warn(
-      `WARNING: ${rankPlacementWarnings.suspicious.length} legs have a rank anchor >2km from their path - see import-report.json`,
+      `WARNING: ${rankPlacementWarnings.suspicious.length} legs have a rank anchor >2km from their surveyed track - see import-report.json`,
     );
   }
 

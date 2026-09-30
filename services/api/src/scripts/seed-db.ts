@@ -4,8 +4,11 @@
  *
  *   ranks          (id, name, lat, lng)
  *   routes         (id, from_rank_id, to_rank_id, fare, time_mins,
- *                   taxi_association, is_blocked)   <- one row per seed LEG
+ *                   taxi_association, is_blocked, path) <- one row per seed LEG
  *   demand_signals (id, user_id, from_rank_id, to_rank_id, timestamp)
+ *
+ * "path" carries the leg's wire-format geometry ([{ lat, lng }, ...]) so the
+ * journey map draws the surveyed streets instead of straight lines.
  *
  * Edge ids and demand ids are deterministic UUIDs derived from the seed ids,
  * so reruns upsert cleanly instead of duplicating. The demo demand rows use
@@ -88,11 +91,15 @@ async function main(): Promise<void> {
   }
 
   const chunk = 500;
-  async function insertAll(table: string, rows: Array<Record<string, unknown>>): Promise<void> {
-    for (let i = 0; i < rows.length; i += chunk) {
+  async function insertAll(
+    table: string,
+    rows: Array<Record<string, unknown>>,
+    size = chunk,
+  ): Promise<void> {
+    for (let i = 0; i < rows.length; i += size) {
       const { error } = await supabase
         .from(table)
-        .upsert(rows.slice(i, i + chunk), { onConflict: 'id' });
+        .upsert(rows.slice(i, i + size), { onConflict: 'id' });
       if (error) throw new Error(`insert ${table}: ${error.message}`);
     }
     console.log(`  seeded ${rows.length} rows into ${table}`);
@@ -111,7 +118,8 @@ async function main(): Promise<void> {
   );
 
   // One edge per seed leg: the live schema flattens fare/minutes/association
-  // onto the edge and inherits the strike toggle from the parent route.
+  // onto the edge and inherits the strike toggle from the parent route. Rows
+  // carry the full surveyed geometry, so they are upserted in smaller chunks.
   await insertAll(
     'routes',
     legs.map((l) => ({
@@ -125,7 +133,12 @@ async function main(): Promise<void> {
           ? assocName.get(routeById.get(l.routeId!)!.associationId!) ?? 'Independent'
           : 'Independent',
       is_blocked: l.routeId ? (routeById.get(l.routeId)?.isBlocked ?? false) : false,
+      path:
+        l.path && l.path.length >= 2
+          ? l.path.map((p) => ({ lat: p.latitude, lng: p.longitude }))
+          : null,
     })),
+    100,
   );
 
   // A demand signal travels one leg: use that leg's from/to directly.
