@@ -10,12 +10,12 @@
 import type { PlanLeg, PlanResult, RankSuggestion } from './api';
 
 export const STUB_RANKS: RankSuggestion[] = [
-  { rankId: 'rank-f12', name: 'Marabastad Taxi Rank', lat: -25.7449, lng: 28.1878 },
-  { rankId: 'rank-f34', name: 'Bloed Mall Taxi Rank', lat: -25.7545, lng: 28.1905 },
-  { rankId: 'rank-f57', name: 'Sunnyside Loading Point', lat: -25.7646, lng: 28.2051 },
-  { rankId: 'rank-cr1-2', name: 'Hammanskraal Rank', lat: -25.4081, lng: 28.2825 },
-  { rankId: 'rank-cr8', name: 'Temba Taxi Rank', lat: -25.3456, lng: 28.2871 },
-  { rankId: 'rank-f71', name: 'Mamelodi Taxi Rank', lat: -25.7205, lng: 28.3817 },
+  { rankId: 'rank-f12', name: 'Marabastad Taxi Rank', area: 'Pretoria, City of Tshwane', lat: -25.7449, lng: 28.1878 },
+  { rankId: 'rank-f34', name: 'Bloed Mall Taxi Rank', area: 'Pretoria, City of Tshwane', lat: -25.7545, lng: 28.1905 },
+  { rankId: 'rank-f57', name: 'Sunnyside Loading Point', area: 'Sunnyside, City of Tshwane', lat: -25.7646, lng: 28.2051 },
+  { rankId: 'rank-cr1-2', name: 'Hammanskraal Rank', area: 'Hammanskraal, Pretoria', lat: -25.4081, lng: 28.2825 },
+  { rankId: 'rank-cr8', name: 'Temba Taxi Rank', area: 'Temba, Hammanskraal', lat: -25.3456, lng: 28.2871 },
+  { rankId: 'rank-f71', name: 'Mamelodi Taxi Rank', area: 'Mamelodi, City of Tshwane', lat: -25.7205, lng: 28.3817 },
 ];
 
 /** One-leg journey: Marabastad -> Hammanskraal. */
@@ -76,11 +76,14 @@ const STUB_PLAN_TRANSFER: PlanResult = {
   legCount: 2,
 };
 
-/** Search over the stub rank list (same intent as GET /ranks?q=). */
+/** Search over the stub rank list (same intent as GET /ranks?q=): the query
+ *  matches a rank name or its town/city, like the real endpoint. */
 export function stubSearchRanks(query: string): RankSuggestion[] {
   const q = query.trim().toLowerCase();
   if (!q) return STUB_RANKS;
-  return STUB_RANKS.filter((r) => r.name.toLowerCase().includes(q));
+  return STUB_RANKS.filter(
+    (r) => r.name.toLowerCase().includes(q) || (r.area?.toLowerCase().includes(q) ?? false),
+  );
 }
 
 /** Alternate between the two stub journeys so both layouts get exercised. */
