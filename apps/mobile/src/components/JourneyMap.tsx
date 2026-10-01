@@ -20,7 +20,24 @@ const CORRIDOR_REGION: Region = {
  * requires a native rebuild — restarting Metro updates this JS check, but not
  * the manifest meta-data the native SDK reads.
  */
-const hasMapsApiKey = Boolean(process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY);
+export const hasMapsApiKey = Boolean(process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY);
+
+/**
+ * Placeholder swapped in for every native MapView when no API key was baked
+ * into the build. Exported so the journey and route screens can guard their
+ * own MapViews with the same explanation.
+ */
+export function MapFallback() {
+  return (
+    <View style={styles.fallback}>
+      <Text style={styles.fallbackTitle}>Map preview unavailable</Text>
+      <Text style={styles.fallbackBody}>
+        Set EXPO_PUBLIC_GOOGLE_MAPS_API_KEY in apps/mobile/.env and rebuild the dev client to
+        enable the map. Routes, fares and landmarks all work without it.
+      </Text>
+    </View>
+  );
+}
 
 const HIGHLIGHT_PIN = '#0b5cad';
 const DEFAULT_PIN = '#e8a33d';
@@ -71,15 +88,7 @@ export function JourneyMap({
   }, [fitToRoute]);
 
   if (!hasMapsApiKey) {
-    return (
-      <View style={styles.fallback}>
-        <Text style={styles.fallbackTitle}>Map preview unavailable</Text>
-        <Text style={styles.fallbackBody}>
-          Set EXPO_PUBLIC_GOOGLE_MAPS_API_KEY in apps/mobile/.env and rebuild the dev client to
-          enable the corridor map. Routes, fares and landmarks all work without it.
-        </Text>
-      </View>
-    );
+    return <MapFallback />;
   }
 
   return (

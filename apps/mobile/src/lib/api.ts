@@ -5,6 +5,8 @@
  *   GET  /ranks?q=<text>          -> [{ rankId, name, area?, lat, lng }, ...]
  *   POST /routes/plan             -> { legs, totalFareZar, legCount } | 404
  *   Request body: { fromRankId, toRankId, priority? }
+ *   POST /demand                  -> { message } (one demand signal per call)
+ *   Request body: { from_rank_id, to_rank_id }
  *
  * USE_STUBS forces the local fake responses regardless of connectivity.
  * When it is false, every call tries the real API first and falls back to
@@ -77,5 +79,23 @@ export async function planJourney(
   } catch {
     // API unreachable: the seeded corridor keeps the demo alive.
     return { plan: buildFixturePlan(fromRankId, toRankId), source: 'fixtures' };
+  }
+}
+
+/**
+ * Reports a demand signal for the searched corridor. Resolves true only when
+ * the API accepted the signal — the caller shows the result, so an offline
+ * tap must not claim "marshals notified".
+ */
+export async function reportDemand(fromRankId: string, toRankId: string): Promise<boolean> {
+  if (USE_STUBS) return true;
+  try {
+    await fetchJson('/demand', {
+      method: 'POST',
+      body: JSON.stringify({ from_rank_id: fromRankId, to_rank_id: toRankId }),
+    });
+    return true;
+  } catch {
+    return false;
   }
 }

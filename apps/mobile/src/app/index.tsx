@@ -13,6 +13,7 @@ import { Link, router } from 'expo-router';
 import type { PlanLeg, PlanPriority, PlanResult, RankSuggestion } from '@hackathon26/shared';
 import { planJourney, searchRanks } from '../lib/api';
 import { savePlan } from '../lib/planStore';
+import { hasMapsApiKey, MapFallback } from '../components/JourneyMap';
 
 /**
  * Journey search + map screen.
@@ -172,6 +173,7 @@ export default function HomeScreen() {
           label="To"
           state={to}
           suggestions={suggestionsFor('to')}
+          blocked={activeField === 'from' && suggestions.length > 0}
           onFocus={() => setActiveField('to')}
           onChangeText={(text) => setTo({ text })}
           onPick={(rank) => pickSuggestion('to', rank)}
@@ -198,34 +200,38 @@ export default function HomeScreen() {
         </Pressable>
       </View>
 
-      <MapView ref={mapRef} style={styles.map} initialRegion={INITIAL_REGION}>
-        {plan?.legs.map((leg, index) => {
-          const coordinates = leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }));
-          const color = LEG_COLORS[index % LEG_COLORS.length]!;
-          const midpoint = leg.path[Math.floor(leg.path.length / 2)];
-          return (
-            <View key={`leg-${index}`}>
-              <Polyline coordinates={coordinates} strokeColor={color} strokeWidth={4} />
-              {midpoint && (
-                <Marker coordinate={{ latitude: midpoint.lat, longitude: midpoint.lng }} anchor={{ x: 0.5, y: 0.5 }} tracksViewChanges={false}>
-                  <View style={[styles.fareBubble, { backgroundColor: color }]}>
-                    <Text style={styles.fareBubbleText}>{formatZar(leg.fareZar)}</Text>
-                  </View>
-                </Marker>
-              )}
-            </View>
-          );
-        })}
-        {stops.map((stop) => (
-          <Marker
-            key={stop.key}
-            coordinate={{ latitude: stop.lat, longitude: stop.lng }}
-            title={stop.name}
-            description={stop.kind === 'transfer' ? 'Change taxis here' : undefined}
-            pinColor={stop.kind === 'start' ? '#2e7d32' : stop.kind === 'end' ? '#c62828' : '#f9a825'}
-          />
-        ))}
-      </MapView>
+      {hasMapsApiKey ? (
+        <MapView ref={mapRef} style={styles.map} initialRegion={INITIAL_REGION}>
+          {plan?.legs.map((leg, index) => {
+            const coordinates = leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }));
+            const color = LEG_COLORS[index % LEG_COLORS.length]!;
+            const midpoint = leg.path[Math.floor(leg.path.length / 2)];
+            return (
+              <View key={`leg-${index}`}>
+                <Polyline coordinates={coordinates} strokeColor={color} strokeWidth={4} />
+                {midpoint && (
+                  <Marker coordinate={{ latitude: midpoint.lat, longitude: midpoint.lng }} anchor={{ x: 0.5, y: 0.5 }} tracksViewChanges={false}>
+                    <View style={[styles.fareBubble, { backgroundColor: color }]}>
+                      <Text style={styles.fareBubbleText}>{formatZar(leg.fareZar)}</Text>
+                    </View>
+                  </Marker>
+                )}
+              </View>
+            );
+          })}
+          {stops.map((stop) => (
+            <Marker
+              key={stop.key}
+              coordinate={{ latitude: stop.lat, longitude: stop.lng }}
+              title={stop.name}
+              description={stop.kind === 'transfer' ? 'Change taxis here' : undefined}
+              pinColor={stop.kind === 'start' ? '#2e7d32' : stop.kind === 'end' ? '#c62828' : '#f9a825'}
+            />
+          ))}
+        </MapView>
+      ) : (
+        <MapFallback />
+      )}
 
       <ScrollView style={styles.breakdown} contentContainerStyle={styles.breakdownContent}>
         {error && <Text style={styles.errorText}>{error}</Text>}
@@ -293,14 +299,20 @@ interface EndpointInputProps {
   label: string;
   state: EndpointState;
   suggestions: RankSuggestion[];
+  /**
+   * Disables the whole block (input included). Set on the field sitting under
+   * an open suggestion list: its native TextInput would otherwise swallow taps
+   * meant for the dropdown rows drawn on top of it.
+   */
+  blocked?: boolean;
   onFocus: () => void;
   onChangeText: (text: string) => void;
   onPick: (rank: RankSuggestion) => void;
 }
 
-function EndpointInput({ label, state, suggestions, onFocus, onChangeText, onPick }: EndpointInputProps) {
+function EndpointInput({ label, state, suggestions, blocked = false, onFocus, onChangeText, onPick }: EndpointInputProps) {
   return (
-    <View style={styles.endpointBlock}>
+    <View style={styles.endpointBlock} pointerEvents={blocked ? 'none' : 'auto'}>
       <Text style={styles.endpointLabel}>{label}</Text>
       <TextInput
         style={styles.endpointInput}
