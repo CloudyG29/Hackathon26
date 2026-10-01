@@ -23,13 +23,13 @@ const MODE_ICONS: Record<TransportMode, string> = {
   walk: '🚶',
 };
 
-/** Polyline colours per mode. Blue matches the accent used across the app. */
+/** Polyline colours per mode, drawn from the app palette in theme.ts. */
 const MODE_COLORS: Record<TransportMode, string> = {
-  long_distance_taxi: '#0b5cad',
-  mini_bus_taxi: '#2e7d32',
-  local_bus: '#b45309',
-  metro_train: '#6d28d9',
-  walk: '#616a75',
+  long_distance_taxi: '#6C4EF6',
+  mini_bus_taxi: '#0E9F6E',
+  local_bus: '#E8940A',
+  metro_train: '#D6409F',
+  walk: '#616A75',
 };
 
 const TAG_LABELS: Record<RoutePriority, string> = {
