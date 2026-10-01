@@ -137,6 +137,8 @@ export interface JourneyEndpoint {
 export interface RankSuggestion {
   rankId: string;
   name: string;
+  /** Town/city context ("Temba, Hammanskraal"). Search matches it too. */
+  area?: string;
   lat: number;
   lng: number;
 }
@@ -147,8 +149,12 @@ export interface LatLng {
   lng: number;
 }
 
-/** Priorities the planner supports today; other modes are future work. */
-export type PlanPriority = 'cheapest' | 'fastest' | 'fewest_transfers';
+/**
+ * Priorities the planner supports today: cheapest (fare), fastest (time) and
+ * easiest (fewest taxi changes). 'safest' needs time-of-day reliability
+ * weighting the engines do not model yet — see RoutePriority.
+ */
+export type PlanPriority = Exclude<RoutePriority, 'safest'>;
 
 /** Request body for POST /routes/plan. */
 export interface PlanJourneyRequest {
@@ -158,15 +164,26 @@ export interface PlanJourneyRequest {
   priority?: PlanPriority;
 }
 
-/** One ordered leg of a planned journey. */
+/**
+ * One ordered leg of a planned journey (the wire shape engines and the API
+ * emit for POST /routes/plan options). Unlike `Leg` (catalogue shape), a
+ * planned leg is already resolved: geometry, fare and, when known, duration
+ * and mode.
+ */
 export interface PlanLeg {
   fromRankId: string;
+  /** Rank name, for the leg-by-leg breakdown list. */
   fromName: string;
   toRankId: string;
   toName: string;
-  /** The leg's geometry, for drawing the map line. */
+  /** The leg's geometry ({lat,lng} points), for drawing the map line. */
   path: LatLng[];
+  /** Fare in rand, including the planner's imputed value for unknown fares. */
   fareZar: number;
+  /** Traversal minutes. Present only when the source duration is known. */
+  minutes?: number;
+  /** Vehicle type, when the data carries one. */
+  mode?: TransportMode;
 }
 
 /** Response body for POST /routes/plan (200 OK; a 404 carries { error, message }). */

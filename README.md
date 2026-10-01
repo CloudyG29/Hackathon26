@@ -15,7 +15,7 @@ request flow and the reasoning behind each stack choice.
 | ----------------------- | ------- | ------------------------------------------- |
 | Node.js                 | 20+ (22 recommended) | app, API, tooling              |
 | npm                     | 10+     | workspaces                                  |
-| Python                  | 3.11+   | `services/routing` (not in the path yet)    |
+| Python                  | 3.11+   | `services/routing` engine, tests, HTTP API  |
 | Android Studio + JDK 17 | —       | building the app locally                    |
 | Supabase account        | free    | ranks/fares database                        |
 
@@ -72,21 +72,30 @@ npm run import:csir -- --push
 Without `--push` the command just regenerates the JSON files in `data/seed/`
 (needs network access to the CSIR server).
 
-### 5. Python routing engine (optional, not yet used)
+### 5. Python routing engine
 
-```sh
-Set-Location services/routing
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -e ".[dev]"
-pytest
+The Python planner (`services/routing/src/routing/planner.py`) mirrors
+`services/api/src/planner.ts`, and its pytest suite is the contract test for
+both engines:
+
+```powershell
+Set-Location services\routing
+python -m venv venv
+.\venv\Scripts\Activate.ps1      # the prompt gains a (venv) prefix
+pip install -r requirements.txt  # planner + HTTP wrapper dependencies
+pip install pytest               # test runner (not in requirements.txt)
+python -m pytest                 # expect: 10 passed
 ```
+
+The Express API plans journeys in-process, so nothing above needs to stay
+running for `/routes/plan` to work — the venv is for the test suite and the
+optional HTTP wrapper in [Running](#running).
 
 ## Running
 
 Use two terminals from the repository root.
 
-```sh
+```powershell
 # Terminal 1 — API on http://localhost:4000
 npm run api
 
@@ -94,11 +103,114 @@ npm run api
 npm run mobile
 ```
 
-Verify the API is up:
+### Sending your first request
 
-```sh
+With the API up and `services/api/.env` pointing at a Supabase project that
+has data, check health first, then plan a journey between two ranks:
+
+```powershell
 Invoke-RestMethod http://localhost:4000/health
 ```
+
+```powershell
+$body = @'
+{
+  "fromRankId": "rank-f40",
+  "toRankId": "rank-f45",
+  "priority": "cheapest"
+}
+'@
+Invoke-RestMethod http://localhost:4000/routes/plan -Method Post `
+  -ContentType 'application/json' -Body $body
+```
+
+`rank-f40` and `rank-f45` exist in the team Supabase project — swap in any
+two connected rank IDs from your own `ranks` table otherwise. `priority` is
+one of `cheapest`, `fastest` or `easiest` (fewest taxi changes) and defaults
+to `cheapest`.
+
+The response is the one best journey for the requested priority: an ordered
+list of legs with `fromName`/`toName` labels, `fareZar` (always), `minutes`
+and `mode` (when known), and a road-following `path` array of `{lat, lng}`
+points ready for `react-native-maps`, plus the fare total and leg count:
+
+```json
+{
+  "legs": [
+    { "fromRankId": "rank-f40", "fromName": "…", "toRankId": "rank-soutpan", "toName": "…",
+      "fareZar": 25, "minutes": 93, "path": ["~120 road-following points"] },
+    { "fromRankId": "rank-soutpan", "fromName": "…", "toRankId": "rank-f45", "toName": "…",
+      "fareZar": 25, "minutes": 82, "path": ["~119 points"] }
+  ],
+  "totalFareZar": 50,
+  "legCount": 2
+}
+```
+
+The two `fromName`/`toName` labels come from the `ranks` table (the rank id
+when a name is missing).
+
+Failures come back as `{ "error": "message" }` with status 400 (invalid
+body), 404 (unknown rank, or no viable route between the two) or 503
+(database not configured).
+
+The mobile app calls this same endpoint. Inside the Android emulator,
+`localhost` is the phone itself — point `EXPO_PUBLIC_API_URL` in
+`apps/mobile/.env` at `http://10.0.2.2:4000` instead.
+
+### Live rerouting (strike toggle)
+
+Blocked legs are excluded from every fresh plan, so toggling a strike
+reroutes the next request — no restart, no cache:
+
+```powershell
+$routeId = "<any leg id from the response above>"
+Invoke-RestMethod "http://localhost:4000/marshal/$routeId/block" -Method Patch `
+  -ContentType 'application/json' -Body '{"is_blocked": true}'
+
+# Re-run the plan request — cheapest now takes the next-best corridor.
+
+Invoke-RestMethod "http://localhost:4000/marshal/$routeId/block" -Method Patch `
+  -ContentType 'application/json' -Body '{"is_blocked": false}'
+```
+
+### Python engine over HTTP (optional)
+
+The same planner is wrapped as a FastAPI service for querying the engine
+directly (curl, notebooks). From `services/routing`, venv active:
+
+```powershell
+uvicorn routing.api:app --reload --port 8000 --app-dir src
+```
+
+`--app-dir src` puts the `routing` package on the import path; the
+historical `uvicorn main:app --reload --port 8000` still works through a
+deprecated shim. The engine does not read Supabase — you pass the whole
+network in the body, in seed-fixture camelCase or DB snake_case:
+
+```powershell
+$engineBody = @'
+{
+  "fromRankId": "jhb-noord",
+  "toRankId": "mbombela",
+  "ranks": [
+    { "id": "jhb-noord", "location": { "latitude": -26.2027, "longitude": 28.0455 } },
+    { "id": "mbombela", "location": { "latitude": -25.4753, "longitude": 30.9694 } }
+  ],
+  "legs": [
+    { "id": "noord-mbombela", "mode": "long_distance_taxi",
+      "fromRankId": "jhb-noord", "toRankId": "mbombela",
+      "fareZar": 520, "estimatedMinutes": 300 }
+  ]
+}
+'@
+Invoke-RestMethod http://localhost:8000/plan -Method Post `
+  -ContentType 'application/json' -Body $engineBody
+```
+
+The response carries one option per requested priority (all three by
+default), each with the same leg shape as `/routes/plan`, and `GET /health`
+is available for a quick check.
 
 ### Building the app for the device (required for maps)
 
@@ -156,10 +268,12 @@ Run from the repository root:
 
 ## API surface
 
-| Endpoint            | Status      | Notes                                        |
-| ------------------- | ----------- | -------------------------------------------- |
-| `GET /health`       | Implemented | Uptime and which data source is configured   |
-| `POST /routes/plan` | Stub        | Validates the request, then returns 501      |
+| Endpoint                   | Status      | Notes                                                |
+| -------------------------- | ----------- | ---------------------------------------------------- |
+| `GET /health`              | Implemented | Uptime and which data source is configured           |
+| `POST /routes/plan`        | Implemented | One best journey per requested priority, per-leg geometry |
+| `PATCH /marshal/:id/block` | Implemented | Toggle a strike — the next plan reroutes live        |
+| `GET/POST /demand`         | Implemented | Record and aggregate commuter demand signals         |
 
 ## Known caveats
 

@@ -13,13 +13,17 @@ import { RANKS } from './fixtures';
 export const STUB_RANKS: RankSuggestion[] = RANKS.map((rank) => ({
   rankId: rank.id,
   name: rank.name,
+  area: rank.area,
   lat: rank.location.latitude,
   lng: rank.location.longitude,
 }));
 
-/** Search over the fixture rank list (same intent as GET /ranks?q=). */
+/** Search over the fixture rank list (same intent as GET /ranks?q=): the query
+ * matches a rank name or its town/city, like the real endpoint. */
 export function stubSearchRanks(query: string): RankSuggestion[] {
   const q = query.trim().toLowerCase();
   if (!q) return STUB_RANKS;
-  return STUB_RANKS.filter((r) => r.name.toLowerCase().includes(q));
+  return STUB_RANKS.filter(
+    (r) => r.name.toLowerCase().includes(q) || (r.area?.toLowerCase().includes(q) ?? false),
+  );
 }

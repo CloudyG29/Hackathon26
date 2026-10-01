@@ -27,8 +27,8 @@ import type {
  *
  * planJourney() falls back to buildFixturePlan() whenever the API is
  * unreachable, so the demo keeps working offline and still honours the
- * cheapest / fastest / fewest-transfers choice. Keep the numbers in sync
- * with data/seed.
+ * cheapest / fastest / easiest (fewest taxis) choice. Keep the numbers in
+ * sync with data/seed.
  */
 
 /** Compact surveyed-geometry point, matching the PlanLeg wire shape. */
@@ -394,7 +394,7 @@ export function buildFixturePlan(
     if (priority === 'fastest') {
       return a.totalMinutes - b.totalMinutes || a.totalFareZar - b.totalFareZar;
     }
-    if (priority === 'fewest_transfers') {
+    if (priority === 'easiest') {
       return (
         a.legs.length - b.legs.length ||
         a.totalMinutes - b.totalMinutes ||

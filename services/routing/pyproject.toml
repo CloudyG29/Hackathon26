@@ -1,10 +1,11 @@
 [project]
 name = "routing"
 version = "0.0.0"
-description = "Graph search over the rank/leg transit network, ranking journeys by cost, time, transfers and reliability"
+description = "Deterministic multi-priority journey planning over the rank/leg transit network (cheapest, fastest, easiest)"
 requires-python = ">=3.11"
 dependencies = [
-    "networkx>=3.4",
+    "fastapi",
+    "uvicorn",
 ]
 
 [project.optional-dependencies]

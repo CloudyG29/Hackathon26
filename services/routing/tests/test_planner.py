@@ -1,158 +1,205 @@
-"""Journey planner behaviour: priorities, blocking, parallel legs, edge cases."""
+"""Contract tests for the routing planner (routing.planner).
 
-from __future__ import annotations
+Covers the demo-critical properties:
 
-from routing.planner import build_graph, plan_journey
+- optimality per priority (cheapest / fastest / easiest),
+- determinism: equal-cost paths resolve identically across reruns,
+- missing-data guards: unknown minutes never look "instant", unknown fares
+  never look free,
+- strikes: blocked legs are excluded and the plan reroutes,
+- geometry: the DB path wins; otherwise a straight line between the ranks,
+  both emitted as {lat,lng} wire points,
+- naming: legs carry fromName/toName resolved from the ranks list.
+"""
 
-RANKS = [
-    {"rankId": rank_id, "name": f"Rank {rank_id}", "lat": 0.0, "lng": 0.0}
-    for rank_id in ("a", "b", "c", "d")
-]
+import pytest
 
-DEFAULT_PATH = [{"lat": -25.0, "lng": 28.0}, {"lat": -25.1, "lng": 28.1}]
+from routing.planner import _as_float, plan_journeys
+
+# Sentinel for "key absent" — distinct from an explicit null or zero.
+_MISSING = object()
+
+
+def rank(rank_id: str, lat: float, lng: float) -> dict:
+    """Seed-fixture style rank."""
+    return {
+        "id": rank_id,
+        "name": f"{rank_id} Rank",
+        "location": {"latitude": lat, "longitude": lng},
+    }
 
 
 def leg(
     leg_id: str,
-    source: str,
-    target: str,
-    fare: float,
-    minutes: float,
+    from_rank_id: str,
+    to_rank_id: str,
+    fare: object = _MISSING,
+    minutes: object = _MISSING,
+    mode: str = "long_distance_taxi",
+    path: list | None = None,
     blocked: bool = False,
 ) -> dict:
-    return {
-        "legId": leg_id,
-        "fromRankId": source,
-        "toRankId": target,
-        "fareZar": fare,
-        "minutes": minutes,
-        "blocked": blocked,
-        "path": DEFAULT_PATH,
+    """Seed-fixture style leg; keys left out entirely simulate missing data."""
+    edge: dict = {
+        "id": leg_id,
+        "mode": mode,
+        "fromRankId": from_rank_id,
+        "toRankId": to_rank_id,
     }
+    if fare is not _MISSING:
+        edge["fareZar"] = fare
+    if minutes is not _MISSING:
+        edge["estimatedMinutes"] = minutes
+    if path is not None:
+        edge["path"] = path
+    if blocked:
+        edge["isBlocked"] = True
+    return edge
 
 
-def request(legs: list[dict], source: str = "a", target: str = "b", priority: str | None = None) -> dict:
-    body: dict = {"fromRankId": source, "toRankId": target, "ranks": RANKS, "legs": legs}
-    if priority is not None:
-        body["priority"] = priority
-    return body
+RANKS = [rank("A", -26.0, 28.0), rank("X", -26.1, 28.1), rank("B", -26.2, 28.2)]
 
 
-def leg_ids(result: dict) -> list[str]:
-    return [planned["legId"] for planned in result["legs"]]
+def option_by_priority(result: dict, priority: str) -> dict:
+    return next(option for option in result["options"] if option["priority"] == priority)
 
 
-def two_hop_or_direct() -> list[dict]:
-    """Direct A-B costs more; A-C-B is cheaper but slower."""
-    return [
-        leg("ab", "a", "b", fare=12, minutes=30),
-        leg("ac", "a", "c", fare=5, minutes=50),
-        leg("cb", "c", "b", fare=5, minutes=50),
+def hop_sequence(option: dict) -> list[str]:
+    return [f"{plan_leg['fromRankId']}->{plan_leg['toRankId']}" for plan_leg in option["legs"]]
+
+
+def test_zero_fare_detour_loses_to_paid_direct_when_fares_are_imputed():
+    """A detour whose legs carry no fare data must not beat a paid direct leg:
+    imputed fares keep unknown-cost legs from looking free."""
+    edges = [
+        leg("direct", "A", "B", fare=50, minutes=100),
+        leg("detour-a", "A", "X", minutes=50),  # no fare key -> imputed penalty
+        leg("detour-b", "X", "B", minutes=50),  # no fare key -> imputed penalty
+    ]
+
+    cheapest = option_by_priority(plan_journeys(RANKS, edges, "A", "B"), "cheapest")
+
+    assert hop_sequence(cheapest) == ["A->B"]
+    assert cheapest["totalFareZar"] == 50
+
+
+def test_equal_cost_paths_resolve_deterministically():
+    """Two options with identical totals must resolve to the same plan on every
+    rerun (and regardless of input order): the tie-break prefers fewer legs."""
+    edges = [
+        leg("direct", "A", "B", fare=100, minutes=60),
+        leg("hop-a", "A", "X", fare=50, minutes=30),
+        leg("hop-b", "X", "B", fare=50, minutes=30),
+    ]
+
+    first = plan_journeys(RANKS, edges, "A", "B")
+    reversed_input = plan_journeys(RANKS, list(reversed(edges)), "A", "B")
+    for _ in range(3):
+        assert plan_journeys(RANKS, edges, "A", "B") == first
+
+    assert hop_sequence(option_by_priority(first, "cheapest")) == ["A->B"]
+    assert hop_sequence(option_by_priority(reversed_input, "cheapest")) == ["A->B"]
+
+
+def test_epsilon_tolerates_float_noise():
+    """A hair-thin cost difference (within COST_EPSILON) must not flip the
+    winner between reruns: near-ties fall through to the structural tie-break."""
+    edges = [
+        leg("direct", "A", "B", fare=100, minutes=60),
+        leg("hop-a", "A", "X", fare=50, minutes=30),
+        leg("hop-b", "X", "B", fare=50.0000000005, minutes=30),
+    ]
+
+    cheapest = option_by_priority(plan_journeys(RANKS, edges, "A", "B"), "cheapest")
+
+    assert hop_sequence(cheapest) == ["A->B"]
+
+
+def test_missing_minutes_loses_to_known_time_leg():
+    """A leg with no duration must not look "instant": on fastest, the known-time
+    detour wins, and per-leg minutes/mode are populated for the chosen legs."""
+    edges = [
+        leg("direct", "A", "B", fare=10),  # no minutes key -> large penalty
+        leg("hop-a", "A", "X", fare=10, minutes=30),
+        leg("hop-b", "X", "B", fare=10, minutes=30),
+    ]
+
+    fastest = option_by_priority(plan_journeys(RANKS, edges, "A", "B"), "fastest")
+
+    assert hop_sequence(fastest) == ["A->X", "X->B"]
+    assert fastest["totalMinutes"] == 60
+    assert all(plan_leg["minutes"] == 30 for plan_leg in fastest["legs"])
+    assert all(plan_leg["mode"] == "long_distance_taxi" for plan_leg in fastest["legs"])
+
+
+def test_as_float_guard_keeps_explicit_zero_but_penalises_missing():
+    assert _as_float(0, default=99.0) == 0.0  # explicit zero is a real zero
+    assert _as_float("0", default=99.0) == 0.0
+    assert _as_float(None, default=99.0) == 99.0  # missing -> penalty, never 0
+    assert _as_float("12.5", default=99.0) == 12.5
+    assert _as_float("not-a-number", default=99.0) == 99.0
+
+
+def test_blocked_leg_reroutes():
+    """Toggling a strike in the DB must push the plan onto the next-best path."""
+    edges = [
+        leg("direct", "A", "B", fare=10, minutes=60, blocked=True),
+        leg("hop-a", "A", "X", fare=20, minutes=30),
+        leg("hop-b", "X", "B", fare=20, minutes=30),
+    ]
+
+    cheapest = option_by_priority(plan_journeys(RANKS, edges, "A", "B"), "cheapest")
+
+    assert hop_sequence(cheapest) == ["A->X", "X->B"]
+    assert cheapest["totalFareZar"] == 40
+
+
+def test_plan_leg_geometry_prefers_db_path_then_straight_line():
+    road_path = [
+        {"lat": -26.05, "lng": 28.05},
+        {"lat": -26.1, "lng": 28.1},
+        {"lat": -26.2, "lng": 28.2},
+    ]
+    with_path = plan_journeys(
+        RANKS, [leg("direct", "A", "B", fare=10, minutes=60, path=road_path)], "A", "B"
+    )
+    planned = option_by_priority(with_path, "fastest")["legs"][0]
+    assert planned["path"] == [
+        {"lat": -26.05, "lng": 28.05},
+        {"lat": -26.1, "lng": 28.1},
+        {"lat": -26.2, "lng": 28.2},
+    ]
+
+    without_path = plan_journeys(RANKS, [leg("direct", "A", "B", fare=10, minutes=60)], "A", "B")
+    fallback = option_by_priority(without_path, "fastest")["legs"][0]
+    assert fallback["path"] == [  # straight line between the rank coordinates
+        {"lat": -26.0, "lng": 28.0},
+        {"lat": -26.2, "lng": 28.2},
     ]
 
 
-def test_cheapest_prefers_lowest_total_fare() -> None:
-    result = plan_journey(request(two_hop_or_direct(), priority="cheapest"))
-    assert result["found"] is True
-    assert leg_ids(result) == ["ac", "cb"]
-    assert result["totalFareZar"] == 10
-    assert result["legCount"] == 2
-
-
-def test_fastest_prefers_shortest_total_time() -> None:
-    result = plan_journey(request(two_hop_or_direct(), priority="fastest"))
-    assert leg_ids(result) == ["ab"]
-    assert result["legCount"] == 1
-
-
-def test_fewest_transfers_prefers_minimum_hops() -> None:
-    result = plan_journey(request(two_hop_or_direct(), priority="fewest_transfers"))
-    assert leg_ids(result) == ["ab"]
-
-
-def test_fewest_transfers_tie_breaks_on_minutes() -> None:
-    legs = [
-        leg("ac", "a", "c", fare=5, minutes=50),
-        leg("cb", "c", "b", fare=5, minutes=50),
-        leg("ad", "a", "d", fare=5, minutes=20),
-        leg("db", "d", "b", fare=5, minutes=20),
+def test_planned_leg_carries_rank_names_with_id_fallback():
+    """Legs label their endpoints from the ranks list; an unnamed rank falls
+    back to its id so the breakdown list never renders blanks."""
+    named = [
+        {"id": "A", "name": "Alpha Rank", "location": {"latitude": -26.0, "longitude": 28.0}},
+        {"id": "B", "name": "Beta Rank", "location": {"latitude": -26.2, "longitude": 28.2}},
     ]
-    result = plan_journey(request(legs, priority="fewest_transfers"))
-    assert leg_ids(result) == ["ad", "db"]
-
-
-def test_default_priority_is_cheapest() -> None:
-    with_default = plan_journey(request(two_hop_or_direct()))
-    explicit = plan_journey(request(two_hop_or_direct(), priority="cheapest"))
-    assert leg_ids(with_default) == leg_ids(explicit) == ["ac", "cb"]
-
-
-def test_blocked_legs_are_excluded() -> None:
-    legs = [
-        leg("ab", "a", "b", fare=1, minutes=1, blocked=True),
-        leg("ac", "a", "c", fare=5, minutes=50),
-        leg("cb", "c", "b", fare=5, minutes=50),
+    anonymous = [
+        {"id": "A", "location": {"latitude": -26.0, "longitude": 28.0}},
+        {"id": "B", "location": {"latitude": -26.2, "longitude": 28.2}},
     ]
-    result = plan_journey(request(legs, priority="cheapest"))
-    assert result["found"] is True
-    assert leg_ids(result) == ["ac", "cb"]
+    edges = [leg("direct", "A", "B", fare=10, minutes=60)]
+
+    planned = option_by_priority(plan_journeys(named, edges, "A", "B"), "cheapest")["legs"][0]
+    assert planned["fromName"] == "Alpha Rank"
+    assert planned["toName"] == "Beta Rank"
+
+    fallback = option_by_priority(plan_journeys(anonymous, edges, "A", "B"), "cheapest")["legs"][0]
+    assert fallback["fromName"] == "A"
+    assert fallback["toName"] == "B"
 
 
-def test_no_path_when_every_option_is_blocked() -> None:
-    legs = [
-        leg("ab", "a", "b", fare=1, minutes=1, blocked=True),
-        leg("ac", "a", "c", fare=5, minutes=50, blocked=True),
-        leg("cb", "c", "b", fare=5, minutes=50, blocked=True),
-    ]
-    result = plan_journey(request(legs))
-    assert result["found"] is False
-    assert result["reason"] == "no_path"
-
-
-def test_no_path_when_ranks_are_disconnected() -> None:
-    legs = [leg("ac", "a", "c", fare=5, minutes=50)]
-    result = plan_journey(request(legs, source="a", target="b"))
-    assert result["found"] is False
-    assert result["reason"] == "no_path"
-
-
-def test_parallel_legs_pick_the_best_per_priority() -> None:
-    legs = [
-        leg("cheap-slow", "a", "b", fare=8, minutes=40),
-        leg("pricey-fast", "a", "b", fare=12, minutes=20),
-    ]
-    cheapest = plan_journey(request(legs, priority="cheapest"))
-    fastest = plan_journey(request(legs, priority="fastest"))
-    assert leg_ids(cheapest) == ["cheap-slow"]
-    assert leg_ids(fastest) == ["pricey-fast"]
-
-
-def test_same_rank_is_an_empty_journey() -> None:
-    result = plan_journey(request(two_hop_or_direct(), source="a", target="a"))
-    assert result == {"found": True, "legs": [], "totalFareZar": 0.0, "legCount": 0}
-
-
-def test_unknown_priority_is_rejected() -> None:
-    result = plan_journey(request(two_hop_or_direct(), priority="easiest"))
-    assert result["found"] is False
-    assert result["reason"] == "bad_priority"
-
-
-def test_names_paths_and_rounded_fares_are_passed_through() -> None:
-    legs = [
-        leg("ac", "a", "c", fare=6.25, minutes=10),
-        leg("cb", "c", "b", fare=7.5, minutes=10),
-        leg("ab", "a", "b", fare=99, minutes=10),
-    ]
-    result = plan_journey(request(legs, priority="cheapest"))
-    assert leg_ids(result) == ["ac", "cb"]
-    assert result["totalFareZar"] == 13.75
-    first = result["legs"][0]
-    assert first["fromName"] == "Rank a"
-    assert first["toName"] == "Rank c"
-    assert first["path"] == DEFAULT_PATH
-
-
-def test_build_graph_skips_self_loops() -> None:
-    graph = build_graph([leg("loop", "a", "a", fare=1, minutes=1)], "cheapest")
-    assert graph.number_of_edges() == 0
+def test_unknown_rank_raises():
+    with pytest.raises(ValueError, match="Origin rank not found"):
+        plan_journeys(RANKS, [], "nope", "B")

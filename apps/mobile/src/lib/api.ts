@@ -2,15 +2,17 @@
  * API client for the journey screen.
  *
  * Contract (agreed with the backend team):
- *   GET  /ranks?q=<text>          -> [{ rankId, name, lat, lng }, ...]
+ *   GET  /ranks?q=<text>          -> [{ rankId, name, area?, lat, lng }, ...]
  *   POST /routes/plan             -> { legs, totalFareZar, legCount } | 404
  *   Request body: { fromRankId, toRankId, priority? }
+ *   POST /demand                  -> { message } (one demand signal per call)
+ *   Request body: { from_rank_id, to_rank_id }
  *
  * USE_STUBS forces the seeded fixtures regardless of connectivity.
  * When it is false, every call tries the real API first and falls back to
  * the seeded fixtures on any failure (API down, timeout, bad status) so the
  * UI stays demoable offline — including the priority (cheapest / fastest /
- * fewest transfers) the user picked.
+ * easiest) the user picked.
  *
  * Default base URL: the Android emulator cannot reach the dev machine via
  * localhost, so it gets the 10.0.2.2 host alias instead (see .env.example).
@@ -93,5 +95,23 @@ export async function planJourney(
   } catch {
     // API unreachable: the seeded corridor keeps the demo alive.
     return { plan: buildFixturePlan(fromRankId, toRankId, priority), source: 'fixtures' };
+  }
+}
+
+/**
+ * Reports a demand signal for the searched corridor. Resolves true only when
+ * the API accepted the signal — the caller shows the result, so an offline
+ * tap must not claim "marshals notified".
+ */
+export async function reportDemand(fromRankId: string, toRankId: string): Promise<boolean> {
+  if (USE_STUBS) return true;
+  try {
+    await fetchJson('/demand', {
+      method: 'POST',
+      body: JSON.stringify({ from_rank_id: fromRankId, to_rank_id: toRankId }),
+    });
+    return true;
+  } catch {
+    return false;
   }
 }

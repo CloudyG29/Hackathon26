@@ -17,11 +17,15 @@ import type { PlanLeg, PlanPriority, PlanResult, RankSuggestion } from '@hackath
 import { planJourney, searchRanks } from '../lib/api';
 import { polylineMidpoint } from '../lib/geo';
 import { savePlan } from '../lib/planStore';
+import { hasMapsApiKey, MapFallback } from '../components/JourneyMap';
 import { LEG_COLORS, PIN_COLORS, cardShadow, chipShadow, colors, radii } from '../lib/theme';
-import { ScreenHeader } from '../components/ScreenHeader';
 
 /**
  * Journey search + map screen.
+ *
+ * From/To autocomplete calls GET /ranks?q= — our ranks, matched by rank name
+ * or town/city (no Google Places/geocoding). Search calls POST /routes/plan
+ * and renders the returned legs on the map.
  *
  * Layout: MapView fills the entire screen. All UI panels are absolutely
  * positioned floating layers over the map — search panel at the top,
@@ -32,7 +36,7 @@ import { ScreenHeader } from '../components/ScreenHeader';
 const PRIORITY_OPTIONS: Array<{ value: PlanPriority; label: string; icon: string }> = [
   { value: 'cheapest', label: 'Cheapest', icon: '💸' },
   { value: 'fastest', label: 'Fastest', icon: '⚡' },
-  { value: 'fewest_transfers', label: 'Fewest taxis', icon: '🚕' },
+  { value: 'easiest', label: 'Fewest taxis', icon: '🚕' },
 ];
 
 const INITIAL_REGION: Region = {
@@ -170,48 +174,52 @@ export default function HomeScreen() {
   return (
     <View style={styles.root}>
       {/* ── Full-screen map (sits behind everything) ─────────────────── */}
-      <MapView ref={mapRef} style={StyleSheet.absoluteFill} initialRegion={INITIAL_REGION}>
-        {plan?.legs.map((leg, index) => {
-          const coordinates = leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }));
-          const color = LEG_COLORS[index % LEG_COLORS.length]!;
-          const midpoint = polylineMidpoint(leg.path);
-          return (
-            <View key={`leg-${index}`}>
-              <Polyline
-                coordinates={coordinates}
-                strokeColor={color}
-                strokeWidth={5}
-                lineCap="round"
-              />
-              {midpoint && (
-                <Marker
-                  coordinate={{ latitude: midpoint.lat, longitude: midpoint.lng }}
-                  anchor={{ x: 0.5, y: 0.5 }}
-                >
-                  <View style={[styles.fareBubble, { backgroundColor: color }]}>
-                    <Text style={styles.fareBubbleText}>{formatZar(leg.fareZar)}</Text>
-                  </View>
-                </Marker>
-              )}
-            </View>
-          );
-        })}
-        {stops.map((stop) => (
-          <Marker
-            key={stop.key}
-            coordinate={{ latitude: stop.lat, longitude: stop.lng }}
-            title={stop.name}
-            description={stop.kind === 'transfer' ? 'Change taxis here' : undefined}
-            pinColor={
-              stop.kind === 'start'
-                ? PIN_COLORS.start
-                : stop.kind === 'end'
-                  ? PIN_COLORS.end
-                  : PIN_COLORS.transfer
-            }
-          />
-        ))}
-      </MapView>
+      {hasMapsApiKey ? (
+        <MapView ref={mapRef} style={StyleSheet.absoluteFill} initialRegion={INITIAL_REGION}>
+          {plan?.legs.map((leg, index) => {
+            const coordinates = leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }));
+            const color = LEG_COLORS[index % LEG_COLORS.length]!;
+            const midpoint = polylineMidpoint(leg.path);
+            return (
+              <View key={`leg-${index}`}>
+                <Polyline
+                  coordinates={coordinates}
+                  strokeColor={color}
+                  strokeWidth={5}
+                  lineCap="round"
+                />
+                {midpoint && (
+                  <Marker
+                    coordinate={{ latitude: midpoint.lat, longitude: midpoint.lng }}
+                    anchor={{ x: 0.5, y: 0.5 }}
+                  >
+                    <View style={[styles.fareBubble, { backgroundColor: color }]}>
+                      <Text style={styles.fareBubbleText}>{formatZar(leg.fareZar)}</Text>
+                    </View>
+                  </Marker>
+                )}
+              </View>
+            );
+          })}
+          {stops.map((stop) => (
+            <Marker
+              key={stop.key}
+              coordinate={{ latitude: stop.lat, longitude: stop.lng }}
+              title={stop.name}
+              description={stop.kind === 'transfer' ? 'Change taxis here' : undefined}
+              pinColor={
+                stop.kind === 'start'
+                  ? PIN_COLORS.start
+                  : stop.kind === 'end'
+                    ? PIN_COLORS.end
+                    : PIN_COLORS.transfer
+              }
+            />
+          ))}
+        </MapView>
+      ) : (
+        <MapFallback />
+      )}
 
       {/* ── Floating top panel ────────────────────────────────────────── */}
       <View style={[styles.topPanel, { top: topPanelTop }]} pointerEvents="box-none">
@@ -459,9 +467,16 @@ function EndpointInput({ kind, state, suggestions, focused, onFocus, onChangeTex
               <View style={styles.suggestionIcon}>
                 <Text style={styles.suggestionIconText}>📍</Text>
               </View>
-              <Text style={styles.suggestionName} numberOfLines={1}>
-                {rank.name}
-              </Text>
+              <View style={styles.suggestionText}>
+                <Text style={styles.suggestionName} numberOfLines={1}>
+                  {rank.name}
+                </Text>
+                {rank.area ? (
+                  <Text style={styles.suggestionArea} numberOfLines={1}>
+                    {rank.area}
+                  </Text>
+                ) : null}
+              </View>
             </Pressable>
           ))}
         </ScrollView>
@@ -604,7 +619,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   suggestionIconText: { fontSize: 13 },
-  suggestionName: { flex: 1, fontSize: 14, fontWeight: '500', color: colors.text },
+  suggestionText: { flex: 1 },
+  suggestionName: { fontSize: 14, fontWeight: '500', color: colors.text },
+  suggestionArea: { fontSize: 11, color: colors.textFaint, marginTop: 1 },
 
   /* Priority chips -------------------------------------------------------- */
   priorityRow: {

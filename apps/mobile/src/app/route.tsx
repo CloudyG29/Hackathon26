@@ -7,6 +7,8 @@ import type { PlanLeg } from '@hackathon26/shared';
 import { formatZar } from '../lib/format';
 import { polylineMidpoint, regionForPath } from '../lib/geo';
 import { loadPlan } from '../lib/planStore';
+import { reportDemand } from '../lib/api';
+import { hasMapsApiKey, MapFallback } from '../components/JourneyMap';
 import { LEG_COLORS, PIN_COLORS, cardShadow, chipShadow, colors, radii } from '../lib/theme';
 import { ScreenHeader } from '../components/ScreenHeader';
 
@@ -91,7 +93,7 @@ function LegRow({
  */
 export default function RouteScreen() {
   const saved = loadPlan();
-  const [demandSent, setDemandSent] = useState(false);
+  const [demandState, setDemandState] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
   const [activeLeg, setActiveLeg] = useState<number | null>(null);
   const mapRef = useRef<MapView>(null);
   const insets = useSafeAreaInsets();
@@ -123,6 +125,14 @@ export default function RouteScreen() {
 
   const { plan, fromLabel, toLabel, source } = saved;
   const cash = cashNeeded(plan.totalFareZar);
+
+  const onReportDemand = async () => {
+    setDemandState('sending');
+    const fromRankId = plan.legs[0]!.fromRankId;
+    const toRankId = plan.legs[plan.legs.length - 1]!.toRankId;
+    const ok = await reportDemand(fromRankId, toRankId);
+    setDemandState(ok ? 'sent' : 'failed');
+  };
 
   const points = plan.legs.flatMap((leg) =>
     leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng })),
@@ -185,56 +195,60 @@ export default function RouteScreen() {
 
         {/* Map */}
         <View style={styles.mapWrap}>
-          <MapView ref={mapRef} style={styles.map} initialRegion={INITIAL_REGION}>
-            {plan.legs.map((leg, index) => {
-              const coordinates = leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }));
-              const color = LEG_COLORS[index % LEG_COLORS.length]!;
-              const midpoint = polylineMidpoint(leg.path);
-              return (
-                <View key={`leg-${index}`}>
-                  <Polyline
-                    coordinates={coordinates}
-                    strokeColor={color}
-                    strokeWidth={activeLeg === index ? 7 : 4}
-                    lineCap="round"
-                  />
-                  {midpoint ? (
-                    <Marker
-                      coordinate={{ latitude: midpoint.lat, longitude: midpoint.lng }}
-                      anchor={{ x: 0.5, y: 0.5 }}
-                    >
-                      <View style={[styles.fareBubble, { backgroundColor: color }]}>
-                        <Text style={styles.fareBubbleText}>{formatZar(leg.fareZar)}</Text>
-                      </View>
-                    </Marker>
-                  ) : null}
-                </View>
-              );
-            })}
-            {plan.legs.map((leg, index) => {
-              const start = leg.path[0];
-              const end = leg.path[leg.path.length - 1];
-              const lastLeg = index === plan.legs.length - 1;
-              return (
-                <View key={`stops-${index}`}>
-                  {start ? (
-                    <Marker
-                      coordinate={{ latitude: start.lat, longitude: start.lng }}
-                      title={leg.fromName}
-                      pinColor={index === 0 ? PIN_COLORS.start : PIN_COLORS.transfer}
+          {hasMapsApiKey ? (
+            <MapView ref={mapRef} style={styles.map} initialRegion={INITIAL_REGION}>
+              {plan.legs.map((leg, index) => {
+                const coordinates = leg.path.map((p) => ({ latitude: p.lat, longitude: p.lng }));
+                const color = LEG_COLORS[index % LEG_COLORS.length]!;
+                const midpoint = polylineMidpoint(leg.path);
+                return (
+                  <View key={`leg-${index}`}>
+                    <Polyline
+                      coordinates={coordinates}
+                      strokeColor={color}
+                      strokeWidth={activeLeg === index ? 7 : 4}
+                      lineCap="round"
                     />
-                  ) : null}
-                  {end && lastLeg ? (
-                    <Marker
-                      coordinate={{ latitude: end.lat, longitude: end.lng }}
-                      title={leg.toName}
-                      pinColor={PIN_COLORS.end}
-                    />
-                  ) : null}
-                </View>
-              );
-            })}
-          </MapView>
+                    {midpoint ? (
+                      <Marker
+                        coordinate={{ latitude: midpoint.lat, longitude: midpoint.lng }}
+                        anchor={{ x: 0.5, y: 0.5 }}
+                      >
+                        <View style={[styles.fareBubble, { backgroundColor: color }]}>
+                          <Text style={styles.fareBubbleText}>{formatZar(leg.fareZar)}</Text>
+                        </View>
+                      </Marker>
+                    ) : null}
+                  </View>
+                );
+              })}
+              {plan.legs.map((leg, index) => {
+                const start = leg.path[0];
+                const end = leg.path[leg.path.length - 1];
+                const lastLeg = index === plan.legs.length - 1;
+                return (
+                  <View key={`stops-${index}`}>
+                    {start ? (
+                      <Marker
+                        coordinate={{ latitude: start.lat, longitude: start.lng }}
+                        title={leg.fromName}
+                        pinColor={index === 0 ? PIN_COLORS.start : PIN_COLORS.transfer}
+                      />
+                    ) : null}
+                    {end && lastLeg ? (
+                      <Marker
+                        coordinate={{ latitude: end.lat, longitude: end.lng }}
+                        title={leg.toName}
+                        pinColor={PIN_COLORS.end}
+                      />
+                    ) : null}
+                  </View>
+                );
+              })}
+            </MapView>
+          ) : (
+            <MapFallback />
+          )}
 
           {/* Map legend */}
           <View style={styles.mapLegend}>
@@ -288,14 +302,20 @@ export default function RouteScreen() {
         <Pressable
           style={({ pressed }) => [
             styles.demandButton,
-            demandSent && styles.demandButtonSent,
-            pressed && !demandSent && styles.demandButtonPressed,
+            demandState === 'sent' && styles.demandButtonSent,
+            pressed && demandState !== 'sent' && styles.demandButtonPressed,
           ]}
-          onPress={() => setDemandSent(true)}
-          disabled={demandSent}
+          onPress={onReportDemand}
+          disabled={demandState === 'sending' || demandState === 'sent'}
         >
-          <Text style={[styles.demandText, demandSent && styles.demandTextSent]}>
-            {demandSent ? '✅ Demand reported — marshals notified' : '📢 Report high demand on this route'}
+          <Text style={[styles.demandText, demandState === 'sent' && styles.demandTextSent]}>
+            {demandState === 'sending'
+              ? 'Reporting demand…'
+              : demandState === 'sent'
+                ? '✅ Demand reported — marshals notified'
+                : demandState === 'failed'
+                  ? 'Could not report — tap to retry'
+                  : '📢 Report high demand on this route'}
           </Text>
         </Pressable>
       </ScrollView>
