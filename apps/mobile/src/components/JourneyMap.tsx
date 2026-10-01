@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE, type Region } from 'react-native-maps';
 import type { Leg, Rank } from '@hackathon26/shared';
 import { MODE_COLORS } from '../lib/format';
+import { PIN_COLORS, colors } from '../lib/theme';
 
 /** Corridor-level overview: Johannesburg CBD through Mbombela to White River. */
 const CORRIDOR_REGION: Region = {
@@ -39,8 +40,8 @@ export function MapFallback() {
   );
 }
 
-const HIGHLIGHT_PIN = '#0b5cad';
-const DEFAULT_PIN = '#e8a33d';
+const HIGHLIGHT_PIN = colors.accent;
+const DEFAULT_PIN = PIN_COLORS.transfer;
 
 interface JourneyMapProps {
   ranks: Rank[];
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
     padding: 24,
-    backgroundColor: '#f4f6f9',
+    backgroundColor: colors.bg,
   },
   fallbackTitle: {
     fontSize: 16,
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
   },
   fallbackBody: {
     fontSize: 13,
-    color: '#555',
+    color: colors.textSecondary,
     textAlign: 'center',
   },
 });

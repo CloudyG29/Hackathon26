@@ -1,5 +1,6 @@
 import { FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Rank } from '@hackathon26/shared';
+import { colors, radii } from '../lib/theme';
 
 interface RankPickerModalProps {
   visible: boolean;
@@ -61,15 +62,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   sheet: {
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    backgroundColor: colors.surface,
+    borderTopLeftRadius: radii.xl,
+    borderTopRightRadius: radii.xl,
     maxHeight: '80%',
     paddingBottom: 16,
   },
   sheetTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
+    color: colors.text,
     padding: 16,
   },
   listContent: {
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   rowSelected: {
-    backgroundColor: '#e8f1fb',
+    backgroundColor: colors.accentSoft,
   },
   rowText: {
     flex: 1,
@@ -92,14 +94,15 @@ const styles = StyleSheet.create({
   rowName: {
     fontSize: 15,
     fontWeight: '600',
+    color: colors.text,
   },
   rowArea: {
     fontSize: 13,
-    color: '#555',
+    color: colors.textSecondary,
   },
   check: {
     fontSize: 13,
-    color: '#0b5cad',
+    color: colors.accent,
     fontWeight: '600',
   },
 });
